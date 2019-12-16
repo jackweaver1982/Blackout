@@ -1,1 +1,0 @@
-Make a `s.goWithMsg` function to streamline the process. There should be a map connecting passage names with the number of messages they require. There should be a post-rendering process to check for this number and return an error if it's missing. The `goto` macro and the `[[...|...]]` syntax should be avoided, forcibly if possible.

@@ -41,7 +41,7 @@ a {
 :: Story JavaScript [script]
 /* twine-user-script #1: "010_customizations.js" */
 setup.version = "1.0";
-setup.lastEdited = "2019-12-15-1654"
+setup.lastEdited = "2019-12-16-1714"
 
 /*  make "v" a shortcut for "State.variables",
  *  which is equivalent to "variables()" */
@@ -971,6 +971,8 @@ setup.generalRememberMustang = function() {
 <p>The story automatically saves your progress, so if you exit and reload later, you will be able to resume right where you left off. You can also manually save your progress in a bookmark that can be reloaded later. But think carefully about this. You only get one bookmark! (Warning: using private browsing or disabling or clearing your cookies will interfere with the story's saving feature.)</p>
 
 <p><<link "return to story">><<script>>Engine.show()<</script>><</link>></p>
+
+<p>[Blackout version <<=setup.version>>, last edited <<=setup.lastEdited>> UTC]</p>
 
 
 :: bio {"position":"600,100","size":"100,100"}

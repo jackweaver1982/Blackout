@@ -1,0 +1,337 @@
+:: Cops bust in
+<<run s.discoverThing("detective")>>
+
+/*  segue is in $msg[0,1] */
+<p><<= $msg[0]>></p>
+
+/*  description */
+<p><<= $msg[1]>>Three men rush in. "Get down on the ground!" one shouts. <<if $inventory.has("knife")>>"He's got a knife!" yells another.<</if>> They all have their guns trained on you. The bald man in the center looks like a police <<link "detective" >><<run setup.examine("The detective doesn't move. He doesn't blink. He just stands there scowling, waiting for you to make a move.")>><</link>>. The other two are uniformed cops.</p>
+
+/*  container for examination prose */
+<p id="end"></p>
+
+/*  basic actions */
+<div id="basic-actions">
+  <<include "basic actions">>
+</div>
+
+/*  combat actions */
+<div id="combat-actions">
+  <<include "combat actions">>
+</div>
+
+/*  dialogue actions */
+<div id="dialogue-actions">
+  <<include "dialogue actions">>
+</div>
+
+:: basic actions [include]
+/*  talk to detective */
+<p><<if !$talking>>
+  <<link "talk to them">>
+    <<set $talking = true>>
+    <<replace "#basic-actions">><<include "basic actions">><</replace>>
+    <<replace "#combat-actions">><<include "combat actions">><</replace>>
+    <<replace "#dialogue-actions">><<include "dialogue actions">><</replace>>
+  <</link>>
+<</if>></p>
+
+/*  surrender */
+<p><<if !$talking>>
+  <<link "get on the ground">>
+    <<if $knowledge.has("bumStuff")>>
+      <<run $containedIn.set("player", "copCar")>>
+      <<set $copCar.traveledIn = true>>
+      <<set $msg = ["", "You get down on the ground with your hands out to the side. There's blood everywhere and you are lying in it. You're looking right into the ear of the corpse. "]>>
+      <<goto "heading to the station">>
+    <<else>>
+      <<set $msg = ["", "You think about trying something risky, but in the end you chicken out. You get down on the ground and surrender. "]>>
+      <<goto "Arrested">>
+    <</if>>
+  <</link>>
+<</if>></p>
+
+:: combat actions [include]
+/*  go to bathroom */
+<p><<if !$talking>>
+  <<link "run to the bathroom<<if settings.debug>> (DEX)<</if>>">>
+    <<run setup.adjustREL("detective",-1)>>
+    <<set _roll = setup.roll() + $player.DEX>>
+    <<if _roll <= 6>>
+
+      /*  fail */
+      <<set _levelUp = setup.markXP()>>
+      <<if _levelUp == 1>>
+        <<script>>
+          alert("unexpected level up");
+        <</script>>
+      <</if>>
+      <<set _result = setup.copsBustInTackled()>>
+      <<if _result == 5>>
+        <<set $msg = ["You turn to make a break for the bathroom, but you aren't fast enough. One of the cops jumps on you and throws you on the ground. Your head hits the floor hard, and for a minute you can't see anything.", ""]>>
+        <<goto "heading to the station">>
+      <<elseif _result == 8>>
+        <<set $msg = ["You turn to make a break for the bathroom, but you aren't fast enough. One of the cops jumps on you and throws you on the ground. The other cops rush to surround you.", ""]>>
+        <<goto "Arrested">>
+      <<else>>
+        <<script>>
+          alert("copsBustInTackled() is asking me to do something I don't recognize.");
+        <</script>>
+      <</if>>
+    <<else>>
+
+      /*  success and mixed */
+      <<set $shelfBedroom.fallen = true>>
+      <<goto "knocking down shelf">>
+    <</if>>
+  <</link>>
+<</if>></p>
+
+/*  tackle detective */
+<p><<if !$talking>>
+  <<link "try to tackle the detective">>
+    <<set _result = setup.copsBustInShot()>>
+    <<if _result == 6>>
+      <<set $msg = ["You run straight at the detective. You've hardly taken two steps when one of the uniformed cops shoots at you."]>>
+      <<goto "heading to the hospital">>
+    <<elseif _result == 9>>
+      <<set $msg = ["You run straight at the detective. You've hardly taken two steps when one of the uniformed cops shoots at you."]>>
+      <<goto "Hospital then prison">>
+    <<else>>
+      <<script>>
+        alert("copsBustInShot() is asking me to do something I don't recognize.");
+      <</script>>
+    <</if>>
+  <</link>>
+<</if>></p>
+
+/*  charge detective with knife */
+<p><<if $inventory.has("knife") && !$talking>>
+  <<link "run at the detective with the knife">>
+    <<set _result = setup.copsBustInShot()>>
+    <<if _result == 6>>
+      <<set $msg = ["You hold out the knife and run straight at the detective. You've hardly taken two steps before he fires his gun."]>>
+      <<goto "heading to the hospital">>
+    <<elseif _result == 9>>
+      <<set $msg = ["You hold out the knife and run straight at the detective. You've hardly taken two steps before he fires his gun."]>>
+      <<goto "Hospital then prison">>
+    <<else>>
+      <<script>>
+        alert("copsBustInShot() is asking me to do something I don't recognize.");
+      <</script>>
+    <</if>>
+  <</link>>
+<</if>></p>
+
+/*  throw knife at detective */
+<p><<if $inventory.has("knife") && !$talking>>
+  <<link "throw the knife at the detective">>
+    <<set _result = setup.copsBustInShot()>>
+    <<if _result == 6>>
+      <<set $msg = ["You throw the knife at the detective. It doesn't fly straight. Instead, it sails through the air sideways. The handle almost hits him in the face, but he ducks. Then one of the uniformed cops panics and takes a shot at you."]>>
+      <<goto "heading to the hospital">>
+    <<elseif _result == 9>>
+      <<set $msg = ["You throw the knife at the detective. It doesn't fly straight. Instead, it sails through the air sideways. The handle almost hits him in the face, but he ducks. Then one of the uniformed cops panics and takes a shot at you."]>>
+      <<goto "Hospital then prison">>
+    <<else>>
+      <<script>>
+        alert("copsBustInShot() is asking me to do something I don't recognize.");
+      <</script>>
+    <</if>>
+  <</link>>
+<</if>></p>
+
+:: dialogue actions [include]
+/*  tell detective about ignorance */
+<p><<if $talking>>
+  <<link "say \"This isn't what it looks like. I don't know anything.\"">>
+    <<set _result = setup.copsBustInTackled()>>
+    <<if _result == 5>>
+      <<set $msg = ["\"This isn't what it looks like,\" you say. \"I don't know anything.\""]>>
+      <<set $talking = false>>
+      <<goto "tell us later">>
+    <<elseif _result == 8>>
+      <<set $msg = ["\"This isn't what it looks like,\" you say. \"I don't know anything.\"", "\"Get down on the ground //now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
+      <<goto "Arrested">>
+    <<else>>
+      <<script>>
+        alert("copsBustInTackled() is asking me to do something I don't recognize.");
+      <</script>>
+    <</if>>
+  <</link>>
+<</if>></p>
+
+/*  tell detective about cat */
+<p><<if $talking && $knowledge.has("catInvolved")>>
+  <<link "say \"This isn't what it looks like. It's cat blood!\"">>
+    <<set _result = setup.copsBustInTackled()>>
+    <<if _result == 5>>
+      <<set $msg = ["\"This isn't what it looks like,\" you say. \"It's cat blood!\""]>>
+      <<set $talking = false>>
+      <<goto "tell us later">>
+    <<elseif _result == 8>>
+      <<set $msg = ["\"This isn't what it looks like,\" you say. \"It's cat blood!\"", "\"Get down on the ground //now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
+      <<goto "Arrested">>
+    <<else>>
+      <<script>>
+        alert("copsBustInTackled() is asking me to do something I don't recognize.");
+      <</script>>
+    <</if>>
+  <</link>>
+<</if>></p>
+
+/*  tell detective about setup */
+<p><<if $talking>>
+  <<link "say \"I'm being set up!\"">>
+    <<set _result = setup.copsBustInTackled()>>
+    <<if _result == 5>>
+      <<set $msg = ["\"I'm being set up!\" you shout."]>>
+      <<set $talking = false>>
+      <<goto "tell us later">>
+    <<elseif _result == 8>>
+      <<set $msg = ["\"I'm being set up!\" you shout.", "\"Get down on the ground //now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
+      <<goto "Arrested">>
+    <<else>>
+      <<script>>
+        alert("copsBustInTackled() is asking me to do something I don't recognize.");
+      <</script>>
+    <</if>>
+  <</link>>
+<</if>></p>
+
+/*  tell detective about woman with tattoo */
+<p><<if $talking && $knowledge.has("strangeTattoo")>>
+  <<link "say \"I'm being set up! The real killer is a woman with a strange tattoo.\"">>
+    <<set _result = setup.copsBustInTackled()>>
+    <<if _result == 5>>
+      <<set $msg = ["\"I'm being set up!\" you shout. \"The real killer is a woman with a strange tattoo.\""]>>
+      <<set $talking = false>>
+      <<goto "tell us later">>
+    <<elseif _result == 8>>
+      <<set $msg = ["\"I'm being set up!\" you shout. \"The real killer is a woman with a strange tattoo.\"", "\"Get down on the ground //now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
+      <<goto "Arrested">>
+    <<else>>
+      <<script>>
+        alert("copsBustInTackled() is asking me to do something I don't recognize.");
+      <</script>>
+    <</if>>
+  <</link>>
+<</if>></p>
+
+/*  tell detective about bomb */
+<p><<if $talking>>
+  <<link "say \"I have a bomb. Back away and leave right now.\"<<if settings.debug>> (CHA)<</if>>">>
+    <<run setup.adjustREL("detective", -1)>>
+    <<set _roll = setup.roll() + $player.CHA>>
+    <<if _roll <=6>>
+
+      /*  fail */
+      <<set _levelUp = setup.markXP()>>
+      <<if _levelUp == 1>>
+        <<script>>
+          alert("unexpected level up");
+        <</script>>
+      <</if>>
+      <<set _result = setup.copsBustInTackled()>>
+      <<if _result == 5>>
+        <<set $talking = false>>
+        <<goto "we are not fools">>
+      <<elseif _result == 8>>
+        <<set $msg = ["\"I have a bomb,\" you say. \"Back away slowly and leave. Now.\"", "\"Right,\" says the detective. \"Do you take us for fools?\" The two uniformed cops come forward and throw you on the ground. "]>>
+        <<goto "Arrested">>
+      <<else>>
+        <<script>>
+          alert("copsBustInTackled() is asking me to do something I don't recognize.");
+        <</script>>
+      <</if>>
+    <<elseif _roll <= 9>>
+      
+      /*  mixed */
+      <<set $talking = false>>
+      <<goto "maybe a bomb">>
+    <<else>>
+
+      /*  success */
+      <<set $talking = false>>
+      <<set $shelfBedroom.fallen = true>>
+      <<goto "buying time">>
+    <</if>>
+  <</link>>
+<</if>></p>
+
+/*  do something else */
+<p><<if $talking>>
+  <<link "do something else">>
+    <<set $talking = false>>
+    <<replace "#basic-actions">><<include "basic actions">><</replace>>
+    <<replace "#combat-actions">><<include "combat actions">><</replace>>
+    <<replace "#dialogue-actions">><<include "dialogue actions">><</replace>>
+  <</link>>
+<</if>></p>
+
+:: fleeing to bathroom [message]
+<p>You run to the bathroom, the cops right behind you. If there's no way out of the bathroom, you're trapped.</p>
+
+<p>[[continue|bathroom]]</p>
+
+:: knocking down shelf [message]
+<p>There's a bookshelf to your right. You throw it to the floor between you and the cops, then run into the bathroom. That shelf won't slow them down for long. You need a quick decision.</p>
+
+<p>[[continue|bathroom]]</p>
+
+:: maybe a bomb
+<p>"I have a bomb," you say. "Back away slowly and leave. Now."</p>
+
+<p>Everyone freezes. After a pause, the detective says, "You're bluffing." He doesn't move. He just keeps his eyes and his gun held on you. It's obvious they aren't going anywhere without proof there's a bomb. Too bad you don't have any.</p>
+
+<div id="combat-actions">
+  <<include "combat actions">>
+</div>
+
+:: buying time [message]
+<p>"I have a bomb," you say. "Back away slowly and leave. Now."</p>
+
+<p>"Okay, okay," the detective says, lowering his gun and holding his other hand up, palm out. He nods to the other cops and they lower their guns. "Just relax. We'll go. But tell us where the bomb is. We'll need to disarm it after you leave." You try to think of some clever-sounding lie, but it's pointless. You can see it in his eyes. He isn't going anywhere. But at least their guns are down. You've bought yourself some time.</p>
+
+<p>You spot a bookshelf to your right. In one fluid motion, you throw it to the floor between you and the cops and run into the bathroom. That shelf won't slow them down for long. You need a quick decision.</p>
+
+<p>[[continue|bathroom]]</p>
+
+:: tell us later [message]
+<p>$msg[0]</p>
+
+<p>"Get down on the ground //now!//" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. Your head hits the floor hard, and for a minute you can't see anything.</p>
+
+<p>"You can tell us all about it at the station," says the detective, as he comes and <<include "cuff">> what must be a half hour while they talk into their radios and fill out paperwork. Finally, they start driving.</p>
+
+<p>[[continue|Streets]]</p>
+
+:: we are not fools [message]
+<p>"I have a bomb," you say. "Back away slowly and leave. Now."</p>
+
+<p>"Right," says the detective. The two uniformed cops come forward and throw you on the ground. Your head hits the floor hard, and for a minute you can't see anything.</p>
+
+<p>"Do you take us for fools?" asks the detective, as he comes and <<include "cuff">> what must be a half hour while they talk into their radios and fill out paperwork. Finally, they start driving.</p>
+
+<p>[[continue|Streets]]</p>
+
+:: cuff [include]
+cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes the knife. <<run $inventory.delete("knife")>><<run $inventoryLost.add("knife")>><</if>>The other cops lift you up and the three of them take you outside. There is a gray sedan and two patrol cars parked out front. They push you into the back of the second patrol car and close the door. You sit there for
+
+:: heading to the station [message]
+<p>$msg[0]</p>
+
+<p><<= $msg[1]>>The detective comes and <<include "cuff">> what must be a half hour while they talk into their radios and fill out paperwork. Finally, they start driving.</p>
+
+<p>[[continue|Streets]]</p>
+
+:: heading to the hospital [message]
+<p>$msg[0] The bullet hits you in the shoulder and knocks you to the ground. You've never been shot before. It's strange, but you don't feel any pain at first. Just warmth from the blood running down your arm. But then it starts to burn and soon it's aching more than anything you've ever felt.</p>
+
+<p>The detective comes and <<include "cuff">> a few minutes while they talk into their radios and fill out paperwork.</p>
+
+<p>Finally, an ambulance arrives. They take you out of the patrol car, cuff you to a gurney, and put you in the back of the ambulance.</p>
+
+<p>[[continue|Streets]]</p>
+
+:: end of copsbustin [fake]

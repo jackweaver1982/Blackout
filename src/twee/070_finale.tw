@@ -1,0 +1,267 @@
+:: should you stay
+<p>She's dead. She's dead and the cops are in the building. You can hear them trading gunfire with the Russian. You take cover under one of the large shelves. You're far enough away that there's no chance they can see you. But you don't want to take a stray bullet like that woman.</p>
+
+<p>She said the bum stole the victim's phone, and used it to find out where he lived. That phone could be exactly the evidence you're looking for. But where is that phone now? If it's anywhere, it has to be back with the bum's garbage bags.</p>
+
+<p>$msg[0] You peer out from your hiding place, getting ready to head back to those garbage bags. You can see the flashing blue and red lights of the cop cars through an open door in the distance. A way out. You're suddenly tempted to make a run for it. But that's crazy. How can you run past a gang of cops in the middle of a firefight and expect to not get caught? And even if you do make it, you'll be on the run your entire life if you don't find the evidence you're looking for.</p>
+
+/*  flee */
+<p><<link "make a mad dash for the exit<<if settings.debug>> (bad end)<</if>>">>
+  <<goto "arrested at warehouse">>
+<</link>></p>
+
+/*  return to bum stuff */
+<p><<link "head back to take another look at the garbage bags<<if settings.debug>> (+1 XP)<</if>>">>
+  <<set $msg = [""]>>
+
+  /*  mark XP */
+  <<set _levelUp = s.markXP()>>
+  <<if _levelUp == 1>>
+    <<set $msg[0] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little clearer now.">>
+  <</if>>
+
+  <<goto "russian dies">>
+<</link>></p>
+
+:: russian dies [message]
+<p>As you make your way back to the where the bum's garbage bags are, the gunshots stop. You hear one of the cops yell, "All clear!" The Russian must be dead. They'll be looking for you now.</p>
+
+<p>$msg[0] You pick up the pace. You need to find that stolen phone. Maybe the bum's fingerprints are on it. Maybe he made a call. Maybe he even took a photo. Finding a selfie of the bum hiding in the shower is probably too much to hope for.</p>
+
+<p><<link "continue">>
+  <<run $knowledge.add("bumMotive")>>
+  <<goto "they found me">>
+<</link>></p>
+
+:: they found me
+<p>You make it back to the shelf with the garbage bags. You start rummaging through them but don't immediately see any phone. You find an empty prescription bottle from the free clinic on Grant Street. It's for something called "Haldol". You also find a few sports jerseys like the ones in the victim's bathroom. Why did the bum have the victim's clothes? Was he trying them on? Was he replacing his own tattered clothing?</p>
+
+<p>Then it clicks. In a strange flash of insight, you understand. The bum wanted to //be// the victim. Through some deep mental delusion, the bum thought he could kill this guy and then //become// him. He wanted to swap out his nasty bum life for this guy's fancy life. You're a little surprised and impressed with yourself for figuring this out. Maybe you have a future as a detective.</p>
+
+<p>You go back to digging through the garbage bags.
+  <<if $hasDiscovered.has("phone")>>
+    The stolen phone has to be in here somewhere.
+  <<else>>
+    It's starting to look like the stolen phone isn't there. It has to be back at the house. You missed it. Damn. That phone is the key to getting you out of this mess and you missed it. You should have investigated more back at the house.
+  <</if>>
+</p>
+
+<p>"Don't move," says a calm voice in the distance. In your peripheral vision, you can see a man at the end of the aisle, about twenty feet away. He has a gun pointed at you.
+  <<if $hasDiscovered.has("detective")>>
+    You recognize him. It's the bald police detective from back at the house.
+    <<if $player.REL.detective < 0>>
+      "You've given me a lot of trouble today," he says. "Just step back from the shelf with your hands up."
+    <</if>>
+  <<else>>
+    He's bald and looks like a police detective.
+  <</if>>
+</p>
+
+/*  keep searching */
+<p><<if !$bumBags.searched>>
+  <<linkreplace "keep searching through the garbage bags">>
+    <<set $bumBags.searched = true>>
+    <<include "phone not there">>
+  <</linkreplace>>
+<<else>>
+  <<include "phone not there">>
+<</if>></p>
+
+/*  talk to detective */
+<p><<link 'say "A bum killed that guy, not me. I can prove it!"'>>
+  <<goto "detective advancing">>
+<</link>></p>
+
+<<include "they found me choices">>
+
+:: they found me choices [include]
+/*  cut through shelf */
+<p><<link 'cut through the shelf to the neighboring aisle<<if settings.debug>> <<if !$hasDiscovered.has("phone")>>(phone not discovered, so bad end)<<else>>(-1 HP if Level 1)<</if>><</if>>'>>
+  <<set $underShelf = true>>
+  <<include "to the platform code">>
+<</link>></p>
+
+/* run down aisle */
+<p><<link 'run down the aisle, away from the detective<<if settings.debug>> <<if !$hasDiscovered.has("phone")>>(phone not discovered, so bad end)<<else>>(-1 HP if Level 1)<</if>><</if>>'>>
+  <<include "to the platform code">>
+<</link>></p>
+
+:: phone not there [include]
+/*  included if you kept searching */
+You ignore the detective and keep searching through the garbage bags.
+  <<if $hasDiscovered.has("phone")>>
+    Your heart sinks as you realize the stolen phone is not here.
+  <<else>>
+    As you suspected, the stolen phone's not here. You missed it.
+  <</if>>
+
+:: detective advancing
+<p>"A bum killed that guy, not me," you say to the detective. "I can prove it."</p>
+
+<p>"Save it for the judge," he says and starts advancing on you, his gun held out in front of him. "Now step away from the shelf. Slowly."</p>
+
+<<include "they found me choices">>
+
+:: to the platform code [include]
+<<set _destination = "to the platform">>
+<<set $msg = ["But with your last step, your foot lands hard on a rusty, three-inch nail. The nail pierces your foot completely and you can see the pointed end coming out the top of your shoe.", "You shout from the sudden pain of it, but adrenaline keeps you moving.", "You lift your foot off the nail and limp into the next aisle.", ""]>>
+
+<<if !$hasDiscovered.has("phone")>>
+  
+  /*  bad end if you didn't find the phone in the medicine cabinet */
+  <<set $msg = ["Your injuries are severe, but eventually you recover. You are convicted of the murder of Matthew Brady. You try to argue that a homeless man had stalked and murdered the victim. But without evidence, your arguments fall flat.", "In your prison cell, you often wonder. If you had found the stolen cell phone, would things have turned out differently? You suspect so."]>>
+  <<set _destination = "nailed it">>
+
+<<else>>
+
+  <<if $player.Level == 1>>
+
+    /*  pierce your foot unless you're Level 2 */
+    <<set _death = s.addInjury("piercedFoot")>>
+    <<if _death == 1>>
+      <<set $msg = ["But it's  too late. By the time the medics arrive, you've lost too much blood. You are pronounced dead on the scene.", ""]>>
+      <<set _destination = "nailed it">>
+    <<elseif _death == 2>>
+      <<set $msg[1] = "You feel weak and light-headed. You're not sure how much more of this physical abuse you can take.">>
+    <<elseif _death !== 0>>
+      <<script>>
+        alert("addInjury() is returning a result I don't recognize.");
+      <</script>>
+    <</if>>
+
+  <<else>>
+
+    /*  avoid the nail if you're Level 2 */
+    <<set $msg = ["You almost step on a rusty, three-inch nail, but manage to hop over it at the last minute.", "", "", "You emerge into the next aisle."]>>
+
+  <</if>>
+<</if>>
+<<goto _destination>>
+
+:: to the platform
+<p>You're not about to spend your life in prison for a murder you didn't commit. <<if $underShelf>>You duck under the shelf and run toward the neighboring aisle. You can hear the detective shouting behind you.<<else>>You run away, down the aisle. You can hear the detective shouting behind you. You round the corner toward the neighboring aisle.<</if>></p>
+
+<p>Your path is blocked by a small pile of old two-by-fours, which you easily climb over. $msg[0] $msg[1] $msg[2]</p>
+
+<p>$msg[3] There's a uniformed cop to your left. "Freeze!" he shouts. You head to your right. The detective is coming around the corner into the aisle in front of you. You <<if $underShelf>>again <</if>>duck through the shelves to the next aisle over and find yourself at the edge of a loading platform. It's a ten-foot drop off the platform to the ground below, with no ladder or stairs that you can see. The cops will be on you in seconds. You don't have a choice. You have to jump.</p>
+
+/*  leap off */
+<p><<link "take a running leap off the platform">>
+  <<set $underShelf = false>>
+  <<set $msg = ["You get a running start and leap off the loading platform to the ground below."]>>
+  <<goto "jump off platform">>
+<</link>></p>
+
+/*  carefully drop */
+<p><<link "carefully climb over the edge and hang by your hands, then drop">>
+  <<set $underShelf = false>>
+  <<set $msg = ["You start to carefully climb over the edge of the platform. You're going to hang by your hands before dropping to the ground below. But you hear the cops shouting and running. You know you don't have time for this. From a sitting position on the platform, you push yourself off."]>>
+  <<goto "jump off platform">>
+<</link>></p>
+
+:: jump off platform
+<p>$msg[0] When your injured foot hits the floor, pain shoots up your leg. You tumble and roll on the floor. You must have hit your elbow in the process, because it too is starting to hurt.</p>
+
+<p>You're in some recessed, pit-type area with walls on all four sides. You can see a ladder on the far wall leading back up, but you're in no shape to climb a ladder.</p>
+
+<p>On your left is a row of forklifts and a large slide-up door that's closed. On your right is an office with large glass windows. You can see the glow of a computer monitor inside the office.</p>
+
+/*  examine forklifts */
+<p>[[examine the forklifts and the slide-up door|examine forklifts]]</p>
+
+/*  head to office */
+<p>[[head over to the office|office]]</p>
+
+:: examine forklifts [message]
+<p>You limp over to the forklifts to check them out. Somehow, your brain isn't working. You can't make out any of the controls, even though you know you've driven these things at work. You've never heard of an alcohol blackout messing with other memories.</p>
+
+<p>But there's one thing you can figure out. The forklifts are electrical. And they're dead. All of them. You try to lift the slide-up door, but it won't budge. There's a control panel on the side, but it's also dark and without power.</p>
+
+<p>You guess that if you can get this door open, you'll have a clear path out of here. The cops won't be expecting anyone to come out this door, so maybe they won't have anyone on the other side.</p>
+
+<p>There are no obvious controls nearby to switch on the power, so you head over to the office.</p>
+
+<p>[[continue|office]]</p>
+
+:: office
+<<if !$hasDiscovered.has("video")>>
+  <<run s.discoverThing("video")>>
+<</if>>
+<<if !$hasDiscovered.has("schematic")>>
+  <<run s.discoverThing("schematic")>>
+<</if>>
+
+<p>You step into the office and can smell stale cigarettes. Large glass windows cover all the walls except the back wall. The only light in the office is coming from the computer monitor on the desk against the side wall.</p>
+
+<p>You quietly limp over to the desk. Its surface is cluttered with things, one of which is the ashtray you smelled when you walked in. You also see <<link "three bags of cocaine">><<run s.examine("<p>You look again at the cocaine on the desk. The Russian and that woman must have been looking for their computer chip inside those bags. Looks like they didn't find it.</p>")>><</link>> which have been torn open, the cocaine spilled all over the desk. You see <<link "your phone">><<run s.examine("<p>You pick up your phone. It's dead. And it has a brand new crack down the middle of the screen.</p>")>><</link>>. It's sitting on top of some kind of technical schematic.</p>
+
+<div id="end"></div>
+
+<p>You turn your attention to the monitor. On the computer screen is a paused video from a security camera in the victim's house. The image shows the victim's bathroom. A bearded man in ragged clothes is climbing into the bathroom through the window.</p>
+
+/*  view schematic */
+<<if !$schematic.searched>>
+  <p><<link "examine the schematic">>
+    <<set $schematic.searched = true>>
+    <<goto "view schematic">>
+  <</link>></p>
+<</if>>
+
+/*  play video */
+<p><<link "play the video">>
+  <<goto "play video">>
+<</link>></p>
+
+:: view schematic [message]
+<p>You take a look at the schematic that was under your phone. It's some kind of diagram describing a computer chip. You know you've seen plenty of these diagrams at work. You should be able to make sense of this. But for some reason, your brain isn't working right now. It just looks like gibberish to you.</p>
+
+<p>You turn your attention back to the computer screen and the bearded man, frozen in place halfway through the bathroom window. For some reason you feel nervous to watch this video. But you have to see it. You have to know the truth.</p>
+
+<p>[[play the video|play video]]</p>
+
+:: play video [message]
+<p>You play the video. The bum drops his trash bags onto the floor and enters the bathroom, a phone in his hand. Leaving his bags on the floor, he puts the phone in his pocket and leaves the bathroom. After some time, he comes back with a blood-stained chef's knife in one hand and a dead cat in the other. He drops the cat on the floor, puts the knife on the counter, and looks around the bathroom again. He heads into the attached walk-in closet and rummages around. When he comes back, he has some sports jerseys and pants. Standing in front of the mirror, he holds up one of the jerseys against his chest, admiring how he would look in it.</p>
+
+<p>He then makes a sudden movement as though he heard something. He stuffs the clothes into one of the trash bags. A few of the jerseys fall on the floor. He stuffs the cat into another bag, then puts all the bags in the shower. He grabs the knife from the counter, gets into the shower himself, and closes the curtain. For the next thirty seconds, nothing happens.</p>
+
+<p>[[fast-forward the video|forward video]]</p>
+
+:: forward video [message]
+<p>After some time, the bum jumps out of the shower, agitated. You resume playing the video at normal speed. The bum is looking at the phone, turning it in his hand, as if looking for something, maybe a switch. The phone screen is lighting up, presumably from alerts or text messages. You figure the bum is trying to silence the phone.</p>
+
+<p>Finally, the bum gives up. He walks over and puts the phone in the medicine cabinet. He then gets back in the shower. Again, nothing happens. You fast-forward, but the video ends.</p>
+
+<p>You look over at your own dead phone on the desk. You found it in the medicine cabinet. A wave of confusion and fear washes over you.</p>
+
+<p>You see something poking out from under the schematic. It's a dossier on the victim.</p>
+
+<p>[[examine the dossier|examine file]]</p>
+
+:: examine file
+<p>You open the dossier. There's a bio sheet with a picture of the victim and his name--Matthew Scott Brady, Jr. Memories of the night at the bar come flooding back.</p>
+
+<p>You were sitting at the bar. The bartender shouted "Order for Brady!" The victim walked up and grabbed a plate of wings from the bar. He nodded at you and smiled. Then his phone chimed. He took it from his pocket and you watched as he typed "2262" and unlocked his phone.</p>
+
+<p>The bartender passed him the bill. He set his phone on the counter and took out some money. "Scotty! Hurry up!" someone shouted. The victim shouted something in return and finished paying. Then he headed back to the pool table where the blonde woman was waiting for him. He kissed her and took a selfie with her. The Russian was sitting at a table in the background.</p>
+
+<p>Your memories are interrupted by a voice coming from the office doorway. "You've given us quite the chase." It's the detective.</p>
+
+/*  claim innocence */
+<p><<link "protest your innocence">>
+  <<set $msg = ['"My name is Scott Allen Brady," you say with slow deliberation. "I work in the shipping department at Hewlett-Packard. I didn\'t kill anyone."', '"Your name is Rufus Allen and you don\'t work anywhere, pal."']>>
+  <<goto "the truth">>
+<</link>></p>
+
+/*  confess */
+<p><<link "confess to the crime">>
+  <<set $msg = ['"I did it," you say with slow deliberation. "It was me." It\'s more of a realization than a confession.', '']>>
+  <<goto "the truth">>
+<</link>></p>
+
+/*  say nothing */
+<p><<link "remain silent">>
+  <<set $msg = ['', 'You say nothing. Your mind is racing and so is your heart.']>>
+  <<goto "the truth">>
+<</link>></p>
+
+:: end of finale [fake]

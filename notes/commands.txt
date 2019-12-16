@@ -1,0 +1,29 @@
+# URLs
+
+## GitHub
+
+https://jackweaver1982.github.io/Blackout/Blackout.html
+https://jackweaver1982.github.io/Blackout/7164863572
+
+## DriveToWeb
+
+https://fnxdpzmgzfbkcnhtbcowjq-on.drv.tw/public/Blackout/Blackout.html
+https://fnxdpzmgzfbkcnhtbcowjq-on.drv.tw/public/Blackout/7164863572
+
+# Tweego commands
+
+## Actively used
+
+tweego -w -t -o Blackout.html src
+tweego -w -o Blackout.html src
+tweego -o Blackout.html src
+tweego -d -o source.txt Blackout.html
+
+## For future reference
+
+tweego -o "foo.html" twee/ js/file1.js js/file2.js js/file3.js
+tweego -o output.html ordered/1.js ordered/2.js unordered/
+
+## No longer needed
+
+rsync -rtvpm --delete-excluded --include "BlackoutGMGuide/" --include "BlackoutGMGuide/**/" --include "flowchart/" --include "flowchart/**/" --include "7164863572/" --include "7164863572/**/" --include "*.html" --include "*.png" --include "*.txt" --exclude "*" /Users/jason/Documents/Programming/Twine/SugarCube/Blackout/ /Users/jason/Google\ Drive/public/Blackout/

@@ -1,0 +1,88 @@
+:: Arrested
+/*  cops get you before you visit the bathroom, you weren't shot */
+<p>$msg[0]</p>
+
+<p><<=$msg[1]>>They arrest you, there is a trial, you are convicted, and you spend the next twenty years in prison. You never do remember that night. Sometimes, in your prison cell, you wonder. Was there evidence in that house to prove your innocence? You suspect so. You might have found it, if only you'd tried harder.</p>
+
+<div align="center"><p>''THE END''</p></div>
+
+:: Hospital then prison
+/*  cops get you before you visit the bathroom, you were shot */
+<p>$msg[0] The bullet hits you in the shoulder and knocks you to the ground. You've never been shot before. It's strange, but you don't feel any pain at first. Just warmth from the blood running down your arm. But then it starts to burn and soon it's aching more than anything you've ever felt.</p>
+
+<p>The cops drag you outside and call for an ambulance to take you to the hospital. When you are well enough, there is a trial. You are convicted and spend the next twenty years in prison. You never do remember that night. Sometimes, in your prison cell, you wonder. Was there evidence in that house to prove your innocence? You suspect so. You might have found it, if only you'd tried harder.</p>
+
+<div align="center"><p>''THE END''</p></div>
+
+:: drilled to death
+/*  drilled finger took last HP */
+<p>Your train of thought is interrupted by the sound of the drill. The Russian grabs your forearm and holds it down onto the arm of the chair. "Maybe you need motivation," he says as he brings the drill toward your hand. Your body tenses and you struggle to move, but it's no use. He drives the drill bit right through your knuckle.</p>
+
+<p>You don't even scream. The drill bit has barely touched your knuckle when you slump over unconscious from the shock. The Russian slaps your face a few times. "Bah!" he says when you won't wake up. He stands up, says something into his radio, and walks away.</p>
+
+<p>You will not be receiving the medical attention you so desperately need. You will die here today, tied to a chair in an empty warehouse.</p>
+
+<div align="center"><p>''THE END''</p></div>
+
+:: punched to death
+/*  punch in face took last HP */
+$msg[0]
+
+<p>The Russian punches you square in the nose. You hear a crunch sound and taste blood in the back of your throat. You feel an urge to gag and cough, but you're too weak. Your chest convulses a few times and you can't breathe. Then you black out.</p>
+
+<p>The Russian slaps your face a few times. "Bah!" he says when you won't wake up. He stands up, says something into his radio, and walks away.</p>
+
+<p>You will not be receiving the medical attention you so desperately need. You will die here today, tied to a chair in an empty warehouse.</p>
+
+<div align="center"><p>''THE END''</p></div>
+
+:: choked to death
+/*  choked by Russian took last HP */
+<p>It's hard to see anything in the darkness. The only light there is comes from the moonlight through the windows high above. You look carefully at every part of the warehouse you can see. There's no trace of him.</p>
+
+<p>You're about to give up when you feel someone grab your throat. Your heart jumps in your chest and you grab at the hands around your neck. It's the Russian. He's behind you, choking you. You try to pull him off you. It's no use. He's too strong. You can feel your windpipe being crushed. Pain shoots up your neck and into your face. You try to gasp and it feels like your throat is being stabbed. Your vision blurs and you black out.</p>
+
+<p>The Russian feels your body go limp and gives your throat one final crushing squeeze. He drops your lifeless body to the floor, steps over it, and continues on his way to meet the woman.</p>
+
+<div align="center"><p>''THE END''</p></div>
+
+:: arrested at warehouse
+/*  you stupidly tried to leave the Warehouse with cops everywhere */
+<p>You head toward the exit, sticking to the shadows. As you get closer, you see the cops, crouching behind boxes and trading gunfire with the Russian. All their attention is on him and it isn't hard to go unnoticed. You pass behind them to the open door and when you have a clear shot, you run outside.</p>
+
+<p>"Freeze!" you hear someone shout. You squint to see past the blaring lights and see a line of five cops with their guns pointed straight at you. "Get on the ground!" one of them shouts. It's over. They have you.</p>
+
+<p>They arrest you, there's a trial, you're convicted, and you spend the next twenty years in prison. You never do remember that night, but you protest your innocence the entire time. Although no one believes you, you know. Somewhere, some bum has gotten away with murder. In your prison cell, you often wonder. If you had found the stolen cell phone, would things have turned out differently? You suspect so.</p>
+
+<div align="center"><p>''THE END''</p></div>
+
+:: nailed it
+/*  stepping on nail took last HP */
+<p>You're not about to spend your life in prison for a murder you didn't commit. <<if $underShelf>>You duck under the shelf and run toward the neighboring aisle. You can hear the detective shouting behind you.<<else>>You run away, down the aisle. You can hear the detective shouting behind you. You round the corner toward the neighboring aisle.<</if>></p>
+
+<p>Your path is blocked by a small pile of old two-by-fours, which you easily climb over. But with your last step, your foot lands hard on a rusty, three-inch nail. The nail pierces your foot completely and you can see the pointed end coming out the top of your shoe. You shout from the sudden pain of it, but adrenaline keeps you moving. You lift your foot off the nail and limp into the next aisle. Blood is pouring out of your shoe onto the floor. You can't even feel your foot. You take one step and immediately collapse, unable to support your own weight. Dizziness overcomes you and you pass out.</p>
+
+<p>The cops rush over to you and the detective calls for an ambulance. $msg[0]</p>
+
+<p>$msg[1]</p>
+
+<div align="center"><p>''THE END''</p></div>
+
+:: the truth
+/*	the intended ending */
+<p>$msg[0]</p>
+
+<p>$msg[1] The detective walks toward you. "You have the right to remain silent," he says. He continues to recite the Miranda warning as he cuffs your hands behind your back. You stand passively, a feeling of confusion clouding your mind. You face the glass window and in it you see your reflection. It looks like a stranger. Ragged beard, matted hair, tired eyes, leathery face. Your whole visage stands in stark contrast to the clothes you're wearing. You have the face of a poverty-stricken old man, and the blood-stained clothes of an affluent young one. Your head hurts trying to make sense of it all and you look away. With a tug on your arm, the detective leads you out of the office.</p>
+
+<div align="center"><p><<link "''THE END''">>
+	<<goto "acknowledgments">>
+<</link>></p></div>
+
+:: acknowledgments
+<h3>Acknowledgments</h3>
+
+<p>Thank you for playing. This story began as a short experiment in creating interactive fiction with Twine. The project ended up being larger and taking longer than I expected. The work involved in creating it gave me a new appreciation for the enormous effort needed for game development in general. I am indebted to the expertise and generosity of the people on the Twine Games Discord server. These include, but are not limited to, GwenTastic, Akjosch, Chapel, Tayruh, Greyelf, TheMadExile, Luna City Hobo, and RynGM. My sincerest apologies to anyone I overlooked.</p>
+
+<p>--Jack Weaver, December 2019</p>
+
+:: end of endings [fake]

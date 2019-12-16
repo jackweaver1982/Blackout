@@ -1,0 +1,500 @@
+:: Warehouse
+/*  take player's inventory */
+<<if !$inventoryTaken>>
+  <<run setup.takeInventory()>>
+  <<set $inventoryTaken = true>>
+<</if>>
+
+/*  place items in Warehouse */
+<<if !$inventoryMoved>>
+  <<run $containedIn.set("bumBags", "shelfWarehouse")>>
+  <<run $containedIn.set("deadCat", "shelfWarehouse")>>
+  <<run $containedIn.set("knife", "shelfWarehouse")>>
+  <<run $containedIn.set("wallet", "shelfWarehouse")>>
+  <<run $containedIn.set("cocaine", "office")>>
+  <<run $containedIn.set("phone", "office")>>
+  <<set $inventoryMoved = true>>
+<</if>>
+
+/*  description */
+<p>You wake up disoriented, your mind in a fog. Blacking out is starting to become a habit. But at least you have your memories this time.</p>
+
+<p>You're sitting on a wooden chair and there is hardly any light to see by. You try to move, but your wrists and ankles are tied down. It looks like you're in some kind of abandoned warehouse. Tall, empty shelves covered with dust and cobwebs are on either side of you. There are large windows near the ceiling on the far wall. It's pitch black outside. You've been out for a while.</p>
+
+<p>As your eyes start to adjust, you see a big, burly man standing at a table about ten feet in front of you. He's unpacking a bag of tools and laying them out on the table. He's not looking at you.</p>
+
+/*  description of Russian depends on what you've learned/seen */
+<p><<if $russianSeen || $knowledge.has("russian")>>
+  You recognize him.
+  <<if $russianSeen && $knowledge.has("russian")>>
+    He's that <<link "Russian thug">><<run setup.examine($russian.description)>><</link>> that knocked you out.
+  <<elseif $russianSeen>>
+    He's that Russian thug that knocked you out.
+  <<else>>
+    He's that <<link "guy from the photos">><<run setup.examine($russian.description)>><</link>> that was watching you.
+  <</if>>
+<</if>>
+You desperately look around. On the shelf to your right you see some things from the house. You can see the <<link "knife">><<run setup.examine($knife.description)>><</link>> and <<if $wallet.discovered>>the <<link "wallet">><<run setup.examine($wallet.description)>><</link>><<else>>a wallet<</if>>. The <<link "garbage bags">><<run setup.examine($bumBags.description)>><</link>> from the shower are also there. Most of their contents are dumped out. It even looks like there's a dead cat among the bum's stuff.</p>
+
+<div id="end"></div>
+
+/*  mention the bar */
+<p><<if $knowledge.has("russian")>>
+  <<link 'say "Who are you? Why were you watching me at the bar?"<<if settings.debug>> (+1 XP)<</if>>'>>
+    <<set $msg = ["", '"Who are you?" you call out. "Why were you watching me at the bar?"', ""]>>
+
+    /*  mark XP */
+    <<set _result = setup.markXP()>>
+    <<if _result == 1>>
+      <<set $msg[0] = "You notice your headache is gone. Good thing too. The pain has been holding you back.">>
+    <</if>>
+
+    <<goto "discovered">>
+  <</link>>
+<</if>></p>
+
+/*  slide toward shelf */
+<p><<link "quietly slide over to the shelf<<if settings.debug>> (+1 XP)<</if>>">>
+  <<set $msg = ["", "You shift your weight forward, raise the chair off the ground, then set it down about an inch to the right. The man at the table just keeps arranging his tools. You do it again. And again. This is going to take a while.", "You've moved about a foot toward the shelf when the chair makes a horrible scraping sound on the cement floor."]>>
+
+  /*  mark XP */
+  <<set _result = setup.markXP()>>
+  <<if _result == 1>>
+    <<set $msg[0] = "You notice your headache is gone. Good thing too. The pain has been holding you back.">>
+  <</if>>
+
+  <<goto "discovered">>
+<</link>></p>
+
+/* shout */
+<p><<link 'shout "Help! Somebody help me!"'>>
+  <<set $msg = ["", '"Help!" you shout at the top of your lungs. "Somebody help me!"', ""]>>
+  <<goto "discovered">>
+<</link>></p>
+
+:: discovered
+<p>$msg[0]</p><p>$msg[1]</p><p>$msg[2]</p>
+
+<p>The man at the table turns and looks at you, but says nothing. He picks up a <<link "power drill">><<run setup.examine($powerDrill.description)>><</link>> from the table and walks over to you. He puts a foot on the chair, right between your legs.</p>
+
+<div id="end"></div>
+
+<p>"The man you killed," he says in a thick Russian accent, "he had something of mine. You know where it is." You look at him with a blank stare. "I'm talking about computer chip. Where is it?"</p>
+
+/*  try to remember chip */
+<p><<link "try to remember something about a computer chip<<if settings.debug>> (+1 XP)<</if>>">>
+  <<set $msg = ["", "Your first instinct is to tell him you don't know anything about a computer chip. But maybe you do and you just can't remember. You struggle to recall something new about last night, but it's a complete blank. You can't remember anything about a computer chip.", "", "But as you go back over the events of the morning, something else clicks in your mind."]>>
+
+  /*  mark XP */
+  <<set _result = setup.markXP()>>
+  <<if _result == 1>>
+    <<set $msg[0] = "You notice your headache is gone. Good thing too. The pain has been holding you back.">>
+  <</if>>
+
+  /*  learn that bum is killer */
+  <<run $knowledge.add("bumKilledHim")>>
+
+  <<goto "epiphany">>
+<</link>></p>
+
+/*  spit in face */
+<p><<link "spit in his face">>
+  <<set $msg = ["", "You look that son of a bitch in the eyes and spit in his face. He blinks but otherwise doesn't move. He lifts his arm without breaking eye contact and wipes his face with his sleeve. Then he hits you full force in the side of the head with the drill.", "The blow knocks your head to the side, toward your shoulder. You're too weak to lift it back up. Your vision is blurry and you're staring in the direction of the shelf with the garbage bags. There is no pain, only numbness. Even your mind feels numb as you stare blankly at those garbage bags.", "You have a sudden realization."]>>
+
+  /*  add narrative-only injury (no HP loss) */
+  <<run setup.addInjury("hitWithDrill")>>
+
+  /*  learn that bum is killer */
+  <<run $knowledge.add("bumKilledHim")>>
+  
+  <<goto "epiphany">>
+<</link>></p>
+
+:: epiphany [message]
+<p>$msg[0]</p>
+
+<p>$msg[1]</p>
+
+<p>$msg[2]</p>
+
+<p>$msg[3] The garbage bags that were in the shower--they aren't yours and they can't be the victim's. He looked like a pretty successful guy. He wouldn't be keeping trash bags of ratty clothes and empty booze bottles lying around. No, those trash bags must belong to the killer. //The killer is a bum.// And he was hiding in the shower at some point. You need to look at those bags again. They could contain the key to proving your innocence.</p>
+
+/*  continue is only choice */
+<p><<link "continue<<if settings.debug>> (-1 HP)<</if>>">>
+  <<set _destination = "drilled finger">>
+
+  /*  add injury */
+  <<set _result = setup.addInjury("drilledFinger")>>
+  <<if _result == 0>>
+    <<set $msg = [""]>>
+  <<elseif _result == 1>>
+    <<set _destination = "drilled to death">>
+  <<elseif _result == 2>>
+    <<set $msg = [" You feel weak and light-headed. You're not sure how much more of this physical abuse you can take."]>>
+  <<else>>
+    <<script>>
+      alert("addInjury() is returning a result I don't recognize.");
+    <</script>>
+  <</if>>
+
+  <<goto _destination>>
+<</link>></p>
+
+:: drilled finger
+<p>Your train of thought is interrupted by the sound of the drill. The Russian grabs your forearm and holds it down onto the arm of the chair. "Maybe you need motivation," he says as he brings the drill toward your hand. Your body tenses and you struggle to move, but it's no use. He drives the drill bit right through your knuckle and you let out a bitter scream that fades into a whimper.$msg[0]</p>
+
+<p>He pulls out the drill and turns it off. Then he grabs you by the chin and forces you to look at him. "Now," he says, studying your face, "where is computer chip?"</p>
+
+/*  narrative-only choice 1 */
+<p><<link 'say "I don\'t know. Maybe the bum took it."<<if settings.debug>> (+1 XP, -1 HP)<</if>>'>>
+  <<set $msg = ['<<include "being a smart ass">>', "", "You recognize her distinctive voice. She's the woman you played pool with last night.", "", "That punch knocked the spunk right out of you."]>>
+  <<include "woman calls code">>
+<</link>></p>
+
+/*  narrative-only choice 2 */
+<p><<link "remain silent<<if settings.debug>> (+1 XP, -1 HP)<</if>>">>
+  <<set $msg = ["<p>This is an obvious lose-lose situation. You don't know where the chip is. Nothing you can say will please the Russian. In the end, you just look at him. You say nothing.</p>", "", "You recognize her distinctive voice. She's the woman you played pool with last night.", "", ""]>>
+  <<include "woman calls code">>
+<</link>></p>
+
+:: woman calls code [include]
+<<set _destination = "woman calls">>
+
+/*  add injury */
+<<set _death = setup.addInjury("brokenNose")>>
+<<if _death == 1>>
+  <<set _destination = "punched to death">>
+<<elseif _death == 2>>
+  <<set $msg[1] = " You feel weak and light-headed. You're not sure how much more of this physical abuse you can take.">>
+<<elseif _death !== 0>>
+  <<script>>
+    alert("addInjury() returned a result I don't recognize");
+  <</script>>
+<</if>>
+
+/*  mark XP */
+<<set _levelUp = setup.markXP()>>
+<<if _levelUp == 1>>
+  <<set $msg[3] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little clearer now.">>
+<<elseif _levelUp !== 0>>
+  <<script>>
+    alert("markXP() returned a result I don't recognize");
+  <</script>>
+<</if>>
+
+/*  learn about the woman */
+<<if !$knowledge.has("womanAtBar")>>
+  <<run $knowledge.add("womanAtBar")>>
+  <<set $msg[2] = "Her distinctive voice triggers a memory. You were with her last night, at the Fireplace Tavern, doing shots and playing pool.">>
+<</if>>
+
+<<goto _destination>>
+
+:: woman calls [message]
+$msg[0]
+
+<p>The Russian punches you square in the nose. You hear a crunch sound and taste blood in the back of your throat.$msg[1] He leans down close, getting in your face. "Where is it!" he shouts.</p>
+
+<p>$msg[4] Your voice is quiet and weak. "I don't know," you say.</p>
+
+<p>The Russian stands and looks you over. A woman's voice comes over his radio. "The download has finished," she says. "Meet me in the office." $msg[2]</p>
+
+<p>The Russian takes one last look at you slumped over in the chair. "On my way," he says into his radio, and walks off into the shadows, out of sight.</p>
+
+<p>$msg[3]</p>
+
+/*  continue is the only option */
+<<link "continue">>
+  <<set $msg = ["", 'The victim\'s <<link "wallet">><<run setup.examine($wallet.description)>><</link>> is also on the shelf.<<if $inventory.has("wallet")>> You put it in your pocket.<</if>>']>>
+  <<run setup.takeThing("knife")>>
+
+  /*  learn about same last name */
+  <<if !$wallet.discovered>>
+    <<run setup.discoverThing("wallet")>>
+    <<run $knowledge.add("sameLastName")>>
+    <<set $msg = ['There\'s also a <<link "wallet">><<run setup.examine($wallet.description, "mid")>><</link>> on the shelf. You thumb through its contents. It must have been the victim\'s. You check <<link "his ID">><<run setup.examine($sameLastName.description, "mid")>><</link>>. Matt Brady. Brady? He has the same last name as you. But who is he?<<if $inventory.has("wallet")>> You take the victim\'s wallet.<</if>>', ""]>>
+  <</if>>
+
+  <<goto "free yourself">>
+<</link>>
+
+:: being a smart ass [include]
+/*  possible inclusion in "woman calls" */
+<p>"I don't know," you say. "Maybe the bum took it." You don't know why, but you're feeling a little spunky.</p>
+
+<p>"The bum!" exclaims the Russian with a hearty laugh. "Okay, friend. Where did the //bum// put it?"</p>
+
+<p>"How should I know."</p>
+
+:: free yourself
+<p>With the Russian out of sight, you quietly scoot over to the shelf. Using your chin, you slide the <<link "knife">><<run setup.examine($knife.description, "early")>><</link>> onto your lap. You grab it with your right hand and cut the ropes binding your right wrist. You then cut the rest of the ropes, stand up, and take a closer look at what's on the shelf.<<if !$inventory.has("knife")>> You put the knife back on the shelf.<</if>></p>
+
+<div id="early"></div>
+
+<p>You were right. There //is// a <<link "dead cat">><<run setup.examine($deadCat.description, "early-mid")>><</link>> among the bum's belongings. He probably killed it to keep it quiet while he was waiting to ambush and murder its owner.</p>
+
+<div id="early-mid"></div>
+
+<p>$msg[0]</p>
+
+<div id="mid"></div>
+
+<p>$msg[1] You fish through the bum's garbage bags, looking for evidence. You need something to prove he's the killer. But all you find is trash. Who could live like this, toting around garbage everywhere? Offhandedly, you wonder if he worried about it getting stolen.</p>
+
+<p>Then you hear a sound. It's the crackle of the Russian's radio, somewhere in the distance. You need to move. He could be back at any moment.</p>
+
+<div id="end"></div>
+
+<p id="msg"><<if !$inventory.has("knife")>>You put the knife back on the shelf. <</if>><<if $inventory.has("wallet")>>You take the victim's wallet.<</if>></p>
+
+/*  put knife back */
+<p><<if $inventory.has("knife")>>
+  <<linkreplace "put the knife back">>
+    <<run $inventory.delete("knife")>>
+    <<run $containedIn.set("knife", "shelfWarehouse")>>
+    <<append "#msg">>You put the knife back on the shelf. <</append>>
+  <</linkreplace>>
+<</if>></p>
+
+/*  take wallet */
+<p><<if !$inventory.has("wallet")>>
+  <<linkreplace "take the wallet">>
+    <<run setup.takeThing("wallet")>>
+    <<run $containedIn.delete("wallet")>>
+    <<append "#msg">>You take the victim's wallet. <</append>>
+  <</linkreplace>>
+<</if>></p>
+
+/*  follow russian */
+<p><<link "head off in the same direction as the Russian">>
+  <<goto "lost the russian">>
+<</link>></p>
+
+/*  move opposite to russian */
+<p><<link "head in the opposite direction">>
+  <<set $msg = [""]>>
+  <<goto "there she is">>
+<</link>></p>
+
+:: lost the russian
+<p>You head off in the same direction as the Russian. If you can follow him and keep an eye on him, you'll be safe. As long as you have eyes on him, he won't be able to surprise you.</p>
+
+<p>You reach the end of the aisle, round the corner, and see him walking in the distance. You follow quietly in the darkness, keeping one eye on him, and the other eye scanning for an exit to this warehouse.</p>
+
+<p>He rounds a corner and heads down another aisle. It takes you a good twenty seconds to reach that aisle. But when you do, he's gone. There's no sign of him. You stop dead in your tracks.</p>
+
+/*  scan the area */
+<p><<link "scan the area for him<<if settings.debug>> (-1 HP if Level 1)<</if>>">>
+  <<set _destination = "scan the area">>
+  <<set $msg = ["You're about to give up when you hear someone. You turn to see the Russian right behind you. He tries to grab your throat. You duck out of the way and ram your shoulder into his chest. Then you knee him in the groin. As he keels over in pain, you take off running down the aisle.", "", ""]>>
+
+  /*  add injury if Level 1 */
+  <<if $player.Level == 1>>
+    <<set _death = setup.addInjury("choked")>>
+    <<if _death == 1>>
+      <<set _destination = "choked to death">>
+    <<else>>
+      <<set $msg[0] = "You're about to give up when you feel someone grab your throat. Your heart jumps in your chest and you grab at the hands around your neck. It's the Russian. He's behind you, choking you. You try to pull him off you. It's no use. He's too strong. You can feel your windpipe being crushed.">>
+      <<set $msg[2] = "With as much strength as you can muster, you jam your elbow back behind you. It strikes the Russian right in the solar plexus. You hear him gasp and he releases you. You push away and take off running down the aisle.">>
+      <<if _death == 2>>
+        <<set $msg[1] = "You feel weak and light-headed. You're not sure how much more of this physical abuse you can take.">>
+      <<elseif _death !== 0>>
+        <<script>>
+          alert("addInjury() returned a result I don't recognize.");
+        <</script>>
+      <</if>>
+    <</if>>
+  <</if>>
+
+  <<goto _destination>>
+<</link>></p>
+
+/*  go back the other way */
+<p><<link "head back in the opposite direction">>
+  <<set $msg = [""]>>
+  <<goto "there she is">>
+<</link>></p>
+
+:: scan the area
+<p>It's hard to see anything in the darkness. The only light there is comes from the moonlight through the windows high above. You look carefully at every part of the warehouse you can see. There's no trace of the Russian.</p>
+
+<p>$msg[0] $msg[1]</p>
+
+<p>$msg[2]</p>
+
+/*  continue is only option */
+<p><<link "continue<<if settings.debug>> (+1 XP)<</if>>">>
+  <<set $msg = [""]>>
+
+  /*  mark XP */
+  <<set _levelUp = setup.markXP()>>
+  <<if _levelUp == 1>>
+    <<set $msg[0] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little clearer now.">>
+  <</if>>
+
+  <<goto "there she is">>
+<</link>></p>
+
+:: there she is
+<p>$msg[0]</p>
+
+<p>You wander through the dark aisles of the warehouse, avoiding the Russian and looking for a way out. You see what looks like an unlit exit sign and head in that direction. As you round the corner, you nearly crash into a woman. It's the woman from the bar. She gasps when she sees what the Russian has done to you.</p>
+
+<p>You can't remember the details, but the two of you have some connection. You have a hunch she'll help you.</p>
+
+/*  narrative-only choice 1 */
+<p><<link "say \"Who are you? Are we in love? What's going on!\"">>
+  <<set $msg = ["\"Who are you?\" you ask. \"Are we in love? What's going on!\" She raises her eyebrows and laughs. \"We played pool together,\" you add. \"We were having a good time.\"", "\"Look, I remember you,\" she says. \"But I don't remember playing pool. And we are certainly not in love.\"", ""]>>
+  <<goto "she opens up">>
+<</link>></p>
+
+/*  narrative-only choice 2 */
+<p><<link "say \"I recognize you from last night. Please help me.\"">>
+  <<set $msg = ["\"I recognize you from last night,\" you say. \"Please help me.\" She hesitates to respond. \"We played pool together,\" you add. \"We were having a good time.\"", "\"I remember you,\" she says. \"But I don't remember playing pool.\"", ""]>>
+  <<goto "she opens up">>
+<</link>></p>
+
+/*  narrative-only choice 3 */
+<p><<link "say \"Do you know why your friend doesn't like me?\"">>
+  <<set $msg = ["\"Do you know why your friend doesn't like me?\" you ask.", "She raises one eyebrow and continues to look at your injuries with sympathy. \"Well,\" she says. \"He doesn't like losing things.\"", "\"What things?\" you ask. She looks you in the eye but says nothing. "]>>
+  <<goto "she opens up">>
+<</link>></p>
+
+:: she opens up
+<p>$msg[0]</p>
+
+<p>$msg[1]</p>
+
+<p>$msg[2] "Please. Just tell me what's going on."</p>
+
+<p>She pauses and takes another long look at your broken nose and mangled finger. Then she sighs. "Okay," she says. "The man you killed, he was supposed to give us a controller. It's a microchip. It was hidden inside a bag of cocaine, but now it's gone. Some dangerous people will be very upset if we don't find it." The woman's radio crackles. "What is it?" she says into the receiver.</p>
+
+<p>The Russian speaks from the other end. "Natasha. I need you here. Now. Police are poking around outside."</p>
+
+<p>"On my way," she says and shuts off the radio.</p>
+
+/*  narrative-only choice 1 */
+<p><<link "put her in a chokehold while she's distracted">>
+  <<set $msg = ["choking her", "", ""]>>
+  <<goto "she gets shot">>
+<</link>></p>
+
+/*  mention cocaine */
+<p><<if $cocaine.discovered>>
+  <<link "tell her you found her cocaine">>
+    <<set $msg = ["", "", ""]>>
+    <<goto "tell about cocaine">>
+  <</link>>
+<</if>></p>
+
+/*  narrative-only choices 2 and 3 */
+<<include "parley with woman">>
+
+:: parley with woman [include]
+/*  narrative-only choice 2 */
+<p><<link "tell her you know a thing or two about microchips">>
+  <<set $msg = ["let us cooperate", '<<include "know about chips">>', "She shakes her head."]>>
+  <<goto "she gets shot">>
+<</link>></p>
+
+/*  narrative-only choice 3 */
+<p><<link "offer to draw away the cops">>
+  <<set $msg = ["let us cooperate", '<p>"The cops are here for me," you say. "Help me get evidence to clear myself and I\'ll go out there and turn myself in. That\'ll get them away from you."</p>', ""]>>
+  <<goto "she gets shot">>
+<</link>></p>
+
+:: tell about cocaine
+<p>"I found your cocaine," you say.</p>
+
+<p>"I know. We recovered it," she replies. "But the chip wasn't there. Did you see the chip?"</p>
+
+/*  admit you didn't see chip */
+<p><<link 'say "No, I didn\'t see any chip."'>>
+  <<goto "too honest">>
+<</link>></p>
+
+/*  narrative-only choice 4 */
+<p><<link 'say "Yes. I\'ll tell you where it is if you help me."'>>
+  <<set $msg = ["let us cooperate", '<<include "big liar">>', ""]>>
+  <<goto "she gets shot">>
+<</link>></p>
+
+:: too honest
+<p>You shake your head. "No, I didn't see any chip."</p>
+
+<p>"Then you're no help to us," she replies.</p>
+
+/*  narrative-only choices 2 and 3 */
+<<include "parley with woman">>
+
+:: she gets shot [message]
+/*  learn that bum stole phone */
+<<if !$knowledge.has("stolenPhone")>>
+  <<run $knowledge.add("stolenPhone")>>
+<</if>>
+
+/*  description */
+<<include $msg[0]>>
+
+/*  continue is only option */
+<p><<link "continue<<if settings.debug>> (+1 XP)<</if>>">>
+  <<set $msg = [""]>>
+
+  /*  mark XP */
+  <<set _levelUp = s.markXP()>>
+  <<if _levelUp == 1>>
+    <<set $msg[0] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little clearer now.">>
+  <</if>>
+
+  <<goto "should you stay">>
+<</link>></p>
+
+:: choking her [include]
+/*  one of two possible descriptions in "she gets shot" */
+<p>The second she shuts of her radio, you grab her and put her in a chokehold. She struggles to free herself, but your grip is solid. There's no getting out of it. "Listen," you hiss in her ear. "I didn't kill anyone and I'm not going to jail. You're going to help me find evidence to clear myself."</p>
+
+<p>You can feel her trying to talk, so you loosen your grip a little. "No evidence will clear you," she says. "You //did// kill him."</p>
+
+<p>"No!" you shout and choke her hard. "There was a bum hiding in the shower last night. I'm sure of it! It was him. Now tell me what you know."</p>
+
+<p>You loosen your grip again and she coughs. "A bum? Seriously?" she says. You tense your arm threateningly. "Okay, okay, fine. There //was// a bum at the bar last night. Lev lost his phone. After that, the bum was gone. I think he took the phone and used it to find where Lev lived."</p>
+
+<p>"Lev?" you ask. "That's the dead guy? I thought his name was Matt. You knew him? He was at the bar with us?"</p>
+
+<p>Suddenly a gunshot rings out. Then more shots. You can hear police shouting in the distance. You hear the Russian's voice shouting back at them. You feel an impact and the woman's body tenses up. You let go of her and she slumps to the ground. She's been shot in the chest and isn't moving.</p>
+
+:: let us cooperate [include]
+/*  one of two possible descriptions in "she gets shot" */
+
+/*  possible multi-paragraph inclusion here */
+$msg[1]
+
+<p>$msg[2] "No evidence will clear you," she says. "You //did// kill him."</p>
+
+<p>"No," you insist. "There was a bum hiding in the shower last night. I'm sure of it! It could have been him. Reasonable doubt is all I need."</p>
+
+<p>"A bum?" She raises her eyebrows and studies your face. "You're serious, aren't you?"</p>
+
+<p>"Yes! Why was he there? How did he get there? Help me figure this out, please."</p>
+
+<p>She smiles and speaks patronizingly. "Okay, here's what I know. There //was// a bum at the bar last night. Lev lost his phone. And after that the bum was gone. I think he took the phone and used it to find where Lev lived."</p>
+
+<p>"Lev?" you ask. "That's the dead guy? I thought his name was Matt. You knew him? He was at the bar with us?"</p>
+
+<p>Suddenly a gunshot rings out. Then more shots. You cover your head instinctively. You can hear police shouting in the distance. The Russian is shouting back at them.</p>
+
+<p>You uncover your head to see the woman lying on the ground, blood flowing from her chest. She isn't moving at all.</p>
+
+:: know about chips [include]
+/*  one of two possible multi-paragraph inclusions in "let us cooperate" */
+<p>"I know a thing or two about microchips," you say. "I work at Hewlett-Packard."</p>
+
+<p>"You do?" she asks, her eyes wide. She looks genuinely surprised.</p>
+
+<p>"I do, yes. Maybe I can help. But I need to find evidence to clear myself. Will you help me with that?"</p>
+
+:: big liar [include]
+/*  one of two possible multi-paragraph inclusions in "let us cooperate" */
+<p>"I did, yes," you lie. "I'll tell you where it is, but you need to help me first. I didn't kill that man. Help me find evidence to clear myself."</p>
+
+:: end of warehouse [fake]

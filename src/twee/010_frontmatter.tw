@@ -1,0 +1,589 @@
+:: StoryTitle
+Blackout
+
+:: StoryData
+{
+  "ifid": "B66587F9-7999-4C0E-B614-A8B0774811E0",
+  "format": "SugarCube",
+  "format-version": "2.29.0",
+  "start": "Start",
+  "zoom": 0.6
+}
+
+:: Story Stylesheet [stylesheet]
+html {
+  font: 100% Georgia, serif;
+}
+a {
+  cursor: pointer;
+  color: #68d;
+  text-decoration: none;
+  font-weight: bold;
+  transition-duration: 200ms;
+}
+.leftcolumn {
+  float: left;
+  width: 48%;
+  margin-right: 4%;
+}
+.rightcolumn {
+  margin-left: 52%; 
+}
+.columns:after {
+    clear: both;
+    display: table;
+    content: "";
+}
+
+:: Story JavaScript [script]
+
+:: StoryInit
+/*  system variables */
+
+  <<set $rollCount = 0>>
+  <<if !settings.debug>>
+    <<script>>UIBar.hide().stow();<</script>>
+  <</if>>
+  <<set $diceMethod = "random">>
+  <<set $diceMethodSpecial = "random">>
+  <<set $lastMenuTurn = 0>> /* turn # of last visit to help/bio */
+  <<set $cheatCode = [1, 1, 1, 1, 1, 1]>>
+  /* an array used to pass text from one passage to another */
+  <<set $msg = []>>
+
+/*  the "classes" used in the game */
+
+  <<set $Thing = {
+    parent: "none",
+    type: "Thing",
+    searched: false,
+    discovered: false,
+    discoveredWhen: 0,
+    handled: false}>>
+
+    <<set $Person = clone($Thing)>>
+      <<set $Person.parent = "Thing">>
+      <<set $Person.type = "Person">>
+
+    <<set $Container = clone($Thing)>>
+      <<set $Container.parent = "Thing">>
+      <<set $Container.type = "Container">>
+
+      <<set $Vehicle = clone($Container)>>
+        <<set $Vehicle.parent = "Container">>
+        <<set $Vehicle.type = "Vehicle">>
+        <<set $Vehicle.traveledIn = false>>
+
+    <<set $Supporter = clone($Thing)>>
+      <<set $Supporter.parent = "Thing">>
+      <<set $Supporter.type = "Supporter">>
+
+    <<set $Door = clone($Thing)>>
+      <<set $Door.parent = "Thing">>
+      <<set $Door.type = "Door">>
+      <<set $Door.tried = false>>
+
+  <<set $Room = {
+    parent: "none",
+    type: "Room"}>>
+
+  <<set $Fact = {
+    parent: "none",
+    type: "Fact"}>>
+
+  <<set $Injury = {
+    parent: "none",
+    type: "Injury",
+    damage: 1,
+    source: ""}>>
+
+<<set $gameObjects = new Set()>> /* logs every object in game */
+
+/*  objects
+
+  /*  Thing objects */
+
+    <<run setup.make("clothes", "Thing")>>
+    <<run setup.make("body", "Thing")>>
+    <<run setup.make("knife", "Thing")>>
+    <<run setup.make("wallet", "Thing")>>
+    <<run setup.make("materials", "Thing")>>
+    <<run setup.make("looseTiles", "Thing")>>
+    <<run setup.make("cocaine", "Thing")>>
+    <<run setup.make("phone", "Thing")>>
+    <<run setup.make("bumBags", "Thing")>>
+    <<run setup.make("deadCat", "Thing")>>
+    <<run setup.make("powerDrill", "Thing")>>
+    <<run setup.make("video", "Thing")>>
+    <<run setup.make("schematic", "Thing")>>
+
+    /*  Person objects */
+
+      <<run setup.make("player", "Person")>>
+      <<run setup.make("detective", "Person")>>
+      <<run setup.make("shooter", "Person")>>
+
+    /*  Container objects */
+
+      <<run setup.make("memory", "Container")>>
+      <<run setup.make("medCabinet", "Container")>>
+      <<run setup.make("shower", "Container")>>
+
+      /* Vehicle objects */
+
+        <<run setup.make("mustang", "Vehicle")>>
+        <<run setup.make("copCar", "Vehicle")>>
+        <<run setup.make("ambulance", "Vehicle")>>
+        <<run setup.make("parkedCar", "Vehicle")>>
+
+    /*  Supporter objects */
+
+      <<run setup.make("shelfBedroom", "Container")>>
+      <<run setup.make("shelfWarehouse", "Supporter")>>
+
+    /*  Door objects */
+
+      <<run setup.make("bedroomDoor", "Door")>>
+      <<run setup.make("bathroomDoor", "Door")>>
+      <<run setup.make("window", "Door")>>
+      <<run setup.make("subwayEntrance", "Door")>>
+
+  /*  Room objects */
+
+    <<run setup.make("bedroom", "Room")>>
+    <<run setup.make("porch", "Room")>>
+    <<run setup.make("bathroom", "Room")>>
+    <<run setup.make("hallway", "Room")>>
+    <<run setup.make("alley", "Room")>>
+    <<run setup.make("warehouse", "Room")>>
+    <<run setup.make("office", "Room")>>
+
+  /*  Fact objects */
+
+    <<run setup.make("catInvolved", "Fact")>>
+    <<run setup.make("policeAtDoor", "Fact")>>
+    <<run setup.make("sameLastName", "Fact")>>
+    <<run setup.make("womanAtBar", "Fact")>>
+    <<run setup.make("strangeTattoo", "Fact")>>
+    <<run setup.make("mustangKeys", "Fact")>>
+    <<run setup.make("russian", "Fact")>>
+    <<run setup.make("bumStuff", "Fact")>>
+    <<run setup.make("bumKilledHim", "Fact")>>
+    <<run setup.make("stolenPhone", "Fact")>>
+    <<run setup.make("bumMotive", "Fact")>>
+
+  /*  Injury objects */
+
+    <<run setup.make("headache", "Injury")>>
+    <<run setup.make("concussion", "Injury")>>
+    <<run setup.make("gunshotShoulder", "Injury")>>
+    <<run setup.make("gunshotLeg", "Injury")>>
+    <<run setup.make("brokenToe", "Injury")>>
+    <<run setup.make("hitWithDrill", "Injury")>>
+    <<run setup.make("drilledFinger", "Injury")>>
+    <<run setup.make("brokenNose", "Injury")>>
+    <<run setup.make("choked", "Injury")>>
+    <<run setup.make("piercedFoot", "Injury")>>
+
+/*  object properties */
+
+  /*  Thing properties */
+
+    <<set $clothes.printedName = "the <<link \"clothes\">><<run setup.examine($clothes.description)>><</link>> on your back">>
+    <<set $clothes.description = "<p>You're wearing a white T-shirt with the Seattle Seahawks logo on the front. But you can hardly see the logo under all the blood. Your jeans are also caked with dried blood.</p>">>
+
+    <<set $body.description = "<p>You've never seen the dead man before, as far as you can remember. He must be in his mid-thirties.</p>">>
+
+    <<set $knife.printedName = "a bloody chef's <<link \"knife\">><<run setup.examine($knife.description)>><</link>>">>
+    <<set $knife.description = "<p>The murder weapon looks like the kind of knife they have hanging on the wall in a restaurant kitchen--the kind they use to cut meat or chop big vegetables. It has a wide blade and is about a foot long.</p>">>
+
+    <<set $wallet.printedName = "the dead man's <<link \"wallet\">><<run setup.examine($wallet.description)>><</link>> and ID">>
+    <<set $wallet.description = "<p>The victim's wallet is a simple leather bifold, worn at the corners from use.</p>">>
+
+    <<set $materials.description = "<p>Beside the broken toilet is a big box of tiles and several buckets of mortar.</p>">>
+
+    <<set $looseTiles.hidden = true>>
+    <<set $looseTiles.moved = false>>
+
+    <<set $cocaine.printedName = "several bags of <<link \"cocaine\">><<run setup.examine($cocaine.description)>><</link>>">>
+    <<set $cocaine.description = "<p>The drugs are packed into three separate ziploc bags.</p>">>
+    <<set $cocaine.hidden = true>>
+
+    <<set $phone.printedName = "your <<link \"phone\">><<run setup.examine($phone.description)>><</link>>">>
+    <<set $phone.description = "<p>The screen has a brand new crack down the middle. The battery is at seventeen percent. Not good, but at least it isn't dead.</p>">>
+
+    <<set $bumBags.description = "<p>These bags were on the floor inside the shower. When you first saw them, two were half-open and some of their contents had spilled onto the tiles--old, dirty clothes, a shoe that was falling apart, empty booze bottles. They're obviously the belongings of some homeless bum.</p>">>
+
+    <<set $deadCat.description = "<p>The cat was stabbed to death. You're not exactly happy it's dead, but the sight of it doesn't choke you up any. You've never liked cats. Disgusting creatures.</p>">>
+
+    <<set $powerDrill.description = "<p>The drill in his hands is a cordless, electric power drill. A long, thin drill bit is set inside it.</p>">>
+
+    /*  Person properties */
+
+      <<set $player.description = "<p>You reek of alcohol, your mouth is dry and tastes like vomit, and your head is throbbing. There's blood on your <<link \"clothes\">><<run setup.examine($clothes.description,\"more\")>><</link>>, in your hair, and on your face and hands. You've had better days.</p><div id=\"more\"></div>">>
+      <<set $player.STR = 3>>
+      <<set $player.INT = 0>>
+      <<set $player.WIS = 1>>
+      <<set $player.DEX = -1>>
+      <<set $player.CHA = 1>>
+      <<set $player.REL = {}>>
+      <<set $player.HP = 6>>
+      <<set $player.XP = 0>>
+      <<set $player.Level = 1>>
+
+      <<set $shooter.description = "<p>The man with the gun is striding toward the parked car, his face calm and serious. From the looks of him, this is not his first rodeo.</p>">>
+
+    /*  Container properties */
+
+      <<set $medCabinet.description = "<p>You see your face in the mirrored door of the medicine cabinet. You weren't expecting so much blood. You have the urge to wash your face right then and there. But there's no time for that.</p>">>
+
+      <<set $shower.description = "<p>The bathroom has a small walk-in shower with a full-length curtain. There is no tub.</p>">>
+
+      /*  Vehicle properties */
+
+        <<set $mustang.description = "<p>The car outside is a 1966 Mustang. It's black with a red interior. The driver side is covered with mud.</p>">>
+
+        <<set $parkedCar.description = "<p>You're hiding behind a maroon, four-door sedan. It's an older car and a little beat up. It has a sticker in the window that reads, \"Protected by Smith & Wesson\".</p>">>
+
+      /*  Supporter properties
+
+        <<set $shelfBedroom.fallen = false>>
+
+    /*  Door properties */
+
+      <<set $bedroomDoor.description = "<p>The bedroom door is white, like the walls of the room. Blood is spattered on the left side near the door handle.</p>">>
+
+      <<set $bathroomDoor.description = "<p>The bathroom door is made of cheap plywood and won't even close all the way.</p>">>
+
+      <<set $window.description = "<p>The window is not very big. If you climbed on the broken toilet, you could probably reach it and crawl outside, but it would be a tight squeeze.</p>">>
+
+      <<set $subwayEntrance.description = "<p>You hold up your hand against the low morning sun and take a closer look at the subway entrance. You've used this entrance many times. The turnstile is low and easy to jump, and the attendant is usually asleep.</p>">>
+
+  /*  Fact properties */
+
+    <<set $catInvolved.printedName = "evidence of a <<link \"cat\">><<run setup.examine($catInvolved.description)>><</link>>">>
+    <<set $catInvolved.description = "<p>There were scratches on the neck, hands, and wrists of the victim, as well as fur on his collar and sleeves.</p>">>
+
+    <<set $policeAtDoor.printedName = "the police looking for you">>
+
+    <<set $sameLastName.printedName = "the victim's <<link \"last name\">><<run setup.examine($sameLastName.description)>><</link>>">>
+    <<set $sameLastName.description = "<p>The dead man's Washington state driver's license shows his name is Matt Brady. Could he be a relative? You have no idea. Besides his last name, nothing about him is familiar.</p>">>
+
+    <<set $womanAtBar.printedName = "the <<link \"woman\">><<run setup.examine($womanAtBar.description)>><</link>> at the bar">>
+    <<set $womanAtBar.description = "<p>You remember doing shots at the Fireplace Tavern. You were playing pool with a woman you'd met that night.</p>">>
+
+    <<set $strangeTattoo.printedName = "the strange <<link \"tattoo\">><<run setup.examine($strangeTattoo.description)>><</link>>">>
+    <<set $strangeTattoo.description = "<p>The woman at the bar had a tattoo on the top of her hand, above the base of her thumb. It might have been a letter, but it wasn't from our alphabet.</p>">>
+
+    <<set $mustangKeys.printedName = "the woman's <<link \"Mustang\">><<run setup.examine($mustangKeys.description)>><</link>>">>
+    <<set $mustangKeys.description = "<p>You were in the woman's black Mustang. She got in, took the keys from above the visor, and started driving.</p>">>
+
+    <<set $russian.printedName = "the <<link \"Russian\">><<run setup.examine($russian.description)>><</link>>">>
+    <<set $russian.description = "<p>You had selfies on your phone with a blonde woman. The Russian man was in the background watching you. You also have a video in which he and the woman are together, talking.</p>">>
+
+    <<set $bumStuff.printedName = "the <<link \"bum stuff\">><<run setup.examine($bumStuff.description)>><</link>> in the shower">>
+    <<set $bumStuff.description = "<p>On the floor inside the shower were three garbage bags. Two were half-open and some of their contents had spilled onto the tiles--old, dirty clothes, a shoe that was falling apart, empty booze bottles. These were obviously the belongings of some homeless bum.</p>">>
+
+    <<set $bumKilledHim.printedName = 'the <<link "bum is the killer">><<run setup.examine($bumKilledHim.description)>><</link>>'>>
+    <<set $bumKilledHim.description = "<p>The garbage bags that were in the shower--they aren't yours and they can't be the victim's. He looked like a pretty successful guy. He wouldn't be keeping trash bags of ratty clothes and empty booze bottles lying around. No, those trash bags must belong to the killer. //The killer is a bum.//</p>">>
+
+    <<set $stolenPhone.printedName = 'the <<link "stolen phone">><<run setup.examine($stolenPhone.description)>><</link>>'>>
+    <<set $stolenPhone.description = "<p>The bum was at the bar last night. He stole the victim's phone and used it to track down where he lived.</p>">>
+
+    <<set $bumMotive.printedName = 'the <<link "bum\'s motive">><<run setup.examine($bumMotive.description)>><</link>>'>>
+    <<set $bumMotive.description = "<p>In a strange flash of insight, you understood the bum's motive. He wanted to //be// the victim. Through some deep mental delusion, the bum thought he could kill this guy and then //become// him. He wanted to swap out his nasty bum life for this guy's fancy life.</p>">>
+
+  /*  Injury properties */
+
+    <<set $headache.description = "Your head is throbbing.">>
+
+    <<set $concussion.source = "cops">>
+    <<set $concussion.description = "<<if $concussion.source == \"cops\">>The cops shoved your head onto the floor.<<elseif $concussion.source == \"russian\">>The Russian hit you in the head with a pistol.<</if>>">>
+
+    <<set $gunshotShoulder.description = "You've been shot in the shoulder.">>
+    <<set $gunshotShoulder.damage = 2>>
+
+    <<set $gunshotLeg.description = "A bullet grazed your outer thigh.">>
+    <<set $gunshotLeg.damage = 2>>
+
+    <<set $brokenToe.description = "You dropped a box of tiles on your foot.">>
+
+    <<set $hitWithDrill.description = "The Russian hit you in the head with a drill.">>
+    <<set $hitWithDrill.damage = 0>>
+
+    <<set $drilledFinger.description = "A drill was driven into your finger.">>
+
+    <<set $brokenNose.description = "Your nose was broken.">>
+
+    <<set $choked.description = "You were choked.">>
+
+    <<set $piercedFoot.description = "You stepped on a nail.">>
+
+/*  relations */
+
+  /*  having discovered relation */
+
+    <<set $hasDiscovered = new Set()>>
+
+  /*  carrying relation */
+
+    <<set $inventory = new Set()>>
+
+  /*  having been taken from relation */
+
+    <<set $inventoryLost = new Set()>>
+
+  /*  having handled relation */
+
+    <<set $hasHandled = new Set()>>
+
+  /*  knowing relation */
+
+    <<set $knowledge = new Set()>>
+
+  /*  suffering relation */
+
+    <<set $injuries = new Set()>>
+
+  /*  containment relation */
+
+    <<set $containedIn = new Map()>>
+    <<run $containedIn.set("player", "bedroom")>>
+    <<run $containedIn.set("detective", "porch")>>
+    <<run $containedIn.set("body", "bedroom")>>
+    <<run $containedIn.set("knife", "bedroom")>>
+    <<run $containedIn.set("medCabinet", "bathroom")>>
+    <<run $containedIn.set("shower", "bathroom")>>
+    <<run $containedIn.set("window", "bathroom")>>
+    <<run $containedIn.set("materials", "bathroom")>>
+    <<run $containedIn.set("looseTiles", "bathroom")>>
+    <<run $containedIn.set("cocaine", "bathroom")>>
+    <<run $containedIn.set("phone", "medCabinet")>>
+    <<run $containedIn.set("Mustang", "alley")>>
+    <<run $containedIn.set("shelfBedroom", "bedroom")>>
+    <<run $containedIn.set("bumBags", "bathroom")>>
+
+  /*  miscellaneous relations */
+
+    <<set $pounding = true>> /* detective is pounding on the door */
+    <<set $crowbar = false>> /* detective is not using crowbar */
+    <<set $doorBlocked = false>> /* construction materials not blocking door */
+    <<set $talking = false>> /* player not talking to detective */
+    <<set $inventoryTaken = false>> /* player's inventory not taken */
+    <<set $inventoryMoved = false>> /* inventory not moved to warehouse */
+    <<set $russianSeen = false>> /* Russian not seen */
+    <<set $underShelf = false>> /* player is crawling under Warehouse shelf */
+
+/*  rule return codes
+  0   carry on, nothing else to do
+  1   describe: They stop pounding and someone calls for a crowbar. (Use
+        message)
+  2   goto Cops bust in
+  3   describe: You remember being at a bar with a woman with a strange tattoo.
+  4   describe: You remember being in her Mustang; she kept the keys above the
+      visor.
+  5   describe: Cops tackle you, bang your head on floor, cuff you, and take
+        you away. Take knife. Goto Streets.
+  6   describe: Uniformed cop shoots your shoulder, you're taken away in an
+        ambulance. Take knife. Goto Streets.
+  7   describe: You hear the cops bust into the house. Recheck actions.
+  8   describe: You go to prison. The End.
+  9   describe: You go to the hospital then prison. The End. */
+
+/*  passage tag descriptions
+  message:  a passage without choices that gives information and then returns
+    to the previous passage
+  include: a passage which is never visited, but simply included in other
+      passage(s) with the `<<include>>` macro */
+
+:: PassageHeader
+<<timed 0s>><<if !tags().includes("no-header")>>
+  <<link "help">>
+    <<script>>Engine.play("help", true)<</script>>
+  <</link>> / 
+  <<link "bio">>
+    <<script>>Engine.play("bio", true)<</script>>
+  <</link>> / 
+  <<link "save">>
+    <<run setup.saveGame()>>
+  <</link>> / 
+  <<link "load">>
+    <<run setup.loadGame()>>
+  <</link>> / 
+  <<link "restart">>
+    <<script>>
+      let msg = "Really restart?";
+      if (Save.slots.has(0)) {
+        msg += " This will erase your bookmark also.";
+      }
+      if (settings.debug || confirm(msg)) {
+        Save.autosave.delete();
+        Save.slots.delete(0);
+        Engine.restart();
+      }
+    <</script>>
+  <</link>>
+  <<if settings.debug>> / 2d6 result: 
+    <<listbox "$diceMethod" autoselect>>
+      <<optionsfrom ["random", 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]>>
+    <</listbox>> / 
+    <<linkreplace "exit debug mode">>
+      <<script>>
+        settings.debug = false;
+        Setting.save();
+        UIBar.hide().stow();
+        Engine.show();
+      <</script>>
+      exit debug mode
+    <</linkreplace>>
+    <<set _stats = "STR: " + $player.STR>>
+    <<set _stats += ", INT:" + $player.INT>>
+    <<set _stats += ", WIS: " + $player.WIS>>
+    <<set _stats += ", DEX: " + $player.DEX>>
+    <<set _stats += ", CHA: " + $player.CHA>>
+    <<set _keys = Object.keys($player.REL)>>
+    <<if _keys.length > 0>>
+      <<for _key range _keys>>
+        <<set _stats += ", REL." + _key + ": " + $player.REL[_key]>>
+      <</for>>
+    <</if>>
+    <<set _stats += ", <<link \"HP:\">><<run setup.removeHP()>><</link>> " + $player.HP>>
+    <<set _stats += ", <<link \"XP:\">><<run setup.addXP()>><</link>> " + $player.XP>>
+    <<set _stats += ", Level: " + $player.Level>>
+    <br>_stats
+  <</if>>
+  <br><hr>
+<</if>><</timed>>
+
+:: PassageFooter
+<<timed 0s>><<if !tags().includes("no-header") && settings.debug>>
+  <hr>
+  <p>//Random number between 1 and <span id="maxNumber">5</span>:// <span id="randomNumber">''<<= random(1, 5)>>''</span></p>
+  <<for _i = 2; _i <= 10; _i++>>
+    <<capture _i>>
+      <<button _i>>
+        <<replace "#maxNumber">>//_i//<</replace>>
+        <<replace "#randomNumber">>''<<= random(1, _i)>>''<</replace>>
+      <</button>>
+    <</capture>>
+  <</for>>
+<</if>><</timed>>
+
+:: help
+<<timed 0s>>
+  <<run setup.visitMenu("help")>>
+<</timed>>
+
+<p>The story you are reading is a work of interactive fiction. In interactive fiction you play the main character of a story. Your actions drive the story forward.</p>
+
+<p>In this story, you control the character by tapping (or clicking) on links. Tap a noun to examine that object in closer detail. Tap a command to follow that action. Tapping a noun will usually not advance the story. Tapping a command, though, is often irreversible.<p>
+
+<p>Some actions may have a random outcome which could be good or bad. Your chances of getting a good outcome are related to your character's traits. Click on "bio" in the top menu bar to better understand these traits. The bio also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
+
+<p>The story automatically saves your progress, so if you exit and reload later, you will be able to resume right where you left off. You can also manually save your progress in a bookmark that can be reloaded later. But think carefully about this. You only get one bookmark! (Warning: using private browsing or disabling or clearing your cookies will interfere with the story's saving feature.)</p>
+
+<p><<link "return to story">><<script>>Engine.show()<</script>><</link>></p>
+
+<p>[Blackout version <<=setup.version>>, last edited <<=setup.lastEdited>> UTC]</p>
+
+:: bio
+<<timed 0s>>
+  <<run setup.visitMenu("bio")>>
+<</timed>>
+
+<p>You were born Scott Allen Brady, but your friends just call you Scotty. You're six foot two, 245 pounds. You work in the shipping department at the Hewlett-Packard plant. You like to lift weights and go out drinking with your friends. You're a little clumsy, but you have a keen eye for detail and can charm the skin off a snake.</p>
+
+<p>
+  <<if $injuries.size == 0>>
+    You are uninjured.
+  <<else>>
+    <<for _item range $injuries>>
+      <<= v[_item].description + " ">>
+    <</for>>
+  <</if>>
+  <<if $player.HP == 1>>
+    You feel weak and light-headed. You're not sure how much more of this physical abuse you can take.
+  <</if>>
+</p>
+
+<div class="columns">
+  <div class="leftcolumn">
+    ''You are carrying:''
+    <<if $inventory.size == 0>>
+      <<= "<br>nothing">>
+    <<else>>
+      <<for _item range $inventory>>
+        <<= "<br>" + v[_item].printedName>>
+      <</for>>
+    <</if>>
+  </div>
+  <div class="rightcolumn">
+    ''You know about:''
+    <<if $knowledge.size == 0>>
+      <<= "<br>nothing">>
+    <<else>>
+      <<for _item range $knowledge>>
+        <<= "<br>" + v[_item].printedName>>
+      <</for>>
+    <</if>>
+  </div>
+</div>
+
+<div id="end"></div>
+
+<<if settings.debug>>
+  <p>Discovered Things:
+    <<set _display = new Set()>>
+    <<for _item range $hasDiscovered>>
+      <<run _display.add(_item + " (" + v[_item].discoveredWhen + ")")>>
+    <</for>>
+    _display<br>
+  Handled Things: $hasHandled</p>
+<</if>>
+
+<p><<link "return to story">><<script>>Engine.show()<</script>><</link>></p>
+
+:: Start [no-header]
+<<if settings.debug>>
+  <<goto "bedroom">>
+<<else>>
+  <div align="center">
+    <h1>Blackout</h1>
+    by<br>
+    Jack Weaver<br>
+    <br>
+    <br>
+    <br>
+    <<if Save.autosave.has()>>
+      <<link "resume">>
+        <<run Save.autosave.load()>>
+      <</link>> / 
+      <<link "restart">>
+        <<script>>
+        let msg = "Really restart?";
+        if (Save.slots.has(0)) {
+          msg += " This will erase your bookmark also.";
+        }
+        if (settings.debug || confirm(msg)) {
+          Save.autosave.delete();
+          Save.slots.delete(0);
+          Engine.play("intro");
+        }
+        <</script>>
+      <</link>>
+    <<else>>
+      [[begin|intro]]
+    <</if>>
+  </div>
+<</if>>
+
+:: intro [no-header]
+<p>It started with one shot of whiskey. Of course, most nights started with one shot of whiskey. Then one became two and two became more. Before long, you were making a fool of yourself. At least you assume you were. You can't remember.</p>
+
+<p>That was last night. This morning, you wake up alone on a strange bed in a house you've never seen before. From the trash and bottles lying around, this had to be the scene of some after party. But where is everyone? And what is that smell? It's then you realize your clothes are covered in blood.</p>
+
+<p>When you get out of the bed, you see it. The body. A man lying on his back, dead, with a knife sticking out of his chest. Before you can do or think anything, someone starts pounding on the front door. Is it the police? Is it the murderer? Are //you// the murderer?</p>
+
+<p>[[continue|bedroom]]</p>
+
+:: end of frontmatter [fake]

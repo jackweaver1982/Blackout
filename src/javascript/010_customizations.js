@@ -1,5 +1,5 @@
-setup.version = "1.0";
-setup.lastEdited = "2019-12-16-1714"
+setup.version = "1.1";
+setup.lastEdited = "2019-01-15-1033"
 
 /*  make "v" a shortcut for "State.variables",
  *  which is equivalent to "variables()" */

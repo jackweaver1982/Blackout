@@ -369,7 +369,7 @@ $msg[0]
 
 <p>She pauses and takes another long look at your broken nose and mangled finger. Then she sighs. "Okay," she says. "The man you killed, he was supposed to give us a controller. It's a microchip. It was hidden inside a bag of cocaine, but now it's gone. Some dangerous people will be very upset if we don't find it." The woman's radio crackles. "What is it?" she says into the receiver.</p>
 
-<p>The Russian speaks from the other end. "Natasha. I need you here. Now. Police are poking around outside."</p>
+<p>The Russian speaks from the other end. "Kira, I need you here. Now. Police are poking around outside."</p>
 
 <p>"On my way," she says and shuts off the radio.</p>
 
@@ -451,7 +451,7 @@ $msg[0]
 
 :: choking her [include]
 /*  one of two possible descriptions in "she gets shot" */
-<p>The second she shuts of her radio, you grab her and put her in a chokehold. She struggles to free herself, but your grip is solid. There's no getting out of it. "Listen," you hiss in her ear. "I didn't kill anyone and I'm not going to jail. You're going to help me find evidence to clear myself."</p>
+<p>The second she shuts off her radio, you grab her and put her in a chokehold. She struggles to free herself, but your grip is solid. There's no getting out of it. "Listen," you hiss in her ear. "I didn't kill anyone and I'm not going to jail. You're going to help me find evidence to clear myself."</p>
 
 <p>You can feel her trying to talk, so you loosen your grip a little. "No evidence will clear you," she says. "You //did// kill him."</p>
 

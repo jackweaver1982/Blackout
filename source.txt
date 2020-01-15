@@ -40,8 +40,8 @@ a {
 
 :: Story JavaScript [script]
 /* twine-user-script #1: "010_customizations.js" */
-setup.version = "1.0";
-setup.lastEdited = "2019-12-16-1714"
+setup.version = "1.1";
+setup.lastEdited = "2019-01-15-1033"
 
 /*  make "v" a shortcut for "State.variables",
  *  which is equivalent to "variables()" */
@@ -1071,7 +1071,7 @@ setup.generalRememberMustang = function() {
 :: intro [no-header] {"position":"850,100","size":"100,100"}
 <p>It started with one shot of whiskey. Of course, most nights started with one shot of whiskey. Then one became two and two became more. Before long, you were making a fool of yourself. At least you assume you were. You can't remember.</p>
 
-<p>That was last night. This morning, you wake up alone on a strange bed in a house you've never seen before. From the trash and bottles lying around, this had to be the scene of some after party. But where is everyone? And what is that smell? It's then you realize your clothes are covered in blood.</p>
+<p>That was last night. This morning, you wake up alone on a strange bed in a house you've never seen before. From the trash and bottles lying around, this had to be the scene of some after-party. But where is everyone? And what is that smell? It's then you realize your clothes are covered in blood.</p>
 
 <p>When you get out of the bed, you see it. The body. A man lying on his back, dead, with a knife sticking out of his chest. Before you can do or think anything, someone starts pounding on the front door. Is it the police? Is it the murderer? Are //you// the murderer?</p>
 
@@ -1676,7 +1676,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 /*  description */
 <p>You <<if visited("bathroom") == 1 && $containedIn.get("detective") !== "bedroom">>step into the master bathroom and are hit head-on with a foul stench.<<else>>are in the master bathroom. A foul stench is in the air.<</if>> On your left, the shower curtain is pulled back and inside the shower are three garbage bags. Two are half-open and some of their contents have spilled onto the tiles--old, dirty clothes, a shoe that's falling apart, empty booze bottles. These are obviously the belongings of some homeless bum.<<if visited("bathroom") == 1>> Somehow, despite your own stench, you have to fight the urge to gag.<</if>></p>
 
-<p>Dirty clothes are strewn about the floor--socks, shorts, and an assortment of NFL and NBA jerseys. The sink and medicine cabinet are in front of you. There's a bloody thumbprint on the edge of the <<link "medicine cabinet">><<run setup.examine($medCabinet.description, "mid")>><</link>>'s mirrored door. Against the right wall, under the <<link "window">><<run setup.examine($window.description, "mid")>><</link>>, is a an old, broken toilet<<if !$doorBlocked>> and a pile of <<link "construction materials">><<run setup.examine($materials.description, "mid")>><</link>><<else>>. You've blocked the door with construction materials. You can hear people trying to push their way in<</if>>.</p>
+<p>Dirty clothes are strewn about the floor--socks, shorts, and an assortment of NFL and NBA jerseys. The sink and medicine cabinet are in front of you. There's a bloody thumbprint on the edge of the <<link "medicine cabinet">><<run setup.examine($medCabinet.description, "mid")>><</link>>'s mirrored door. Against the right wall, under the <<link "window">><<run setup.examine($window.description, "mid")>><</link>>, is an old, broken toilet<<if !$doorBlocked>> and a pile of <<link "construction materials">><<run setup.examine($materials.description, "mid")>><</link>><<else>>. You've blocked the door with construction materials. You can hear people trying to push their way in<</if>>.</p>
 
 <div id="mid"></div>
 
@@ -2136,7 +2136,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 /*  crash description if in cop car */
 <p>That's when the van slams into you. It hits you on the passenger side. Your body flies across the back seat. Your head hits the window and you roll backward, toppling down onto the floorboard. With difficulty, you squirm back up onto the seat. The passenger side door looks a little ajar, but it still won't open. The cop behind the wheel is barely moving. The grate separating you from him has broken. You reach up front, grab the handcuff keys, and free yourself.</p>
 
-<p>The driver of the van that hit you is rushing toward the car in a panic. "Oh my god!" he's shouting. "I didn't see you! Are you all right?" He walks around the front of the car and opens the driver's door. The cop in front reaches out a weak hand and mutters something you can't hear. Then the truck driver shoots him in the head.</p>
+<p>The driver of the van that hit you is rushing toward the car in a panic. "Oh my god!" he's shouting. "I didn't see you! Are you all right?" He walks around the front of the car and opens the driver's door. The cop in front reaches out a weak hand and mutters something you can't hear. Then the van driver shoots him in the head.</p>
 
 <p>You're in shock, barely comprehending what's happening. But you need to make a quick decision.</p>
 
@@ -2657,7 +2657,7 @@ $msg[0]
 
 <p>She pauses and takes another long look at your broken nose and mangled finger. Then she sighs. "Okay," she says. "The man you killed, he was supposed to give us a controller. It's a microchip. It was hidden inside a bag of cocaine, but now it's gone. Some dangerous people will be very upset if we don't find it." The woman's radio crackles. "What is it?" she says into the receiver.</p>
 
-<p>The Russian speaks from the other end. "Natasha. I need you here. Now. Police are poking around outside."</p>
+<p>The Russian speaks from the other end. "Kira, I need you here. Now. Police are poking around outside."</p>
 
 <p>"On my way," she says and shuts off the radio.</p>
 
@@ -2744,7 +2744,7 @@ $msg[0]
 
 :: choking her [include] {"position":"600,975","size":"100,100"}
 /*  one of two possible descriptions in "she gets shot" */
-<p>The second she shuts of her radio, you grab her and put her in a chokehold. She struggles to free herself, but your grip is solid. There's no getting out of it. "Listen," you hiss in her ear. "I didn't kill anyone and I'm not going to jail. You're going to help me find evidence to clear myself."</p>
+<p>The second she shuts off her radio, you grab her and put her in a chokehold. She struggles to free herself, but your grip is solid. There's no getting out of it. "Listen," you hiss in her ear. "I didn't kill anyone and I'm not going to jail. You're going to help me find evidence to clear myself."</p>
 
 <p>You can feel her trying to talk, so you loosen your grip a little. "No evidence will clear you," she says. "You //did// kill him."</p>
 

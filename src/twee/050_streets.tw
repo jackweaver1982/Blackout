@@ -6,6 +6,8 @@
 <</if>>
 <<if $containedIn.get("player") == "copCar">>
 
+<<set $shooter.discovered = true>>
+
   /*  initial description if in cop car */
   <p><<if $inventoryLost.size !== 0>>The cops have taken all your things and have them in the front seat. <</if>>You are in the back of the patrol car with your hands cuffed behind you. You drive for about twenty minutes along the interstate. When you get off, you head through downtown toward the station.</p>
 
@@ -36,7 +38,7 @@
 
 :: cop car crash [include]
 /*  crash description if in cop car */
-<p>That's when the van slams into you. It hits you on the passenger side. Your body flies across the back seat. Your head hits the window and you roll backward, toppling down onto the floorboard. With difficulty, you squirm back up onto the seat. The passenger side door looks a little ajar, but it still won't open. The cop behind the wheel is barely moving. The grate separating you from him has broken. You reach up front, grab the handcuff keys, and free yourself.</p>
+<p>That's when the van slams into you. It hits you on the passenger side. Your body flies across the back seat. Your head hits the window and you roll backward, toppling down onto the floorboard. With difficulty, you squirm back up onto the seat. The passenger side door looks a little ajar, but it still won't open. The cop behind the wheel is barely moving. The grate separating you from him has broken. You turn and put your cuffed hands through the broken grate. After a few moments of straining and groping around, you manage to get a grip on the handcuff keys. You bring them into the backseat with you and free yourself.</p>
 
 <p>The driver of the van that hit you is rushing toward the car in a panic. "Oh my god!" he's shouting. "I didn't see you! Are you all right?" He walks around the front of the car and opens the driver's door. The cop in front reaches out a weak hand and mutters something you can't hear. Then the van driver shoots him in the head.</p>
 

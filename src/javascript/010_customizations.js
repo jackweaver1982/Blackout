@@ -1,5 +1,13 @@
-setup.version = "1.1";
-setup.lastEdited = "2019-01-15-1033"
+setup.lastEdited = "2019-01-18-0901";
+setup.versionNumber = 102;
+
+setup.calcVersion = function(num) {
+  let main = Math.floor(num/100);
+  let sub = num % 100;
+  return main + '.' + sub;
+}
+
+setup.version = setup.calcVersion(setup.versionNumber);
 
 /*  make "v" a shortcut for "State.variables",
  *  which is equivalent to "variables()" */
@@ -30,6 +38,12 @@ Config.passages.nobr = true;
 /*  add debug mode to settings */
 Setting.addToggle("debug", {
   label: "debug mode"
+});
+
+/*  add beta mode to settings */
+Setting.addToggle("beta", {
+  label: "beta mode",
+  default: true
 });
 
 /*  enable autosaves and autoloading */
@@ -65,4 +79,12 @@ Config.saves.onSave = function(save) {
     save.title = prompt("Name of this save file:", passage());
   }
   return;
+}
+
+/*  set version number of saves */
+Config.saves.version = setup.versionNumber;
+
+/*  check compatibility of save file */
+s.checkSave = function(save) {
+  return (save.version == setup.versionNumber);
 }

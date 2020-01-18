@@ -4,7 +4,9 @@
 
 <p><<=$msg[1]>>They arrest you, there is a trial, you are convicted, and you spend the next twenty years in prison. You never do remember that night. Sometimes, in your prison cell, you wonder. Was there evidence in that house to prove your innocence? You suspect so. You might have found it, if only you'd tried harder.</p>
 
-<div align="center"><p>''THE END''</p></div>
+<div align="center"><p><<link "''THE END''">>
+	<<goto "acknowledgments">>
+<</link>></p></div>
 
 :: Hospital then prison
 /*  cops get you before you visit the bathroom, you were shot */
@@ -12,7 +14,9 @@
 
 <p>The cops drag you outside and call for an ambulance to take you to the hospital. When you are well enough, there is a trial. You are convicted and spend the next twenty years in prison. You never do remember that night. Sometimes, in your prison cell, you wonder. Was there evidence in that house to prove your innocence? You suspect so. You might have found it, if only you'd tried harder.</p>
 
-<div align="center"><p>''THE END''</p></div>
+<div align="center"><p><<link "''THE END''">>
+	<<goto "acknowledgments">>
+<</link>></p></div>
 
 :: drilled to death
 /*  drilled finger took last HP */
@@ -22,7 +26,9 @@
 
 <p>You will not be receiving the medical attention you so desperately need. You will die here today, tied to a chair in an empty warehouse.</p>
 
-<div align="center"><p>''THE END''</p></div>
+<div align="center"><p><<link "''THE END''">>
+	<<goto "acknowledgments">>
+<</link>></p></div>
 
 :: punched to death
 /*  punch in face took last HP */
@@ -34,7 +40,9 @@ $msg[0]
 
 <p>You will not be receiving the medical attention you so desperately need. You will die here today, tied to a chair in an empty warehouse.</p>
 
-<div align="center"><p>''THE END''</p></div>
+<div align="center"><p><<link "''THE END''">>
+	<<goto "acknowledgments">>
+<</link>></p></div>
 
 :: choked to death
 /*  choked by Russian took last HP */
@@ -44,7 +52,9 @@ $msg[0]
 
 <p>The Russian feels your body go limp and gives your throat one final crushing squeeze. He drops your lifeless body to the floor, steps over it, and continues on his way to meet the woman.</p>
 
-<div align="center"><p>''THE END''</p></div>
+<div align="center"><p><<link "''THE END''">>
+	<<goto "acknowledgments">>
+<</link>></p></div>
 
 :: arrested at warehouse
 /*  you stupidly tried to leave the Warehouse with cops everywhere */
@@ -54,7 +64,9 @@ $msg[0]
 
 <p>They arrest you, there's a trial, you're convicted, and you spend the next twenty years in prison. You never do remember that night, but you protest your innocence the entire time. Although no one believes you, you know. Somewhere, some bum has gotten away with murder. In your prison cell, you often wonder. If you had found the stolen cell phone, would things have turned out differently? You suspect so.</p>
 
-<div align="center"><p>''THE END''</p></div>
+<div align="center"><p><<link "''THE END''">>
+	<<goto "acknowledgments">>
+<</link>></p></div>
 
 :: nailed it
 /*  stepping on nail took last HP */
@@ -66,7 +78,9 @@ $msg[0]
 
 <p>$msg[1]</p>
 
-<div align="center"><p>''THE END''</p></div>
+<div align="center"><p><<link "''THE END''">>
+	<<goto "acknowledgments">>
+<</link>></p></div>
 
 :: the truth
 /*	the intended ending */

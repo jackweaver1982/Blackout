@@ -123,8 +123,16 @@ a {
     display: table;
     content: "";
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* twine-user-script #1: "010_customizations.js" */
-setup.version = "1.1";
-setup.lastEdited = "2019-01-15-1033"
+setup.lastEdited = "2019-01-18-0901";
+setup.versionNumber = 102;
+
+setup.calcVersion = function(num) {
+  let main = Math.floor(num/100);
+  let sub = num % 100;
+  return main + '.' + sub;
+}
+
+setup.version = setup.calcVersion(setup.versionNumber);
 
 /*  make "v" a shortcut for "State.variables",
  *  which is equivalent to "variables()" */
@@ -155,6 +163,12 @@ Config.passages.nobr = true;
 /*  add debug mode to settings */
 Setting.addToggle("debug", {
   label: "debug mode"
+});
+
+/*  add beta mode to settings */
+Setting.addToggle("beta", {
+  label: "beta mode",
+  default: true
 });
 
 /*  enable autosaves and autoloading */
@@ -190,6 +204,14 @@ Config.saves.onSave = function(save) {
     save.title = prompt("Name of this save file:", passage());
   }
   return;
+}
+
+/*  set version number of saves */
+Config.saves.version = setup.versionNumber;
+
+/*  check compatibility of save file */
+s.checkSave = function(save) {
+  return (save.version == setup.versionNumber);
 }
 /* twine-user-script #2: "020_functions.js" */
 /*  creates a variable `varName` which is a clone of `ClassName`, then sets its
@@ -800,7 +822,7 @@ setup.generalRememberMustang = function() {
 
     /*  Container properties */
 
-      &lt;&lt;set $medCabinet.description = &quot;&lt;p&gt;You see your face in the mirrored door of the medicine cabinet. You weren&#39;t expecting so much blood. You have the urge to wash your face right then and there. But there&#39;s no time for that.&lt;/p&gt;&quot;&gt;&gt;
+      &lt;&lt;set $medCabinet.description = &quot;&lt;p&gt;The thumbprint is on the side opposite the hinges. It looks like it was made by someone as they opened the cabinet. There are spots of dried blood on the counter directly below where the print is. &lt;/p&gt;&quot;&gt;&gt;
 
       &lt;&lt;set $shower.description = &quot;&lt;p&gt;The bathroom has a small walk-in shower with a full-length curtain. There is no tub.&lt;/p&gt;&quot;&gt;&gt;
 
@@ -1034,13 +1056,11 @@ setup.generalRememberMustang = function() {
 
 &lt;p&gt;In this story, you control the character by tapping (or clicking) on links. Tap a noun to examine that object in closer detail. Tap a command to follow that action. Tapping a noun will usually not advance the story. Tapping a command, though, is often irreversible.&lt;p&gt;
 
-&lt;p&gt;Some actions may have a random outcome which could be good or bad. Your chances of getting a good outcome are related to your character&#39;s traits. Click on &quot;bio&quot; in the top menu bar to better understand these traits. The bio also shows what you are carrying, what you have learned, and any injuries you may have suffered.&lt;/p&gt;
+&lt;p&gt;&lt;b style=&#39;color:yellow&#39;&gt; Random outcomes.&lt;/b&gt; Some actions may have a random outcome which could be good or bad. Your chances of getting a good outcome are related to your character&#39;s traits. Click on &quot;bio&quot; in the top menu bar to better understand these traits. The bio also shows what you are carrying, what you have learned, and any injuries you may have suffered.&lt;/p&gt;
 
-&lt;p&gt;The story automatically saves your progress, so if you exit and reload later, you will be able to resume right where you left off. You can also manually save your progress in a bookmark that can be reloaded later. But think carefully about this. You only get one bookmark! (Warning: using private browsing or disabling or clearing your cookies will interfere with the story&#39;s saving feature.)&lt;/p&gt;
+&lt;p&gt;&lt;b style=&#39;color:yellow&#39;&gt; Saving.&lt;/b&gt; The story automatically saves your progress, so if you exit and reload later, you will be able to resume right where you left off. You can also manually save your progress in a bookmark that can be reloaded later. But think carefully about this. You only get one bookmark! (Warning: using private browsing or disabling or clearing your cookies will interfere with the story&#39;s saving feature.)&lt;/p&gt;
 
-&lt;p&gt;&lt;&lt;link &quot;return to story&quot;&gt;&gt;&lt;&lt;script&gt;&gt;Engine.show()&lt;&lt;/script&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/p&gt;
-
-&lt;p&gt;[Blackout version &lt;&lt;=setup.version&gt;&gt;, last edited &lt;&lt;=setup.lastEdited&gt;&gt; UTC]&lt;/p&gt;</tw-passagedata><tw-passagedata pid="5" name="bio" tags="" position="600,100" size="100,100">&lt;&lt;timed 0s&gt;&gt;
+&lt;p&gt;&lt;&lt;link &quot;return to story&quot;&gt;&gt;&lt;&lt;script&gt;&gt;Engine.show()&lt;&lt;/script&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;/p&gt;</tw-passagedata><tw-passagedata pid="5" name="bio" tags="" position="600,100" size="100,100">&lt;&lt;timed 0s&gt;&gt;
   &lt;&lt;run setup.visitMenu(&quot;bio&quot;)&gt;&gt;
 &lt;&lt;/timed&gt;&gt;
 
@@ -1101,12 +1121,19 @@ setup.generalRememberMustang = function() {
     &lt;h1&gt;Blackout&lt;/h1&gt;
     by&lt;br&gt;
     Jack Weaver&lt;br&gt;
+    &lt;&lt;if settings.beta&gt;&gt;
+      (beta version &lt;&lt;= setup.version&gt;&gt;)
+    &lt;&lt;/if&gt;&gt;
     &lt;br&gt;
     &lt;br&gt;
     &lt;br&gt;
-    &lt;&lt;if Save.autosave.has()&gt;&gt;
+    &lt;&lt;if Save.autosave.has() &amp;&amp; (s.checkSave(Save.autosave.get()) || settings.beta)&gt;&gt;
       &lt;&lt;link &quot;resume&quot;&gt;&gt;
-        &lt;&lt;run Save.autosave.load()&gt;&gt;
+        &lt;&lt;if s.checkSave(Save.autosave.get())&gt;&gt;
+          &lt;&lt;run Save.autosave.load()&gt;&gt;
+        &lt;&lt;else&gt;&gt;
+          &lt;&lt;run alert(&quot;save file incompatible with current version&quot;)&gt;&gt;
+        &lt;&lt;/if&gt;&gt;
       &lt;&lt;/link&gt;&gt; / 
       &lt;&lt;link &quot;restart&quot;&gt;&gt;
         &lt;&lt;script&gt;&gt;
@@ -1999,6 +2026,8 @@ setup.generalRememberMustang = function() {
 &lt;&lt;/if&gt;&gt;
 &lt;&lt;if $containedIn.get(&quot;player&quot;) == &quot;copCar&quot;&gt;&gt;
 
+&lt;&lt;set $shooter.discovered = true&gt;&gt;
+
   /*  initial description if in cop car */
   &lt;p&gt;&lt;&lt;if $inventoryLost.size !== 0&gt;&gt;The cops have taken all your things and have them in the front seat. &lt;&lt;/if&gt;&gt;You are in the back of the patrol car with your hands cuffed behind you. You drive for about twenty minutes along the interstate. When you get off, you head through downtown toward the station.&lt;/p&gt;
 
@@ -2026,7 +2055,7 @@ setup.generalRememberMustang = function() {
     alert(&quot;Error: player not in a vehicle.&quot;);
   &lt;&lt;/script&gt;&gt;
 &lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="49" name="cop car crash" tags="include" position="1100,600" size="100,100">/*  crash description if in cop car */
-&lt;p&gt;That&#39;s when the van slams into you. It hits you on the passenger side. Your body flies across the back seat. Your head hits the window and you roll backward, toppling down onto the floorboard. With difficulty, you squirm back up onto the seat. The passenger side door looks a little ajar, but it still won&#39;t open. The cop behind the wheel is barely moving. The grate separating you from him has broken. You reach up front, grab the handcuff keys, and free yourself.&lt;/p&gt;
+&lt;p&gt;That&#39;s when the van slams into you. It hits you on the passenger side. Your body flies across the back seat. Your head hits the window and you roll backward, toppling down onto the floorboard. With difficulty, you squirm back up onto the seat. The passenger side door looks a little ajar, but it still won&#39;t open. The cop behind the wheel is barely moving. The grate separating you from him has broken. You turn and put your cuffed hands through the broken grate. After a few moments of straining and groping around, you manage to get a grip on the handcuff keys. You bring them into the backseat with you and free yourself.&lt;/p&gt;
 
 &lt;p&gt;The driver of the van that hit you is rushing toward the car in a panic. &quot;Oh my god!&quot; he&#39;s shouting. &quot;I didn&#39;t see you! Are you all right?&quot; He walks around the front of the car and opens the driver&#39;s door. The cop in front reaches out a weak hand and mutters something you can&#39;t hear. Then the van driver shoots him in the head.&lt;/p&gt;
 
@@ -2147,7 +2176,7 @@ setup.generalRememberMustang = function() {
 &lt;&lt;/if&gt;&gt;
 
 /*  description */
-&lt;p&gt;You wake up disoriented, your mind in a fog. Blacking out is starting to become a habit. But at least you have your memories this time.&lt;/p&gt;
+&lt;p&gt;You wake up disoriented, your mind in a fog. Blacking out is starting to become a habit. But at least you have your memories this time.&lt;&lt;if !$shooter.discovered &amp;&amp; $inventoryLost.size !== 0&gt;&gt; Unfortunately, you don&#39;t have much else. All your belongings have been taken, save for the clothes on your back.&lt;&lt;/if&gt;&gt;&lt;/p&gt;
 
 &lt;p&gt;You&#39;re sitting on a wooden chair and there is hardly any light to see by. You try to move, but your wrists and ankles are tied down. It looks like you&#39;re in some kind of abandoned warehouse. Tall, empty shelves covered with dust and cobwebs are on either side of you. There are large windows near the ceiling on the far wall. It&#39;s pitch black outside. You&#39;ve been out for a while.&lt;/p&gt;
 
@@ -2705,9 +2734,9 @@ You ignore the detective and keep searching through the garbage bags.
   &lt;&lt;set $underShelf = false&gt;&gt;
   &lt;&lt;set $msg = [&quot;You start to carefully climb over the edge of the platform. You&#39;re going to hang by your hands before dropping to the ground below. But you hear the cops shouting and running. You know you don&#39;t have time for this. From a sitting position on the platform, you push yourself off.&quot;]&gt;&gt;
   &lt;&lt;goto &quot;jump off platform&quot;&gt;&gt;
-&lt;&lt;/link&gt;&gt;&lt;/p&gt;</tw-passagedata><tw-passagedata pid="88" name="jump off platform" tags="" position="975,1100" size="100,100">&lt;p&gt;$msg[0] When your injured foot hits the floor, pain shoots up your leg. You tumble and roll on the floor. You must have hit your elbow in the process, because it too is starting to hurt.&lt;/p&gt;
+&lt;&lt;/link&gt;&gt;&lt;/p&gt;</tw-passagedata><tw-passagedata pid="88" name="jump off platform" tags="" position="975,1100" size="100,100">&lt;p&gt;$msg[0] Your right foot hits the ground first and pain shoots up your leg. You tumble and roll on the floor, spraining your elbow.&lt;/p&gt;
 
-&lt;p&gt;You&#39;re in some recessed, pit-type area with walls on all four sides. You can see a ladder on the far wall leading back up, but you&#39;re in no shape to climb a ladder.&lt;/p&gt;
+&lt;p&gt;It hurts to even try to move, but you can&#39;t stay here. You wince as you slowly get to your feet. You&#39;re in some recessed, pit-type area with walls on all four sides. You can see a ladder on the far wall leading back up, but you&#39;re in no shape to climb a ladder.&lt;/p&gt;
 
 &lt;p&gt;On your left is a row of forklifts and a large slide-up door that&#39;s closed. On your right is an office with large glass windows. You can see the glow of a computer monitor inside the office.&lt;/p&gt;
 
@@ -2794,19 +2823,25 @@ You ignore the detective and keep searching through the garbage bags.
 
 &lt;p&gt;&lt;&lt;=$msg[1]&gt;&gt;They arrest you, there is a trial, you are convicted, and you spend the next twenty years in prison. You never do remember that night. Sometimes, in your prison cell, you wonder. Was there evidence in that house to prove your innocence? You suspect so. You might have found it, if only you&#39;d tried harder.&lt;/p&gt;
 
-&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&#39;&#39;THE END&#39;&#39;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="97" name="Hospital then prison" tags="" position="850,1225" size="100,100">/*  cops get you before you visit the bathroom, you were shot */
+&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&lt;&lt;link &quot;&#39;&#39;THE END&#39;&#39;&quot;&gt;&gt;
+	&lt;&lt;goto &quot;acknowledgments&quot;&gt;&gt;
+&lt;&lt;/link&gt;&gt;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="97" name="Hospital then prison" tags="" position="850,1225" size="100,100">/*  cops get you before you visit the bathroom, you were shot */
 &lt;p&gt;$msg[0] The bullet hits you in the shoulder and knocks you to the ground. You&#39;ve never been shot before. It&#39;s strange, but you don&#39;t feel any pain at first. Just warmth from the blood running down your arm. But then it starts to burn and soon it&#39;s aching more than anything you&#39;ve ever felt.&lt;/p&gt;
 
 &lt;p&gt;The cops drag you outside and call for an ambulance to take you to the hospital. When you are well enough, there is a trial. You are convicted and spend the next twenty years in prison. You never do remember that night. Sometimes, in your prison cell, you wonder. Was there evidence in that house to prove your innocence? You suspect so. You might have found it, if only you&#39;d tried harder.&lt;/p&gt;
 
-&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&#39;&#39;THE END&#39;&#39;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="98" name="drilled to death" tags="" position="975,1225" size="100,100">/*  drilled finger took last HP */
+&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&lt;&lt;link &quot;&#39;&#39;THE END&#39;&#39;&quot;&gt;&gt;
+	&lt;&lt;goto &quot;acknowledgments&quot;&gt;&gt;
+&lt;&lt;/link&gt;&gt;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="98" name="drilled to death" tags="" position="975,1225" size="100,100">/*  drilled finger took last HP */
 &lt;p&gt;Your train of thought is interrupted by the sound of the drill. The Russian grabs your forearm and holds it down onto the arm of the chair. &quot;Maybe you need motivation,&quot; he says as he brings the drill toward your hand. Your body tenses and you struggle to move, but it&#39;s no use. He drives the drill bit right through your knuckle.&lt;/p&gt;
 
 &lt;p&gt;You don&#39;t even scream. The drill bit has barely touched your knuckle when you slump over unconscious from the shock. The Russian slaps your face a few times. &quot;Bah!&quot; he says when you won&#39;t wake up. He stands up, says something into his radio, and walks away.&lt;/p&gt;
 
 &lt;p&gt;You will not be receiving the medical attention you so desperately need. You will die here today, tied to a chair in an empty warehouse.&lt;/p&gt;
 
-&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&#39;&#39;THE END&#39;&#39;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="99" name="punched to death" tags="" position="1100,1225" size="100,100">/*  punch in face took last HP */
+&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&lt;&lt;link &quot;&#39;&#39;THE END&#39;&#39;&quot;&gt;&gt;
+	&lt;&lt;goto &quot;acknowledgments&quot;&gt;&gt;
+&lt;&lt;/link&gt;&gt;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="99" name="punched to death" tags="" position="1100,1225" size="100,100">/*  punch in face took last HP */
 $msg[0]
 
 &lt;p&gt;The Russian punches you square in the nose. You hear a crunch sound and taste blood in the back of your throat. You feel an urge to gag and cough, but you&#39;re too weak. Your chest convulses a few times and you can&#39;t breathe. Then you black out.&lt;/p&gt;
@@ -2815,21 +2850,27 @@ $msg[0]
 
 &lt;p&gt;You will not be receiving the medical attention you so desperately need. You will die here today, tied to a chair in an empty warehouse.&lt;/p&gt;
 
-&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&#39;&#39;THE END&#39;&#39;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="100" name="choked to death" tags="" position="1225,1225" size="100,100">/*  choked by Russian took last HP */
+&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&lt;&lt;link &quot;&#39;&#39;THE END&#39;&#39;&quot;&gt;&gt;
+	&lt;&lt;goto &quot;acknowledgments&quot;&gt;&gt;
+&lt;&lt;/link&gt;&gt;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="100" name="choked to death" tags="" position="1225,1225" size="100,100">/*  choked by Russian took last HP */
 &lt;p&gt;It&#39;s hard to see anything in the darkness. The only light there is comes from the moonlight through the windows high above. You look carefully at every part of the warehouse you can see. There&#39;s no trace of him.&lt;/p&gt;
 
 &lt;p&gt;You&#39;re about to give up when you feel someone grab your throat. Your heart jumps in your chest and you grab at the hands around your neck. It&#39;s the Russian. He&#39;s behind you, choking you. You try to pull him off you. It&#39;s no use. He&#39;s too strong. You can feel your windpipe being crushed. Pain shoots up your neck and into your face. You try to gasp and it feels like your throat is being stabbed. Your vision blurs and you black out.&lt;/p&gt;
 
 &lt;p&gt;The Russian feels your body go limp and gives your throat one final crushing squeeze. He drops your lifeless body to the floor, steps over it, and continues on his way to meet the woman.&lt;/p&gt;
 
-&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&#39;&#39;THE END&#39;&#39;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="101" name="arrested at warehouse" tags="" position="100,1350" size="100,100">/*  you stupidly tried to leave the Warehouse with cops everywhere */
+&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&lt;&lt;link &quot;&#39;&#39;THE END&#39;&#39;&quot;&gt;&gt;
+	&lt;&lt;goto &quot;acknowledgments&quot;&gt;&gt;
+&lt;&lt;/link&gt;&gt;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="101" name="arrested at warehouse" tags="" position="100,1350" size="100,100">/*  you stupidly tried to leave the Warehouse with cops everywhere */
 &lt;p&gt;You head toward the exit, sticking to the shadows. As you get closer, you see the cops, crouching behind boxes and trading gunfire with the Russian. All their attention is on him and it isn&#39;t hard to go unnoticed. You pass behind them to the open door and when you have a clear shot, you run outside.&lt;/p&gt;
 
 &lt;p&gt;&quot;Freeze!&quot; you hear someone shout. You squint to see past the blaring lights and see a line of five cops with their guns pointed straight at you. &quot;Get on the ground!&quot; one of them shouts. It&#39;s over. They have you.&lt;/p&gt;
 
 &lt;p&gt;They arrest you, there&#39;s a trial, you&#39;re convicted, and you spend the next twenty years in prison. You never do remember that night, but you protest your innocence the entire time. Although no one believes you, you know. Somewhere, some bum has gotten away with murder. In your prison cell, you often wonder. If you had found the stolen cell phone, would things have turned out differently? You suspect so.&lt;/p&gt;
 
-&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&#39;&#39;THE END&#39;&#39;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="102" name="nailed it" tags="" position="225,1350" size="100,100">/*  stepping on nail took last HP */
+&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&lt;&lt;link &quot;&#39;&#39;THE END&#39;&#39;&quot;&gt;&gt;
+	&lt;&lt;goto &quot;acknowledgments&quot;&gt;&gt;
+&lt;&lt;/link&gt;&gt;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="102" name="nailed it" tags="" position="225,1350" size="100,100">/*  stepping on nail took last HP */
 &lt;p&gt;You&#39;re not about to spend your life in prison for a murder you didn&#39;t commit. &lt;&lt;if $underShelf&gt;&gt;You duck under the shelf and run toward the neighboring aisle. You can hear the detective shouting behind you.&lt;&lt;else&gt;&gt;You run away, down the aisle. You can hear the detective shouting behind you. You round the corner toward the neighboring aisle.&lt;&lt;/if&gt;&gt;&lt;/p&gt;
 
 &lt;p&gt;Your path is blocked by a small pile of old two-by-fours, which you easily climb over. But with your last step, your foot lands hard on a rusty, three-inch nail. The nail pierces your foot completely and you can see the pointed end coming out the top of your shoe. You shout from the sudden pain of it, but adrenaline keeps you moving. You lift your foot off the nail and limp into the next aisle. Blood is pouring out of your shoe onto the floor. You can&#39;t even feel your foot. You take one step and immediately collapse, unable to support your own weight. Dizziness overcomes you and you pass out.&lt;/p&gt;
@@ -2838,7 +2879,9 @@ $msg[0]
 
 &lt;p&gt;$msg[1]&lt;/p&gt;
 
-&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&#39;&#39;THE END&#39;&#39;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="103" name="the truth" tags="" position="350,1350" size="100,100">/*	the intended ending */
+&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&lt;&lt;link &quot;&#39;&#39;THE END&#39;&#39;&quot;&gt;&gt;
+	&lt;&lt;goto &quot;acknowledgments&quot;&gt;&gt;
+&lt;&lt;/link&gt;&gt;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="103" name="the truth" tags="" position="350,1350" size="100,100">/*	the intended ending */
 &lt;p&gt;$msg[0]&lt;/p&gt;
 
 &lt;p&gt;$msg[1] The detective walks toward you. &quot;You have the right to remain silent,&quot; he says. He continues to recite the Miranda warning as he cuffs your hands behind your back. You stand passively, a feeling of confusion clouding your mind. You face the glass window and in it you see your reflection. It looks like a stranger. Ragged beard, matted hair, tired eyes, leathery face. Your whole visage stands in stark contrast to the clothes you&#39;re wearing. You have the face of a poverty-stricken old man, and the blood-stained clothes of an affluent young one. Your head hurts trying to make sense of it all and you look away. With a tug on your arm, the detective leads you out of the office.&lt;/p&gt;

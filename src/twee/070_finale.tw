@@ -160,9 +160,9 @@ You ignore the detective and keep searching through the garbage bags.
 <</link>></p>
 
 :: jump off platform
-<p>$msg[0] When your injured foot hits the floor, pain shoots up your leg. You tumble and roll on the floor. You must have hit your elbow in the process, because it too is starting to hurt.</p>
+<p>$msg[0] Your right foot hits the ground first and pain shoots up your leg. You tumble and roll on the floor, spraining your elbow.</p>
 
-<p>You're in some recessed, pit-type area with walls on all four sides. You can see a ladder on the far wall leading back up, but you're in no shape to climb a ladder.</p>
+<p>It hurts to even try to move, but you can't stay here. You wince as you slowly get to your feet. You're in some recessed, pit-type area with walls on all four sides. You can see a ladder on the far wall leading back up, but you're in no shape to climb a ladder.</p>
 
 <p>On your left is a row of forklifts and a large slide-up door that's closed. On your right is an office with large glass windows. You can see the glow of a computer monitor inside the office.</p>
 

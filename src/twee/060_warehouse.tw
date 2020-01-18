@@ -17,7 +17,7 @@
 <</if>>
 
 /*  description */
-<p>You wake up disoriented, your mind in a fog. Blacking out is starting to become a habit. But at least you have your memories this time.</p>
+<p>You wake up disoriented, your mind in a fog. Blacking out is starting to become a habit. But at least you have your memories this time.<<if !$shooter.discovered && $inventoryLost.size !== 0>> Unfortunately, you don't have much else. All your belongings have been taken, save for the clothes on your back.<</if>></p>
 
 <p>You're sitting on a wooden chair and there is hardly any light to see by. You try to move, but your wrists and ankles are tied down. It looks like you're in some kind of abandoned warehouse. Tall, empty shelves covered with dust and cobwebs are on either side of you. There are large windows near the ceiling on the far wall. It's pitch black outside. You've been out for a while.</p>
 

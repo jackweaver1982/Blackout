@@ -235,7 +235,7 @@ a {
 
     /*  Container properties */
 
-      <<set $medCabinet.description = "<p>You see your face in the mirrored door of the medicine cabinet. You weren't expecting so much blood. You have the urge to wash your face right then and there. But there's no time for that.</p>">>
+      <<set $medCabinet.description = "<p>The thumbprint is on the side opposite the hinges. It looks like it was made by someone as they opened the cabinet. There are spots of dried blood on the counter directly below where the print is. </p>">>
 
       <<set $shower.description = "<p>The bathroom has a small walk-in shower with a full-length curtain. There is no tub.</p>">>
 
@@ -478,13 +478,11 @@ a {
 
 <p>In this story, you control the character by tapping (or clicking) on links. Tap a noun to examine that object in closer detail. Tap a command to follow that action. Tapping a noun will usually not advance the story. Tapping a command, though, is often irreversible.<p>
 
-<p>Some actions may have a random outcome which could be good or bad. Your chances of getting a good outcome are related to your character's traits. Click on "bio" in the top menu bar to better understand these traits. The bio also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
+<p><b style='color:yellow'> Random outcomes.</b> Some actions may have a random outcome which could be good or bad. Your chances of getting a good outcome are related to your character's traits. Click on "bio" in the top menu bar to better understand these traits. The bio also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
 
-<p>The story automatically saves your progress, so if you exit and reload later, you will be able to resume right where you left off. You can also manually save your progress in a bookmark that can be reloaded later. But think carefully about this. You only get one bookmark! (Warning: using private browsing or disabling or clearing your cookies will interfere with the story's saving feature.)</p>
+<p><b style='color:yellow'> Saving.</b> The story automatically saves your progress, so if you exit and reload later, you will be able to resume right where you left off. You can also manually save your progress in a bookmark that can be reloaded later. But think carefully about this. You only get one bookmark! (Warning: using private browsing or disabling or clearing your cookies will interfere with the story's saving feature.)</p>
 
 <p><<link "return to story">><<script>>Engine.show()<</script>><</link>></p>
-
-<p>[Blackout version <<=setup.version>>, last edited <<=setup.lastEdited>> UTC]</p>
 
 :: bio
 <<timed 0s>>
@@ -551,12 +549,19 @@ a {
     <h1>Blackout</h1>
     by<br>
     Jack Weaver<br>
+    <<if settings.beta>>
+      (beta version <<= setup.version>>)
+    <</if>>
     <br>
     <br>
     <br>
-    <<if Save.autosave.has()>>
+    <<if Save.autosave.has() && (s.checkSave(Save.autosave.get()) || settings.beta)>>
       <<link "resume">>
-        <<run Save.autosave.load()>>
+        <<if s.checkSave(Save.autosave.get())>>
+          <<run Save.autosave.load()>>
+        <<else>>
+          <<run alert("save file incompatible with current version")>>
+        <</if>>
       <</link>> / 
       <<link "restart">>
         <<script>>

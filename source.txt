@@ -40,8 +40,16 @@ a {
 
 :: Story JavaScript [script]
 /* twine-user-script #1: "010_customizations.js" */
-setup.version = "1.1";
-setup.lastEdited = "2019-01-15-1033"
+setup.lastEdited = "2019-01-18-0901";
+setup.versionNumber = 102;
+
+setup.calcVersion = function(num) {
+  let main = Math.floor(num/100);
+  let sub = num % 100;
+  return main + '.' + sub;
+}
+
+setup.version = setup.calcVersion(setup.versionNumber);
 
 /*  make "v" a shortcut for "State.variables",
  *  which is equivalent to "variables()" */
@@ -72,6 +80,12 @@ Config.passages.nobr = true;
 /*  add debug mode to settings */
 Setting.addToggle("debug", {
   label: "debug mode"
+});
+
+/*  add beta mode to settings */
+Setting.addToggle("beta", {
+  label: "beta mode",
+  default: true
 });
 
 /*  enable autosaves and autoloading */
@@ -107,6 +121,14 @@ Config.saves.onSave = function(save) {
     save.title = prompt("Name of this save file:", passage());
   }
   return;
+}
+
+/*  set version number of saves */
+Config.saves.version = setup.versionNumber;
+
+/*  check compatibility of save file */
+s.checkSave = function(save) {
+  return (save.version == setup.versionNumber);
 }
 /* twine-user-script #2: "020_functions.js" */
 /*  creates a variable `varName` which is a clone of `ClassName`, then sets its
@@ -720,7 +742,7 @@ setup.generalRememberMustang = function() {
 
     /*  Container properties */
 
-      <<set $medCabinet.description = "<p>You see your face in the mirrored door of the medicine cabinet. You weren't expecting so much blood. You have the urge to wash your face right then and there. But there's no time for that.</p>">>
+      <<set $medCabinet.description = "<p>The thumbprint is on the side opposite the hinges. It looks like it was made by someone as they opened the cabinet. There are spots of dried blood on the counter directly below where the print is. </p>">>
 
       <<set $shower.description = "<p>The bathroom has a small walk-in shower with a full-length curtain. There is no tub.</p>">>
 
@@ -966,13 +988,11 @@ setup.generalRememberMustang = function() {
 
 <p>In this story, you control the character by tapping (or clicking) on links. Tap a noun to examine that object in closer detail. Tap a command to follow that action. Tapping a noun will usually not advance the story. Tapping a command, though, is often irreversible.<p>
 
-<p>Some actions may have a random outcome which could be good or bad. Your chances of getting a good outcome are related to your character's traits. Click on "bio" in the top menu bar to better understand these traits. The bio also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
+<p><b style='color:yellow'> Random outcomes.</b> Some actions may have a random outcome which could be good or bad. Your chances of getting a good outcome are related to your character's traits. Click on "bio" in the top menu bar to better understand these traits. The bio also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
 
-<p>The story automatically saves your progress, so if you exit and reload later, you will be able to resume right where you left off. You can also manually save your progress in a bookmark that can be reloaded later. But think carefully about this. You only get one bookmark! (Warning: using private browsing or disabling or clearing your cookies will interfere with the story's saving feature.)</p>
+<p><b style='color:yellow'> Saving.</b> The story automatically saves your progress, so if you exit and reload later, you will be able to resume right where you left off. You can also manually save your progress in a bookmark that can be reloaded later. But think carefully about this. You only get one bookmark! (Warning: using private browsing or disabling or clearing your cookies will interfere with the story's saving feature.)</p>
 
 <p><<link "return to story">><<script>>Engine.show()<</script>><</link>></p>
-
-<p>[Blackout version <<=setup.version>>, last edited <<=setup.lastEdited>> UTC]</p>
 
 
 :: bio {"position":"600,100","size":"100,100"}
@@ -1041,12 +1061,19 @@ setup.generalRememberMustang = function() {
     <h1>Blackout</h1>
     by<br>
     Jack Weaver<br>
+    <<if settings.beta>>
+      (beta version <<= setup.version>>)
+    <</if>>
     <br>
     <br>
     <br>
-    <<if Save.autosave.has()>>
+    <<if Save.autosave.has() && (s.checkSave(Save.autosave.get()) || settings.beta)>>
       <<link "resume">>
-        <<run Save.autosave.load()>>
+        <<if s.checkSave(Save.autosave.get())>>
+          <<run Save.autosave.load()>>
+        <<else>>
+          <<run alert("save file incompatible with current version")>>
+        <</if>>
       <</link>> / 
       <<link "restart">>
         <<script>>
@@ -2103,6 +2130,8 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <</if>>
 <<if $containedIn.get("player") == "copCar">>
 
+<<set $shooter.discovered = true>>
+
   /*  initial description if in cop car */
   <p><<if $inventoryLost.size !== 0>>The cops have taken all your things and have them in the front seat. <</if>>You are in the back of the patrol car with your hands cuffed behind you. You drive for about twenty minutes along the interstate. When you get off, you head through downtown toward the station.</p>
 
@@ -2134,7 +2163,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 
 :: cop car crash [include] {"position":"1100,600","size":"100,100"}
 /*  crash description if in cop car */
-<p>That's when the van slams into you. It hits you on the passenger side. Your body flies across the back seat. Your head hits the window and you roll backward, toppling down onto the floorboard. With difficulty, you squirm back up onto the seat. The passenger side door looks a little ajar, but it still won't open. The cop behind the wheel is barely moving. The grate separating you from him has broken. You reach up front, grab the handcuff keys, and free yourself.</p>
+<p>That's when the van slams into you. It hits you on the passenger side. Your body flies across the back seat. Your head hits the window and you roll backward, toppling down onto the floorboard. With difficulty, you squirm back up onto the seat. The passenger side door looks a little ajar, but it still won't open. The cop behind the wheel is barely moving. The grate separating you from him has broken. You turn and put your cuffed hands through the broken grate. After a few moments of straining and groping around, you manage to get a grip on the handcuff keys. You bring them into the backseat with you and free yourself.</p>
 
 <p>The driver of the van that hit you is rushing toward the car in a panic. "Oh my god!" he's shouting. "I didn't see you! Are you all right?" He walks around the front of the car and opens the driver's door. The cop in front reaches out a weak hand and mutters something you can't hear. Then the van driver shoots him in the head.</p>
 
@@ -2294,7 +2323,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <</if>>
 
 /*  description */
-<p>You wake up disoriented, your mind in a fog. Blacking out is starting to become a habit. But at least you have your memories this time.</p>
+<p>You wake up disoriented, your mind in a fog. Blacking out is starting to become a habit. But at least you have your memories this time.<<if !$shooter.discovered && $inventoryLost.size !== 0>> Unfortunately, you don't have much else. All your belongings have been taken, save for the clothes on your back.<</if>></p>
 
 <p>You're sitting on a wooden chair and there is hardly any light to see by. You try to move, but your wrists and ankles are tied down. It looks like you're in some kind of abandoned warehouse. Tall, empty shelves covered with dust and cobwebs are on either side of you. There are large windows near the ceiling on the far wall. It's pitch black outside. You've been out for a while.</p>
 
@@ -2967,9 +2996,9 @@ You ignore the detective and keep searching through the garbage bags.
 
 
 :: jump off platform {"position":"975,1100","size":"100,100"}
-<p>$msg[0] When your injured foot hits the floor, pain shoots up your leg. You tumble and roll on the floor. You must have hit your elbow in the process, because it too is starting to hurt.</p>
+<p>$msg[0] Your right foot hits the ground first and pain shoots up your leg. You tumble and roll on the floor, spraining your elbow.</p>
 
-<p>You're in some recessed, pit-type area with walls on all four sides. You can see a ladder on the far wall leading back up, but you're in no shape to climb a ladder.</p>
+<p>It hurts to even try to move, but you can't stay here. You wince as you slowly get to your feet. You're in some recessed, pit-type area with walls on all four sides. You can see a ladder on the far wall leading back up, but you're in no shape to climb a ladder.</p>
 
 <p>On your left is a row of forklifts and a large slide-up door that's closed. On your right is an office with large glass windows. You can see the glow of a computer monitor inside the office.</p>
 
@@ -3087,7 +3116,9 @@ You ignore the detective and keep searching through the garbage bags.
 
 <p><<=$msg[1]>>They arrest you, there is a trial, you are convicted, and you spend the next twenty years in prison. You never do remember that night. Sometimes, in your prison cell, you wonder. Was there evidence in that house to prove your innocence? You suspect so. You might have found it, if only you'd tried harder.</p>
 
-<div align="center"><p>''THE END''</p></div>
+<div align="center"><p><<link "''THE END''">>
+	<<goto "acknowledgments">>
+<</link>></p></div>
 
 
 :: Hospital then prison {"position":"850,1225","size":"100,100"}
@@ -3096,7 +3127,9 @@ You ignore the detective and keep searching through the garbage bags.
 
 <p>The cops drag you outside and call for an ambulance to take you to the hospital. When you are well enough, there is a trial. You are convicted and spend the next twenty years in prison. You never do remember that night. Sometimes, in your prison cell, you wonder. Was there evidence in that house to prove your innocence? You suspect so. You might have found it, if only you'd tried harder.</p>
 
-<div align="center"><p>''THE END''</p></div>
+<div align="center"><p><<link "''THE END''">>
+	<<goto "acknowledgments">>
+<</link>></p></div>
 
 
 :: drilled to death {"position":"975,1225","size":"100,100"}
@@ -3107,7 +3140,9 @@ You ignore the detective and keep searching through the garbage bags.
 
 <p>You will not be receiving the medical attention you so desperately need. You will die here today, tied to a chair in an empty warehouse.</p>
 
-<div align="center"><p>''THE END''</p></div>
+<div align="center"><p><<link "''THE END''">>
+	<<goto "acknowledgments">>
+<</link>></p></div>
 
 
 :: punched to death {"position":"1100,1225","size":"100,100"}
@@ -3120,7 +3155,9 @@ $msg[0]
 
 <p>You will not be receiving the medical attention you so desperately need. You will die here today, tied to a chair in an empty warehouse.</p>
 
-<div align="center"><p>''THE END''</p></div>
+<div align="center"><p><<link "''THE END''">>
+	<<goto "acknowledgments">>
+<</link>></p></div>
 
 
 :: choked to death {"position":"1225,1225","size":"100,100"}
@@ -3131,7 +3168,9 @@ $msg[0]
 
 <p>The Russian feels your body go limp and gives your throat one final crushing squeeze. He drops your lifeless body to the floor, steps over it, and continues on his way to meet the woman.</p>
 
-<div align="center"><p>''THE END''</p></div>
+<div align="center"><p><<link "''THE END''">>
+	<<goto "acknowledgments">>
+<</link>></p></div>
 
 
 :: arrested at warehouse {"position":"100,1350","size":"100,100"}
@@ -3142,7 +3181,9 @@ $msg[0]
 
 <p>They arrest you, there's a trial, you're convicted, and you spend the next twenty years in prison. You never do remember that night, but you protest your innocence the entire time. Although no one believes you, you know. Somewhere, some bum has gotten away with murder. In your prison cell, you often wonder. If you had found the stolen cell phone, would things have turned out differently? You suspect so.</p>
 
-<div align="center"><p>''THE END''</p></div>
+<div align="center"><p><<link "''THE END''">>
+	<<goto "acknowledgments">>
+<</link>></p></div>
 
 
 :: nailed it {"position":"225,1350","size":"100,100"}
@@ -3155,7 +3196,9 @@ $msg[0]
 
 <p>$msg[1]</p>
 
-<div align="center"><p>''THE END''</p></div>
+<div align="center"><p><<link "''THE END''">>
+	<<goto "acknowledgments">>
+<</link>></p></div>
 
 
 :: the truth {"position":"350,1350","size":"100,100"}

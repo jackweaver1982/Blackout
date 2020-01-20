@@ -1,5 +1,12 @@
 # Change Log
 
+## Version 1.5
+
+* changed "bio" link to "view Character Sheet" and moved to footer
+* redesigned character sheet
+* added "Bonuses" to character sheet to reflect when PC has leveled up
+* added an RNG warning and info about Character Sheet in a forced message at the beginning of the game
+
 ## Version 1.4
 
 * reorganized JavaScript files

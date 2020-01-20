@@ -39,6 +39,9 @@ a {
 .description {
   color:yellow;
 }
+.headings {
+  color:lime;
+}
 
 
 :: Story JavaScript [script]
@@ -66,8 +69,8 @@ Object.defineProperty(window, "s", {
   }
 });
 /* twine-user-script #2: "007_constants.js" */
-s.lastEdited = "2019-01-20-1327";
-s.versionNumber = 104;
+s.lastEdited = "2019-01-20-1601";
+s.versionNumber = 105;
 
 s.calcVersion = function(num) {
   let main = Math.floor(num/100);
@@ -245,7 +248,7 @@ setup.checkType = function(obj, type) {
   /*  manually remove 1 HP, looping back to 5 after 1 */
   setup.removeHP = function() {
     v.player.HP -= 1;
-    if (v.player.HP == 0) {
+    if (v.player.HP < 1) {
       v.player.HP = 5;
     }
     Engine.show();
@@ -915,9 +918,6 @@ setup.generalRememberMustang = function() {
   <<link "help">>
     <<script>>Engine.play("help", true)<</script>>
   <</link>> / 
-  <<link "bio">>
-    <<script>>Engine.play("bio", true)<</script>>
-  <</link>> / 
   <<link "save">>
     <<run setup.saveGame()>>
   <</link>> / 
@@ -971,17 +971,22 @@ setup.generalRememberMustang = function() {
 
 
 :: PassageFooter
-<<timed 0s>><<if !tags().includes("no-header") && settings.debug>>
+<<timed 0s>><<if !tags().includes("no-header")>>
   <hr>
-  <p>//Random number between 1 and <span id="maxNumber">5</span>:// <span id="randomNumber">''<<= random(1, 5)>>''</span></p>
-  <<for _i = 2; _i <= 10; _i++>>
-    <<capture _i>>
-      <<button _i>>
-        <<replace "#maxNumber">>//_i//<</replace>>
-        <<replace "#randomNumber">>''<<= random(1, _i)>>''<</replace>>
-      <</button>>
-    <</capture>>
-  <</for>>
+  <p><em><<link "view Character Sheet">>
+    <<script>>Engine.play("bio", true)<</script>>
+  <</link>></em></p>
+  <<if settings.debug>>
+    <p>//Random number between 1 and <span id="maxNumber">5</span>:// <span id="randomNumber">''<<= random(1, 5)>>''</span></p>
+    <<for _i = 2; _i <= 10; _i++>>
+      <<capture _i>>
+        <<button _i>>
+          <<replace "#maxNumber">>//_i//<</replace>>
+          <<replace "#randomNumber">>''<<= random(1, _i)>>''<</replace>>
+        <</button>>
+      <</capture>>
+    <</for>>
+  <</if>>
 <</if>><</timed>>
 
 
@@ -994,9 +999,9 @@ setup.generalRememberMustang = function() {
 
 <p>In this story, you control the character by tapping (or clicking) on links. Tap a noun to examine that object in closer detail. Tap a command to follow that action. Tapping a noun will usually not advance the story. Tapping a command, though, is often irreversible.<p>
 
-<p><b style='color:lime'> Random outcomes.</b> Some actions may have a random outcome which could be good or bad. Your chances of getting a good outcome are related to your character's traits. Click on "bio" in the top menu bar to better understand these traits. The bio also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
+<p><b class="headings">Random outcomes.</b> Some actions may have a random outcome which could be good or bad. Your chances of getting a good outcome are related to your character's traits. Click on "view Character Sheet" in the footer to better understand these traits. The Character Sheet also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
 
-<p><b style='color:lime'> Saving.</b> The story automatically saves your progress, so if you exit and reload later, you will be able to resume right where you left off. You can also manually save your progress in a bookmark that can be reloaded later. But think carefully about this. You only get one bookmark! (Warning: using private browsing or disabling or clearing your cookies will interfere with the story's saving feature.)</p>
+<p><b class="headings">Saving.</b> The story automatically saves your progress, so if you exit and reload later, you will be able to resume right where you left off. You can also manually save your progress in a bookmark that can be reloaded later. But think carefully about this. You only get one bookmark! (Warning: using private browsing or disabling or clearing your cookies will interfere with the story's saving feature.)</p>
 
 <p><<link "return to story">><<script>>Engine.show()<</script>><</link>></p>
 
@@ -1006,11 +1011,29 @@ setup.generalRememberMustang = function() {
   <<run setup.visitMenu("bio")>>
 <</timed>>
 
-<p>You were born Scott Allen Brady, but your friends just call you Scotty. You're six foot two, 245 pounds. You work in the shipping department at the Hewlett-Packard plant. You like to lift weights and go out drinking with your friends. You're a little clumsy, but you have a keen eye for detail and can charm the skin off a snake.</p>
+<p><b class="headings">Name:</b> Scott Allen Brady, a.k.a. "Scotty"</p>
 
-<p>
+<p><b class="headings">Occupation:</b> Hewlett-Packard shipping worker</p>
+
+<p><b class="headings">Attributes:</b></p>
+<ul>
+  <li>6' 2", 245 lbs., muscular build</li>
+  <li>a little clumsy</li>
+  <li>a keen eye for detail</li>
+  <li>charming and persuasive</li>
+</ul>
+
+<p><b class="headings">Bonuses:</b>
+  <<if $player.Level === 1>>
+    None.
+  <<else>>
+    Your headache is gone. You can think a little more clearly now.
+  <</if>>
+</p>
+
+<p><b class="headings">Injuries: </b>
   <<if $injuries.size == 0>>
-    You are uninjured.
+    None.
   <<else>>
     <<for _item range $injuries>>
       <<= v[_item].description + " ">>
@@ -1023,7 +1046,7 @@ setup.generalRememberMustang = function() {
 
 <div class="columns">
   <div class="leftcolumn">
-    ''You are carrying:''
+    <b class="headings">You are carrying:</b>
     <<if $inventory.size == 0>>
       <<= "<br>nothing">>
     <<else>>
@@ -1033,7 +1056,7 @@ setup.generalRememberMustang = function() {
     <</if>>
   </div>
   <div class="rightcolumn">
-    ''You know about:''
+    <b class="headings">You know about:</b>
     <<if $knowledge.size == 0>>
       <<= "<br>nothing">>
     <<else>>
@@ -1060,6 +1083,13 @@ setup.generalRememberMustang = function() {
 
 
 :: Start [no-header]
+<<if !$injuries.has("headache")>>
+  <<run setup.addInjury("headache")>>
+<</if>>
+<<if !$inventory.has("clothes")>>
+  <<run setup.takeThing("clothes")>>
+<</if>>
+
 <<if settings.debug>>
   <<goto "bedroom">>
 <<else>>
@@ -1111,7 +1141,13 @@ setup.generalRememberMustang = function() {
 
 <p>When you get out of the bed, you see it. The body. A man lying on his back, dead, with a knife sticking out of his chest. Before you can do or think anything, someone starts pounding on the front door. Is it the police? Is it the murderer? Are //you// the murderer?</p>
 
-<p>[[continue|who you are]]</p>
+<p>[[continue|RNG warning]]</p>
+
+
+:: RNG warning [no-header]
+<p>In this game, your choices can have random consequences. The chances of the various outcomes are affected by your character's traits. You can read about those traits on the Character Sheet. The Character Sheet also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
+
+<p>[[got it|who you are]]</p>
 
 
 :: who you are
@@ -1126,13 +1162,6 @@ setup.generalRememberMustang = function() {
 
 
 :: bedroom
-<<if !$injuries.has("headache")>>
-  <<run setup.addInjury("headache")>>
-<</if>>
-<<if !$inventory.has("clothes")>>
-  <<run setup.takeThing("clothes")>>
-<</if>>
-
 /*  description */
 <p>You are in what has to be the master bedroom. You reek of alcohol, your mouth is dry and tastes like vomit, and your head is throbbing. There's blood on your clothes, in your hair, and on your face and hands. You've had better days.</p>
 
@@ -2504,7 +2533,7 @@ You desperately look around. On the shelf to your right you see some things from
 /*  mark XP */
 <<set _levelUp = setup.markXP()>>
 <<if _levelUp == 1>>
-  <<set $msg[3] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little clearer now.">>
+  <<set $msg[3] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little more clearly now.">>
 <<elseif _levelUp !== 0>>
   <<script>>
     alert("markXP() returned a result I don't recognize");
@@ -2663,7 +2692,7 @@ $msg[0]
   /*  mark XP */
   <<set _levelUp = setup.markXP()>>
   <<if _levelUp == 1>>
-    <<set $msg[0] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little clearer now.">>
+    <<set $msg[0] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little more clearly now.">>
   <</if>>
 
   <<goto "there she is">>
@@ -2783,7 +2812,7 @@ $msg[0]
   /*  mark XP */
   <<set _levelUp = s.markXP()>>
   <<if _levelUp == 1>>
-    <<set $msg[0] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little clearer now.">>
+    <<set $msg[0] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little more clearly now.">>
   <</if>>
 
   <<goto "should you stay">>
@@ -2869,7 +2898,7 @@ $msg[1]
   /*  mark XP */
   <<set _levelUp = s.markXP()>>
   <<if _levelUp == 1>>
-    <<set $msg[0] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little clearer now.">>
+    <<set $msg[0] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little more clearly now.">>
   <</if>>
 
   <<goto "russian dies">>

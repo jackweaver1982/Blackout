@@ -175,7 +175,7 @@ You desperately look around. On the shelf to your right you see some things from
 /*  mark XP */
 <<set _levelUp = setup.markXP()>>
 <<if _levelUp == 1>>
-  <<set $msg[3] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little clearer now.">>
+  <<set $msg[3] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little more clearly now.">>
 <<elseif _levelUp !== 0>>
   <<script>>
     alert("markXP() returned a result I don't recognize");
@@ -329,7 +329,7 @@ $msg[0]
   /*  mark XP */
   <<set _levelUp = setup.markXP()>>
   <<if _levelUp == 1>>
-    <<set $msg[0] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little clearer now.">>
+    <<set $msg[0] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little more clearly now.">>
   <</if>>
 
   <<goto "there she is">>
@@ -443,7 +443,7 @@ $msg[0]
   /*  mark XP */
   <<set _levelUp = s.markXP()>>
   <<if _levelUp == 1>>
-    <<set $msg[0] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little clearer now.">>
+    <<set $msg[0] = "Although you're half dead from everything that just happened, there is one bright side. Your headache is gone. At least you can think a little more clearly now.">>
   <</if>>
 
   <<goto "should you stay">>

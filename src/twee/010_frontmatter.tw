@@ -37,6 +37,9 @@ a {
 .description {
   color:yellow;
 }
+.headings {
+  color:lime;
+}
 
 :: Story JavaScript [script]
 
@@ -404,9 +407,6 @@ a {
   <<link "help">>
     <<script>>Engine.play("help", true)<</script>>
   <</link>> / 
-  <<link "bio">>
-    <<script>>Engine.play("bio", true)<</script>>
-  <</link>> / 
   <<link "save">>
     <<run setup.saveGame()>>
   <</link>> / 
@@ -459,17 +459,22 @@ a {
 <</if>><</timed>>
 
 :: PassageFooter
-<<timed 0s>><<if !tags().includes("no-header") && settings.debug>>
+<<timed 0s>><<if !tags().includes("no-header")>>
   <hr>
-  <p>//Random number between 1 and <span id="maxNumber">5</span>:// <span id="randomNumber">''<<= random(1, 5)>>''</span></p>
-  <<for _i = 2; _i <= 10; _i++>>
-    <<capture _i>>
-      <<button _i>>
-        <<replace "#maxNumber">>//_i//<</replace>>
-        <<replace "#randomNumber">>''<<= random(1, _i)>>''<</replace>>
-      <</button>>
-    <</capture>>
-  <</for>>
+  <p><em><<link "view Character Sheet">>
+    <<script>>Engine.play("bio", true)<</script>>
+  <</link>></em></p>
+  <<if settings.debug>>
+    <p>//Random number between 1 and <span id="maxNumber">5</span>:// <span id="randomNumber">''<<= random(1, 5)>>''</span></p>
+    <<for _i = 2; _i <= 10; _i++>>
+      <<capture _i>>
+        <<button _i>>
+          <<replace "#maxNumber">>//_i//<</replace>>
+          <<replace "#randomNumber">>''<<= random(1, _i)>>''<</replace>>
+        <</button>>
+      <</capture>>
+    <</for>>
+  <</if>>
 <</if>><</timed>>
 
 :: help
@@ -481,9 +486,9 @@ a {
 
 <p>In this story, you control the character by tapping (or clicking) on links. Tap a noun to examine that object in closer detail. Tap a command to follow that action. Tapping a noun will usually not advance the story. Tapping a command, though, is often irreversible.<p>
 
-<p><b style='color:lime'> Random outcomes.</b> Some actions may have a random outcome which could be good or bad. Your chances of getting a good outcome are related to your character's traits. Click on "bio" in the top menu bar to better understand these traits. The bio also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
+<p><b class="headings">Random outcomes.</b> Some actions may have a random outcome which could be good or bad. Your chances of getting a good outcome are related to your character's traits. Click on "view Character Sheet" in the footer to better understand these traits. The Character Sheet also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
 
-<p><b style='color:lime'> Saving.</b> The story automatically saves your progress, so if you exit and reload later, you will be able to resume right where you left off. You can also manually save your progress in a bookmark that can be reloaded later. But think carefully about this. You only get one bookmark! (Warning: using private browsing or disabling or clearing your cookies will interfere with the story's saving feature.)</p>
+<p><b class="headings">Saving.</b> The story automatically saves your progress, so if you exit and reload later, you will be able to resume right where you left off. You can also manually save your progress in a bookmark that can be reloaded later. But think carefully about this. You only get one bookmark! (Warning: using private browsing or disabling or clearing your cookies will interfere with the story's saving feature.)</p>
 
 <p><<link "return to story">><<script>>Engine.show()<</script>><</link>></p>
 
@@ -492,11 +497,29 @@ a {
   <<run setup.visitMenu("bio")>>
 <</timed>>
 
-<p>You were born Scott Allen Brady, but your friends just call you Scotty. You're six foot two, 245 pounds. You work in the shipping department at the Hewlett-Packard plant. You like to lift weights and go out drinking with your friends. You're a little clumsy, but you have a keen eye for detail and can charm the skin off a snake.</p>
+<p><b class="headings">Name:</b> Scott Allen Brady, a.k.a. "Scotty"</p>
 
-<p>
+<p><b class="headings">Occupation:</b> Hewlett-Packard shipping worker</p>
+
+<p><b class="headings">Attributes:</b></p>
+<ul>
+  <li>6' 2", 245 lbs., muscular build</li>
+  <li>a little clumsy</li>
+  <li>a keen eye for detail</li>
+  <li>charming and persuasive</li>
+</ul>
+
+<p><b class="headings">Bonuses:</b>
+  <<if $player.Level === 1>>
+    None.
+  <<else>>
+    Your headache is gone. You can think a little more clearly now.
+  <</if>>
+</p>
+
+<p><b class="headings">Injuries: </b>
   <<if $injuries.size == 0>>
-    You are uninjured.
+    None.
   <<else>>
     <<for _item range $injuries>>
       <<= v[_item].description + " ">>
@@ -509,7 +532,7 @@ a {
 
 <div class="columns">
   <div class="leftcolumn">
-    ''You are carrying:''
+    <b class="headings">You are carrying:</b>
     <<if $inventory.size == 0>>
       <<= "<br>nothing">>
     <<else>>
@@ -519,7 +542,7 @@ a {
     <</if>>
   </div>
   <div class="rightcolumn">
-    ''You know about:''
+    <b class="headings">You know about:</b>
     <<if $knowledge.size == 0>>
       <<= "<br>nothing">>
     <<else>>
@@ -545,6 +568,13 @@ a {
 <p><<link "return to story">><<script>>Engine.show()<</script>><</link>></p>
 
 :: Start [no-header]
+<<if !$injuries.has("headache")>>
+  <<run setup.addInjury("headache")>>
+<</if>>
+<<if !$inventory.has("clothes")>>
+  <<run setup.takeThing("clothes")>>
+<</if>>
+
 <<if settings.debug>>
   <<goto "bedroom">>
 <<else>>
@@ -595,7 +625,12 @@ a {
 
 <p>When you get out of the bed, you see it. The body. A man lying on his back, dead, with a knife sticking out of his chest. Before you can do or think anything, someone starts pounding on the front door. Is it the police? Is it the murderer? Are //you// the murderer?</p>
 
-<p>[[continue|who you are]]</p>
+<p>[[continue|RNG warning]]</p>
+
+:: RNG warning [no-header]
+<p>In this game, your choices can have random consequences. The chances of the various outcomes are affected by your character's traits. You can read about those traits on the Character Sheet. The Character Sheet also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
+
+<p>[[got it|who you are]]</p>
 
 :: who you are
 <p>Scott Allen Brady. Scotty, to your friends. That's your name. You have to remind yourself, just to make sure you haven't forgotten //everything//. The last thing you remember is leaving work. You'd finished packing the motherboards into their shipping crates. Then you clocked out and left the plant. You were still wearing your Hewlett-Packard shirt when you got in your truck. You met some friends at the bar. Then...</p>

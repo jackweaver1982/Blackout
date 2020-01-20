@@ -1,11 +1,4 @@
 :: bedroom
-<<if !$injuries.has("headache")>>
-  <<run setup.addInjury("headache")>>
-<</if>>
-<<if !$inventory.has("clothes")>>
-  <<run setup.takeThing("clothes")>>
-<</if>>
-
 /*  description */
 <p>You are in what has to be the master bedroom. You reek of alcohol, your mouth is dry and tastes like vomit, and your head is throbbing. There's blood on your clothes, in your hair, and on your face and hands. You've had better days.</p>
 

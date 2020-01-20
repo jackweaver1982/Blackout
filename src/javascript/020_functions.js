@@ -107,7 +107,7 @@ setup.checkType = function(obj, type) {
   /*  manually remove 1 HP, looping back to 5 after 1 */
   setup.removeHP = function() {
     v.player.HP -= 1;
-    if (v.player.HP == 0) {
+    if (v.player.HP < 1) {
       v.player.HP = 5;
     }
     Engine.show();

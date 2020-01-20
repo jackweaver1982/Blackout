@@ -40,8 +40,8 @@ a {
 
 :: Story JavaScript [script]
 /* twine-user-script #1: "010_customizations.js" */
-setup.lastEdited = "2019-01-18-0901";
-setup.versionNumber = 102;
+setup.lastEdited = "2019-01-20-1000";
+setup.versionNumber = 103;
 
 setup.calcVersion = function(num) {
   let main = Math.floor(num/100);
@@ -988,9 +988,9 @@ setup.generalRememberMustang = function() {
 
 <p>In this story, you control the character by tapping (or clicking) on links. Tap a noun to examine that object in closer detail. Tap a command to follow that action. Tapping a noun will usually not advance the story. Tapping a command, though, is often irreversible.<p>
 
-<p><b style='color:yellow'> Random outcomes.</b> Some actions may have a random outcome which could be good or bad. Your chances of getting a good outcome are related to your character's traits. Click on "bio" in the top menu bar to better understand these traits. The bio also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
+<p><b style='color:lime'> Random outcomes.</b> Some actions may have a random outcome which could be good or bad. Your chances of getting a good outcome are related to your character's traits. Click on "bio" in the top menu bar to better understand these traits. The bio also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
 
-<p><b style='color:yellow'> Saving.</b> The story automatically saves your progress, so if you exit and reload later, you will be able to resume right where you left off. You can also manually save your progress in a bookmark that can be reloaded later. But think carefully about this. You only get one bookmark! (Warning: using private browsing or disabling or clearing your cookies will interfere with the story's saving feature.)</p>
+<p><b style='color:lime'> Saving.</b> The story automatically saves your progress, so if you exit and reload later, you will be able to resume right where you left off. You can also manually save your progress in a bookmark that can be reloaded later. But think carefully about this. You only get one bookmark! (Warning: using private browsing or disabling or clearing your cookies will interfere with the story's saving feature.)</p>
 
 <p><<link "return to story">><<script>>Engine.show()<</script>><</link>></p>
 
@@ -1102,13 +1102,21 @@ setup.generalRememberMustang = function() {
 
 <p>When you get out of the bed, you see it. The body. A man lying on his back, dead, with a knife sticking out of his chest. Before you can do or think anything, someone starts pounding on the front door. Is it the police? Is it the murderer? Are //you// the murderer?</p>
 
-<p>[[continue|bedroom]]</p>
+<p>[[continue|who you are]]</p>
 
 
-:: end of frontmatter [fake] {"position":"975,100","size":"100,100"}
+:: who you are {"position":"975,100","size":"100,100"}
+<p>Scott Allen Brady. Scotty, to your friends. That's your name. You have to remind yourself, to make sure you haven't forgotten //everything//. The last thing you remember is leaving work. You'd finished packing the motherboards into their shipping crates. Then you clocked out and left the plant. You were still wearing your Hewlett-Packard shirt when you got in your truck. You met some friends at the bar. Then...</p>
+
+<p>Nothing. You can't remember. Now here you are, in some surreal nightmare, looking at a dead guy. The pounding on the door makes it hard to concentrate.</p>
+
+<p>[[take a look around|bedroom]]</p>
 
 
-:: bedroom {"position":"1100,100","size":"100,100"}
+:: end of frontmatter [fake] {"position":"1100,100","size":"100,100"}
+
+
+:: bedroom {"position":"1225,100","size":"100,100"}
 <<if !$injuries.has("headache")>>
   <<run setup.addInjury("headache")>>
 <</if>>
@@ -1258,7 +1266,7 @@ setup.generalRememberMustang = function() {
 </p>
 
 
-:: getting out the crowbar [message] {"position":"1225,100","size":"100,100"}
+:: getting out the crowbar [message] {"position":"100,225","size":"100,100"}
 /*  Description of pounding stops depends on if you know who's pounding.
     Also depends on if it needs to be capitalized or not. */
 <<if $knowledge.has("policeAtDoor")>>
@@ -1287,7 +1295,7 @@ setup.generalRememberMustang = function() {
 </p>
 
 
-:: finding cat evidence [message] {"position":"100,225","size":"100,100"}
+:: finding cat evidence [message] {"position":"225,225","size":"100,100"}
 /*  description */
 <p>You can see scratches on the neck of the victim, like from a small animal. //A cat?// you wonder. There are more scratches on his hands and wrists. Looking closer, you see fur on his collar and sleeves. Glancing around the room, though, you see no trace of a cat.</p>
 
@@ -1297,7 +1305,7 @@ setup.generalRememberMustang = function() {
 <p><<return "continue">></p>
 
 
-:: finding the wallet [include] {"position":"225,225","size":"100,100"}
+:: finding the wallet [include] {"position":"350,225","size":"100,100"}
 /*  description */
 <p>You hear the sound of police radios outside. That pounding on the door is definitely the police. You don't have time to waste, but you take a quick look for the man's <<link "wallet">><<run setup.examine($wallet.description)>><</link>>. You find it and check <<link "his ID">><<run setup.examine($sameLastName.description)>><</link>>. Matt Brady. Brady? He has the same last name as you. But who is he?<p>
 
@@ -1316,7 +1324,7 @@ setup.generalRememberMustang = function() {
 </p>
 
 
-:: remembering the woman [message] {"position":"350,225","size":"100,100"}
+:: remembering the woman [message] {"position":"475,225","size":"100,100"}
 /*  description; segue is $msg[0] */
 <p><<= $msg[0] >>You are trying to remember something—//anything//—about what happened and how you got here. The last thing you remember was doing shots at the Fireplace Tavern. You were playing pool with a woman you'd met that night. She had this weird tattoo on the top of her hand, above the base of her thumb. It might have been a letter, but it wasn't from our alphabet. Maybe this is her house.</p>
 
@@ -1326,7 +1334,7 @@ setup.generalRememberMustang = function() {
 <p><<return "continue">></p>
 
 
-:: hallway [message] {"position":"475,225","size":"100,100"}
+:: hallway [message] {"position":"600,225","size":"100,100"}
 <p>You step out of the bedroom into the hallway. You can't see the front door, but you can hear the pounding and the shouting. "Police!" someone shouts. "Open up!" From the sound of it, you can tell the front door is right around the corner.</p>
 
 <p>For a second, you think about stepping around the corner and turning yourself in. Then you look at the blood on your clothes. You're screwed if you do that. You need to remember what happened or find something that proves you innocent.</p>
@@ -1336,10 +1344,10 @@ setup.generalRememberMustang = function() {
 <p><<return "continue">></p>
 
 
-:: end of bedroom [fake] {"position":"600,225","size":"100,100"}
+:: end of bedroom [fake] {"position":"725,225","size":"100,100"}
 
 
-:: Cops bust in {"position":"725,225","size":"100,100"}
+:: Cops bust in {"position":"850,225","size":"100,100"}
 <<run s.discoverThing("detective")>>
 
 /*  segue is in $msg[0,1] */
@@ -1367,7 +1375,7 @@ setup.generalRememberMustang = function() {
 </div>
 
 
-:: basic actions [include] {"position":"850,225","size":"100,100"}
+:: basic actions [include] {"position":"975,225","size":"100,100"}
 /*  talk to detective */
 <p><<if !$talking>>
   <<link "talk to them">>
@@ -1394,7 +1402,7 @@ setup.generalRememberMustang = function() {
 <</if>></p>
 
 
-:: combat actions [include] {"position":"975,225","size":"100,100"}
+:: combat actions [include] {"position":"1100,225","size":"100,100"}
 /*  go to bathroom */
 <p><<if !$talking>>
   <<link "run to the bathroom<<if settings.debug>> (DEX)<</if>>">>
@@ -1485,7 +1493,7 @@ setup.generalRememberMustang = function() {
 <</if>></p>
 
 
-:: dialogue actions [include] {"position":"1100,225","size":"100,100"}
+:: dialogue actions [include] {"position":"1225,225","size":"100,100"}
 /*  tell detective about ignorance */
 <p><<if $talking>>
   <<link "say \"This isn't what it looks like. I don't know anything.\"">>
@@ -1495,7 +1503,7 @@ setup.generalRememberMustang = function() {
       <<set $talking = false>>
       <<goto "tell us later">>
     <<elseif _result == 8>>
-      <<set $msg = ["\"This isn't what it looks like,\" you say. \"I don't know anything.\"", "\"Get down on the ground //now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
+      <<set $msg = ["\"This isn't what it looks like,\" you say. \"I don't know anything.\"", "\"Get on the ground. //Now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
       <<goto "Arrested">>
     <<else>>
       <<script>>
@@ -1514,7 +1522,7 @@ setup.generalRememberMustang = function() {
       <<set $talking = false>>
       <<goto "tell us later">>
     <<elseif _result == 8>>
-      <<set $msg = ["\"This isn't what it looks like,\" you say. \"It's cat blood!\"", "\"Get down on the ground //now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
+      <<set $msg = ["\"This isn't what it looks like,\" you say. \"It's cat blood!\"", "\"Get on the ground. //Now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
       <<goto "Arrested">>
     <<else>>
       <<script>>
@@ -1533,7 +1541,7 @@ setup.generalRememberMustang = function() {
       <<set $talking = false>>
       <<goto "tell us later">>
     <<elseif _result == 8>>
-      <<set $msg = ["\"I'm being set up!\" you shout.", "\"Get down on the ground //now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
+      <<set $msg = ["\"I'm being set up!\" you shout.", "\"Get on the ground. //Now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
       <<goto "Arrested">>
     <<else>>
       <<script>>
@@ -1552,7 +1560,7 @@ setup.generalRememberMustang = function() {
       <<set $talking = false>>
       <<goto "tell us later">>
     <<elseif _result == 8>>
-      <<set $msg = ["\"I'm being set up!\" you shout. \"The real killer is a woman with a strange tattoo.\"", "\"Get down on the ground //now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
+      <<set $msg = ["\"I'm being set up!\" you shout. \"The real killer is a woman with a strange tattoo.\"", "\"Get on the ground. //Now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
       <<goto "Arrested">>
     <<else>>
       <<script>>
@@ -1581,7 +1589,7 @@ setup.generalRememberMustang = function() {
         <<set $talking = false>>
         <<goto "we are not fools">>
       <<elseif _result == 8>>
-        <<set $msg = ["\"I have a bomb,\" you say. \"Back away slowly and leave. Now.\"", "\"Right,\" says the detective. \"Do you take us for fools?\" The two uniformed cops come forward and throw you on the ground. "]>>
+        <<set $msg = ["\"I have a bomb,\" you say. \"Back away slowly and leave. Now.\"", "\"Bullshit,\" says the detective. He gestures to his men. The two uniformed cops come forward and throw you on the ground. "]>>
         <<goto "Arrested">>
       <<else>>
         <<script>>
@@ -1614,19 +1622,19 @@ setup.generalRememberMustang = function() {
 <</if>></p>
 
 
-:: fleeing to bathroom [message] {"position":"1225,225","size":"100,100"}
+:: fleeing to bathroom [message] {"position":"100,350","size":"100,100"}
 <p>You run to the bathroom, the cops right behind you. If there's no way out of the bathroom, you're trapped.</p>
 
 <p>[[continue|bathroom]]</p>
 
 
-:: knocking down shelf [message] {"position":"100,350","size":"100,100"}
+:: knocking down shelf [message] {"position":"225,350","size":"100,100"}
 <p>There's a bookshelf to your right. You throw it to the floor between you and the cops, then run into the bathroom. That shelf won't slow them down for long. You need a quick decision.</p>
 
 <p>[[continue|bathroom]]</p>
 
 
-:: maybe a bomb {"position":"225,350","size":"100,100"}
+:: maybe a bomb {"position":"350,350","size":"100,100"}
 <p>"I have a bomb," you say. "Back away slowly and leave. Now."</p>
 
 <p>Everyone freezes. After a pause, the detective says, "You're bluffing." He doesn't move. He just keeps his eyes and his gun held on you. It's obvious they aren't going anywhere without proof there's a bomb. Too bad you don't have any.</p>
@@ -1636,41 +1644,41 @@ setup.generalRememberMustang = function() {
 </div>
 
 
-:: buying time [message] {"position":"350,350","size":"100,100"}
+:: buying time [message] {"position":"475,350","size":"100,100"}
 <p>"I have a bomb," you say. "Back away slowly and leave. Now."</p>
 
-<p>"Okay, okay," the detective says, lowering his gun and holding his other hand up, palm out. He nods to the other cops and they lower their guns. "Just relax. We'll go. But tell us where the bomb is. We'll need to disarm it after you leave." You try to think of some clever-sounding lie, but it's pointless. You can see it in his eyes. He isn't going anywhere. But at least their guns are down. You've bought yourself some time.</p>
+<p>"Okay," the detective says, lowering his gun and holding his other hand up, palm out. He nods to the other cops and they lower their guns. "Just stay calm. We'll go. But tell us where the bomb is. We need to disarm it after you're gone." You try to think of some clever-sounding lie, but it's pointless. You can see it in his eyes. He isn't going anywhere. But at least their guns are down. You've bought yourself some time.</p>
 
 <p>You spot a bookshelf to your right. In one fluid motion, you throw it to the floor between you and the cops and run into the bathroom. That shelf won't slow them down for long. You need a quick decision.</p>
 
 <p>[[continue|bathroom]]</p>
 
 
-:: tell us later [message] {"position":"475,350","size":"100,100"}
+:: tell us later [message] {"position":"600,350","size":"100,100"}
 <p>$msg[0]</p>
 
-<p>"Get down on the ground //now!//" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. Your head hits the floor hard, and for a minute you can't see anything.</p>
+<p>"Get down on the ground. //Now!//" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. Your head hits the floor hard, and for a minute you can't see anything.</p>
 
-<p>"You can tell us all about it at the station," says the detective, as he comes and <<include "cuff">> what must be a half hour while they talk into their radios and fill out paperwork. Finally, they start driving.</p>
+<p>"Save your stories for the station," says the detective, as he comes and <<include "cuff">> what must be a half hour while they talk into their radios and fill out paperwork. Finally, they start driving.</p>
 
 <p>[[continue|Streets]]</p>
 
 
-:: we are not fools [message] {"position":"600,350","size":"100,100"}
+:: we are not fools [message] {"position":"725,350","size":"100,100"}
 <p>"I have a bomb," you say. "Back away slowly and leave. Now."</p>
 
-<p>"Right," says the detective. The two uniformed cops come forward and throw you on the ground. Your head hits the floor hard, and for a minute you can't see anything.</p>
+<p>"Bullshit," says the detective. The two uniformed cops come forward and throw you on the ground. Your head hits the floor hard, and for a minute you can't see anything.</p>
 
-<p>"Do you take us for fools?" asks the detective, as he comes and <<include "cuff">> what must be a half hour while they talk into their radios and fill out paperwork. Finally, they start driving.</p>
+<p>The detective comes and <<include "cuff">> what must be a half hour while they talk into their radios and fill out paperwork. Finally, they start driving.</p>
 
 <p>[[continue|Streets]]</p>
 
 
-:: cuff [include] {"position":"725,350","size":"100,100"}
+:: cuff [include] {"position":"850,350","size":"100,100"}
 cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes the knife. <<run $inventory.delete("knife")>><<run $inventoryLost.add("knife")>><</if>>The other cops lift you up and the three of them take you outside. There is a gray sedan and two patrol cars parked out front. They push you into the back of the second patrol car and close the door. You sit there for
 
 
-:: heading to the station [message] {"position":"850,350","size":"100,100"}
+:: heading to the station [message] {"position":"975,350","size":"100,100"}
 <p>$msg[0]</p>
 
 <p><<= $msg[1]>>The detective comes and <<include "cuff">> what must be a half hour while they talk into their radios and fill out paperwork. Finally, they start driving.</p>
@@ -1678,7 +1686,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <p>[[continue|Streets]]</p>
 
 
-:: heading to the hospital [message] {"position":"975,350","size":"100,100"}
+:: heading to the hospital [message] {"position":"1100,350","size":"100,100"}
 <p>$msg[0] The bullet hits you in the shoulder and knocks you to the ground. You've never been shot before. It's strange, but you don't feel any pain at first. Just warmth from the blood running down your arm. But then it starts to burn and soon it's aching more than anything you've ever felt.</p>
 
 <p>The detective comes and <<include "cuff">> a few minutes while they talk into their radios and fill out paperwork.</p>
@@ -1688,10 +1696,10 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <p>[[continue|Streets]]</p>
 
 
-:: end of copsbustin [fake] {"position":"1100,350","size":"100,100"}
+:: end of copsbustin [fake] {"position":"1225,350","size":"100,100"}
 
 
-:: bathroom {"position":"1225,350","size":"100,100"}
+:: bathroom {"position":"100,475","size":"100,100"}
 /*  variables */
 <<set _seeLooseTiles = "There are loose tiles in the corner.">>
 <<set _seeCocaine = "You remove the loose tiles. Underneath you see several bags of cocaine.">>
@@ -1703,7 +1711,9 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 /*  description */
 <p>You <<if visited("bathroom") == 1 && $containedIn.get("detective") !== "bedroom">>step into the master bathroom and are hit head-on with a foul stench.<<else>>are in the master bathroom. A foul stench is in the air.<</if>> On your left, the shower curtain is pulled back and inside the shower are three garbage bags. Two are half-open and some of their contents have spilled onto the tiles--old, dirty clothes, a shoe that's falling apart, empty booze bottles. These are obviously the belongings of some homeless bum.<<if visited("bathroom") == 1>> Somehow, despite your own stench, you have to fight the urge to gag.<</if>></p>
 
-<p>Dirty clothes are strewn about the floor--socks, shorts, and an assortment of NFL and NBA jerseys. The sink and medicine cabinet are in front of you. There's a bloody thumbprint on the edge of the <<link "medicine cabinet">><<run setup.examine($medCabinet.description, "mid")>><</link>>'s mirrored door. Against the right wall, under the <<link "window">><<run setup.examine($window.description, "mid")>><</link>>, is an old, broken toilet<<if !$doorBlocked>> and a pile of <<link "construction materials">><<run setup.examine($materials.description, "mid")>><</link>><<else>>. You've blocked the door with construction materials. You can hear people trying to push their way in<</if>>.</p>
+<p>Dirty clothes are strewn about the floor--socks, shorts, and an assortment of NFL and NBA jerseys. The sink and medicine cabinet are in front of you. Your Hewlett-Packard work shirt is on the floor. "Scotty" is stitched above the right breast pocket. It's definitely yours. Why did you change your shirt here? Who's house is this, anyway?</p>
+
+<p>There's a bloody thumbprint on the edge of the <<link "medicine cabinet">><<run setup.examine($medCabinet.description, "mid")>><</link>>'s mirrored door. Against the right wall, under the <<link "window">><<run setup.examine($window.description, "mid")>><</link>>, is an old, broken toilet<<if !$doorBlocked>> and a pile of <<link "construction materials">><<run setup.examine($materials.description, "mid")>><</link>><<else>>. You've blocked the door with construction materials. You can hear people trying to push their way in<</if>>.</p>
 
 <div id="mid"></div>
 
@@ -1948,7 +1958,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 </p>
 
 
-:: take cocaine [include] {"position":"100,475","size":"100,100"}
+:: take cocaine [include] {"position":"225,475","size":"100,100"}
 <<linkreplace "take the cocaine">>
   <<run $containedIn.delete("cocaine")>>
   <<run setup.takeThing("cocaine")>>
@@ -1962,7 +1972,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <</linkreplace>>
 
 
-:: cops in hallway [message] {"position":"225,475","size":"100,100"}
+:: cops in hallway [message] {"position":"350,475","size":"100,100"}
 <p>$msg[0]</p>
 
 <p>Then you hear the splintering sound of the front door being broken open. You can hear several people rushing into the house. There's no time to waste. They'll be on top of you in seconds.<p>
@@ -1970,7 +1980,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <p><<return "continue">></p>
 
 
-:: finding phone [message] {"position":"350,475","size":"100,100"}
+:: finding phone [message] {"position":"475,475","size":"100,100"}
 <p>You open the medicine cabinet and there on the shelf is your <<link "phone">><<run setup.examine($phone.description)>><</link>>. How it got there, you have no idea.<p>
 
 <div id="end"></div>
@@ -1980,7 +1990,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <p><<return "continue">></p>
 
 
-:: finding photos [include] {"position":"475,475","size":"100,100"}
+:: finding photos [include] {"position":"600,475","size":"100,100"}
 <p>You unlock it and check the photos, hoping for something that'll jog your memory. There are several selfies and a video with a blonde woman at a bar. The two of you are playing pool. But what catches your eye is the man at the back table. In every photo, he's watching you. He looks like some Russian villain from an 80's action movie.</p>
 
 <p>There's also a video of two guys yelling at each other. In the background, you can see the blonde woman talking to the Russian. You can't hear what they're saying.</p>
@@ -1988,14 +1998,14 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <p>As you put the phone in your pocket and close the medicine cabinet, you notice something in the mirror. A few of the floor tiles in the corner are loose. You have the distinct impression that something is hiding underneath.</p>
 
 
-:: hiding in shower {"position":"600,475","size":"100,100"}
+:: hiding in shower {"position":"725,475","size":"100,100"}
 <p>$msg[0]</p>
 
 <p>You quickly run over and open the window, then come back, climb into the shower, and close the curtain. You press up against the wall, as far from the bum stuff as you can, and hold your breath. Seconds later, <<if $doorBlocked>>your makeshift barricade gives way and <</if>>you hear several men rush into the bathroom.</p>
 
 <p>"There! He's in the alley!" one of them says. They must have seen the open window.</p>
 
-<p>"You two go cut him off," says another. You hear a couple men leave, but one guy is still wandering around inside the bathroom.</p>
+<p>"You two cut him off," says another. You hear a couple men leave, but one guy is still wandering around inside the bathroom.</p>
 
 <p>[[crack open the curtain and take a peek|peeking out]]</p>
 
@@ -2004,7 +2014,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <p>[[keep holding your breath|not breathing]]</p>
 
 
-:: peeking out [message] {"position":"725,475","size":"100,100"}
+:: peeking out [message] {"position":"850,475","size":"100,100"}
 <p>You bring your eye toward the edge of the curtain. Without making a sound, you peel the curtain back a sliver.</p>
 
 <p>You flinch at the sight of a man's eye looking back at you. The man rips the curtain back and points a gun at your face. The man is bald and looks like a police detective.</p>
@@ -2012,19 +2022,19 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <<include "arrested in shower">>
 
 
-:: sneaking a breath [message] {"position":"850,475","size":"100,100"}
+:: sneaking a breath [message] {"position":"975,475","size":"100,100"}
 <p>You take a slow and quiet breath, but it isn't quiet enough. You can hear the man outside the shower start walking toward you. Then the shower curtain flies open and you can see him, pointing his gun at you. He's bald and looks like a police detective.</p>
 
 <<include "arrested in shower">>
 
 
-:: not breathing [message] {"position":"975,475","size":"100,100"}
+:: not breathing [message] {"position":"1100,475","size":"100,100"}
 <p>Not wanting to move or breath, you keep holding your breath. But that damn guy won't leave. He keeps walking around, opening drawers and fiddling with the window. Then his radio crackles and someone on the other end starts talking. You can't hold it in any longer. Against your wishes, your lungs blow out all that air and you take a deep breath. You hope he can't hear it over the radio, but you're not so lucky. The shower curtain flies open and you can see him, pointing his gun at you. He's bald and looks like a police detective.</p>
 
 <<include "arrested in shower">>
 
 
-:: arrested in shower [include] {"position":"1100,475","size":"100,100"}
+:: arrested in shower [include] {"position":"1225,475","size":"100,100"}
 <<run $containedIn.set("player", "copCar")>>
 <<set $copCar.traveledIn = true>>
 <<run s.discoverThing("detective")>>
@@ -2034,25 +2044,25 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <p>[[continue|Streets]]</p>
 
 
-:: blocking the door [message] {"position":"1225,475","size":"100,100"}
+:: blocking the door [message] {"position":"100,600","size":"100,100"}
 <p>You scramble to move the materials in front of the door.$msg[0] As soon as you put the last bucket of mortar in place, someone starts trying to push their way in. These materials won't hold for long. You need to get out of here fast.</p>
 
 <p><<return "continue">></p>
 
 
-:: thinking twice [message] {"position":"100,600","size":"100,100"}
+:: thinking twice [message] {"position":"225,600","size":"100,100"}
 <p>You start to try climbing out the window. Then you pause. //I may never be back here,// you think. //This may be my only chance to find out what happened. Do I really want to leave?//</p>
 
 <p><<return "continue">></p>
 
 
-:: leaving with regret [message] {"position":"225,600","size":"100,100"}
+:: leaving with regret [message] {"position":"350,600","size":"100,100"}
 <p>You feel like a coward, leaving before you've learned anything about last night. You have a bad feeling you're going to regret this. You take one quick look back. Then you climb up onto the broken toilet and push yourself out the window.</p>
 
 <p>[[continue|alley]]</p>
 
 
-:: slip and fall [message] {"position":"350,600","size":"100,100"}
+:: slip and fall [message] {"position":"475,600","size":"100,100"}
 <<run $containedIn.set("player", "copCar")>>
 <<set $copCar.traveledIn = true>>
 <<run s.discoverThing("detective")>>
@@ -2066,13 +2076,13 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <p>[[continue|Streets]]</p>
 
 
-:: escaping [message] {"position":"475,600","size":"100,100"}
+:: escaping [message] {"position":"600,600","size":"100,100"}
 <p>You climb up onto the broken toilet and open the window. The opening is pretty small. You can tell it's going to be a tight squeeze. You put your hands on the window sill and push yourself up and out. You have to wriggle a bit to get your shoulders through$msg[0]</p>
 
 <p>[[continue|alley]]</p>
 
 
-:: alley {"position":"600,600","size":"100,100"}
+:: alley {"position":"725,600","size":"100,100"}
 <p>You drop into the alley beside a dumpster and land on your side. You can hear the engine of the Mustang running. As you get to your feet, the blonde woman behind the wheel leans out the window. <<if $knowledge.has("womanAtBar")>>You recognize her. She's the <<link "woman">><<run setup.examine($womanAtBar.description)>><</link>> you played pool with last night. <</if>>"Hey you," she says with a smile. When you hesitate to answer, she beckons you closer. "Well, what are you waiting for? Come on over here." She lets out a short laugh.</p>
 
 <p id="end"></p>
@@ -2094,7 +2104,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <</link>></p>
 
 
-:: kidnapped [message] {"position":"725,600","size":"100,100"}
+:: kidnapped [message] {"position":"850,600","size":"100,100"}
 <p>$msg[0]</p>
 
 <div id="end"></div>
@@ -2119,10 +2129,10 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <p>[[continue|Warehouse]]</p>
 
 
-:: end of bathroom [fake] {"position":"850,600","size":"100,100"}
+:: end of bathroom [fake] {"position":"975,600","size":"100,100"}
 
 
-:: Streets {"position":"975,600","size":"100,100"}
+:: Streets {"position":"1100,600","size":"100,100"}
 /*  take player's inventory */
 <<if !$inventoryTaken>>
   <<run setup.takeInventory()>>
@@ -2161,7 +2171,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <</if>>
 
 
-:: cop car crash [include] {"position":"1100,600","size":"100,100"}
+:: cop car crash [include] {"position":"1225,600","size":"100,100"}
 /*  crash description if in cop car */
 <p>That's when the van slams into you. It hits you on the passenger side. Your body flies across the back seat. Your head hits the window and you roll backward, toppling down onto the floorboard. With difficulty, you squirm back up onto the seat. The passenger side door looks a little ajar, but it still won't open. The cop behind the wheel is barely moving. The grate separating you from him has broken. You turn and put your cuffed hands through the broken grate. After a few moments of straining and groping around, you manage to get a grip on the handcuff keys. You bring them into the backseat with you and free yourself.</p>
 
@@ -2170,7 +2180,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <p>You're in shock, barely comprehending what's happening. But you need to make a quick decision.</p>
 
 
-:: ambulance crash [include] {"position":"1225,600","size":"100,100"}
+:: ambulance crash [include] {"position":"100,725","size":"100,100"}
 /*  crash description if in ambulance */
 <p>That's when the truck slams into you. Your gurney topples over and you fall onto the ground. Pain shoots through your shoulder and for a moment, you're disoriented. Then you see the railing you were cuffed to has broken off. Although you still wear one cuff like a bracelet, you're free. The medic is on the ground, motionless, blood running down his temple. Medical supplies are strewn about the floor and the back door of the ambulance is damaged.</p>
 
@@ -2179,7 +2189,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <p>You're in shock, barely comprehending what's happening. But you need to make a quick decision.</p>
 
 
-:: crash choices [include] {"position":"100,725","size":"100,100"}
+:: crash choices [include] {"position":"225,725","size":"100,100"}
 /*  kick open door */
 <p><<link "try to kick open the door and make a run for it">>
   <<run $containedIn.delete("player")>>
@@ -2199,7 +2209,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <</link>></p>
 
 
-:: surrender [message] {"position":"225,725","size":"100,100"}
+:: surrender [message] {"position":"350,725","size":"100,100"}
 <<if $containedIn.get("player") == "copCar">>
   
   /*  description if in cop car */
@@ -2223,7 +2233,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <</if>>
 
 
-:: sitting duck {"position":"350,725","size":"100,100"}
+:: sitting duck {"position":"475,725","size":"100,100"}
 <p>You kick open the door and make a run for it. A gunshot rings out behind you and you duck behind a <<link "parked car">><<run setup.examine($parkedCar.description)>><</link>>. You can see the <<link "shooter">><<run setup.examine($shooter.description)>><</link>> walking toward you. You look around for somewhere to go. Nothing. Wherever you go, you'll be out in the open, exposed. There's a <<link "subway entrance">><<run setup.examine($subwayEntrance.description)>><</link>> about fifty feet away. You can make a break for it, but that's a long way to run without cover. You need to decide quick. The shooter is almost on top of you.</p>
 
 <div id="end"></div>
@@ -2245,7 +2255,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <p>[[make a break for the subway entrance|stop or get shot]]</p>
 
 
-:: car is locked [message] {"position":"475,725","size":"100,100"}
+:: car is locked [message] {"position":"600,725","size":"100,100"}
 <p>You grab the door handle and pull. Locked. You try the other door. Locked. There's nothing left to try. You need to sprint for that subway entrance.</p>
 
 <p>$msg[0]</p>
@@ -2255,7 +2265,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <p>[[continue|Warehouse]]</p>
 
 
-:: stop or get shot {"position":"600,725","size":"100,100"}
+:: stop or get shot {"position":"725,725","size":"100,100"}
 <p>You launch into a sprint toward the subway entrance. Almost immediately, you hear the shooter's voice, thick with a Russian accent. "Stop or I shoot!" Does he have a clear shot at you? Or is he bluffing? One thing you know--if he wanted you dead, he'd have shot you already.</p>
 
 /*  flee */
@@ -2285,13 +2295,13 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <p>[[stop and put your hands up|surrender 2]]</p>
 
 
-:: surrender 2 [message] {"position":"725,725","size":"100,100"}
+:: surrender 2 [message] {"position":"850,725","size":"100,100"}
 <p>You come to a stop in the middle of the street and put your hands up. You hear the shooter walk up behind you, then feel the gun press against your back. He grabs your arm and leads you to the back of his van. He opens the door and pushes you inside. Then he puts a rag over your face. It smells like paint thinner and you immediately feel weak and light-headed. Though you try to struggle, you soon lose consciousness.</p>
 
 <p>[[continue|Warehouse]]</p>
 
 
-:: keep on trucking [message] {"position":"850,725","size":"100,100"}
+:: keep on trucking [message] {"position":"975,725","size":"100,100"}
 <p>With the sun in his eyes, there's no way he has a clean shot. You decide to call his bluff. You pick up the pace and run even faster to the subway entrance.<<= $msg[0]>></p>
 
 <p>You're ten feet from the door when you hear the gunshot and feel a sharp pain on the outer edge of your right thigh. Your leg gives out beneath you and you collapse to the ground.<<=$msg[1]>></p>
@@ -2301,10 +2311,10 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <p>[[continue|Warehouse]]</p>
 
 
-:: end of streets [fake] {"position":"975,725","size":"100,100"}
+:: end of streets [fake] {"position":"1100,725","size":"100,100"}
 
 
-:: Warehouse {"position":"1100,725","size":"100,100"}
+:: Warehouse {"position":"1225,725","size":"100,100"}
 /*  take player's inventory */
 <<if !$inventoryTaken>>
   <<run setup.takeInventory()>>
@@ -2379,14 +2389,14 @@ You desperately look around. On the shelf to your right you see some things from
 <</link>></p>
 
 
-:: discovered {"position":"1225,725","size":"100,100"}
+:: discovered {"position":"100,850","size":"100,100"}
 <p>$msg[0]</p><p>$msg[1]</p><p>$msg[2]</p>
 
 <p>The man at the table turns and looks at you, but says nothing. He picks up a <<link "power drill">><<run setup.examine($powerDrill.description)>><</link>> from the table and walks over to you. He puts a foot on the chair, right between your legs.</p>
 
 <div id="end"></div>
 
-<p>"The man you killed," he says in a thick Russian accent, "he had something of mine. You know where it is." You look at him with a blank stare. "I'm talking about computer chip. Where is it?"</p>
+<p>"That man you killed," he says in a thick Russian accent, "he had something belongs to me. You know where it is." You look at him with a blank stare. "I'm talking about computer chip. Where is it?"</p>
 
 /*  try to remember chip */
 <p><<link "try to remember something about a computer chip<<if settings.debug>> (+1 XP)<</if>>">>
@@ -2418,7 +2428,7 @@ You desperately look around. On the shelf to your right you see some things from
 <</link>></p>
 
 
-:: epiphany [message] {"position":"100,850","size":"100,100"}
+:: epiphany [message] {"position":"225,850","size":"100,100"}
 <p>$msg[0]</p>
 
 <p>$msg[1]</p>
@@ -2449,7 +2459,7 @@ You desperately look around. On the shelf to your right you see some things from
 <</link>></p>
 
 
-:: drilled finger {"position":"225,850","size":"100,100"}
+:: drilled finger {"position":"350,850","size":"100,100"}
 <p>Your train of thought is interrupted by the sound of the drill. The Russian grabs your forearm and holds it down onto the arm of the chair. "Maybe you need motivation," he says as he brings the drill toward your hand. Your body tenses and you struggle to move, but it's no use. He drives the drill bit right through your knuckle and you let out a bitter scream that fades into a whimper.$msg[0]</p>
 
 <p>He pulls out the drill and turns it off. Then he grabs you by the chin and forces you to look at him. "Now," he says, studying your face, "where is computer chip?"</p>
@@ -2467,7 +2477,7 @@ You desperately look around. On the shelf to your right you see some things from
 <</link>></p>
 
 
-:: woman calls code [include] {"position":"350,850","size":"100,100"}
+:: woman calls code [include] {"position":"475,850","size":"100,100"}
 <<set _destination = "woman calls">>
 
 /*  add injury */
@@ -2501,7 +2511,7 @@ You desperately look around. On the shelf to your right you see some things from
 <<goto _destination>>
 
 
-:: woman calls [message] {"position":"475,850","size":"100,100"}
+:: woman calls [message] {"position":"600,850","size":"100,100"}
 $msg[0]
 
 <p>The Russian punches you square in the nose. You hear a crunch sound and taste blood in the back of your throat.$msg[1] He leans down close, getting in your face. "Where is it!" he shouts.</p>
@@ -2530,16 +2540,16 @@ $msg[0]
 <</link>>
 
 
-:: being a smart ass [include] {"position":"600,850","size":"100,100"}
+:: being a smart ass [include] {"position":"725,850","size":"100,100"}
 /*  possible inclusion in "woman calls" */
 <p>"I don't know," you say. "Maybe the bum took it." You don't know why, but you're feeling a little spunky.</p>
 
-<p>"The bum!" exclaims the Russian with a hearty laugh. "Okay, friend. Where did the //bum// put it?"</p>
+<p>"The bum!" exclaims the Russian with a hearty laugh. "Okay, friend. Where did //bum// put it?"</p>
 
 <p>"How should I know."</p>
 
 
-:: free yourself {"position":"725,850","size":"100,100"}
+:: free yourself {"position":"850,850","size":"100,100"}
 <p>With the Russian out of sight, you quietly scoot over to the shelf. Using your chin, you slide the <<link "knife">><<run setup.examine($knife.description, "early")>><</link>> onto your lap. You grab it with your right hand and cut the ropes binding your right wrist. You then cut the rest of the ropes, stand up, and take a closer look at what's on the shelf.<<if !$inventory.has("knife")>> You put the knife back on the shelf.<</if>></p>
 
 <div id="early"></div>
@@ -2590,7 +2600,7 @@ $msg[0]
 <</link>></p>
 
 
-:: lost the russian {"position":"850,850","size":"100,100"}
+:: lost the russian {"position":"975,850","size":"100,100"}
 <p>You head off in the same direction as the Russian. If you can follow him and keep an eye on him, you'll be safe. As long as you have eyes on him, he won't be able to surprise you.</p>
 
 <p>You reach the end of the aisle, round the corner, and see him walking in the distance. You follow quietly in the darkness, keeping one eye on him, and the other eye scanning for an exit to this warehouse.</p>
@@ -2630,7 +2640,7 @@ $msg[0]
 <</link>></p>
 
 
-:: scan the area {"position":"975,850","size":"100,100"}
+:: scan the area {"position":"1100,850","size":"100,100"}
 <p>It's hard to see anything in the darkness. The only light there is comes from the moonlight through the windows high above. You look carefully at every part of the warehouse you can see. There's no trace of the Russian.</p>
 
 <p>$msg[0] $msg[1]</p>
@@ -2651,7 +2661,7 @@ $msg[0]
 <</link>></p>
 
 
-:: there she is {"position":"1100,850","size":"100,100"}
+:: there she is {"position":"1225,850","size":"100,100"}
 <p>$msg[0]</p>
 
 <p>You wander through the dark aisles of the warehouse, avoiding the Russian and looking for a way out. You see what looks like an unlit exit sign and head in that direction. As you round the corner, you nearly crash into a woman. It's the woman from the bar. She gasps when she sees what the Russian has done to you.</p>
@@ -2660,35 +2670,35 @@ $msg[0]
 
 /*  narrative-only choice 1 */
 <p><<link "say \"Who are you? Are we in love? What's going on!\"">>
-  <<set $msg = ["\"Who are you?\" you ask. \"Are we in love? What's going on!\" She raises her eyebrows and laughs. \"We played pool together,\" you add. \"We were having a good time.\"", "\"Look, I remember you,\" she says. \"But I don't remember playing pool. And we are certainly not in love.\"", ""]>>
+  <<set $msg = ["\"Who are you?\" you ask. \"Are we in love? What's going on!\" She raises her eyebrows and laughs. \"We played pool together,\" you add. \"We were having a good time.\"", "\"I remember you,\" she says. \"I //don't// remember playing pool. And we are //certainly// not in love.\"", ""]>>
   <<goto "she opens up">>
 <</link>></p>
 
 /*  narrative-only choice 2 */
 <p><<link "say \"I recognize you from last night. Please help me.\"">>
-  <<set $msg = ["\"I recognize you from last night,\" you say. \"Please help me.\" She hesitates to respond. \"We played pool together,\" you add. \"We were having a good time.\"", "\"I remember you,\" she says. \"But I don't remember playing pool.\"", ""]>>
+  <<set $msg = ["\"I recognize you from last night,\" you say. \"Please help me.\" She hesitates to respond. \"We played pool together,\" you add. \"We were having a good time.\"", "\"I remember you,\" she says. \"I //don't// remember playing pool.\"", ""]>>
   <<goto "she opens up">>
 <</link>></p>
 
 /*  narrative-only choice 3 */
 <p><<link "say \"Do you know why your friend doesn't like me?\"">>
-  <<set $msg = ["\"Do you know why your friend doesn't like me?\" you ask.", "She raises one eyebrow and continues to look at your injuries with sympathy. \"Well,\" she says. \"He doesn't like losing things.\"", "\"What things?\" you ask. She looks you in the eye but says nothing. "]>>
+  <<set $msg = ["\"Do you know why your friend doesn't like me?\" you ask.", "She raises one eyebrow and continues to look at your injuries with sympathy. \"Well,\" she says, \"he doesn't like losing things.\"", "\"What things?\" you ask. She looks you in the eye but says nothing. "]>>
   <<goto "she opens up">>
 <</link>></p>
 
 
-:: she opens up {"position":"1225,850","size":"100,100"}
+:: she opens up {"position":"100,975","size":"100,100"}
 <p>$msg[0]</p>
 
 <p>$msg[1]</p>
 
 <p>$msg[2] "Please. Just tell me what's going on."</p>
 
-<p>She pauses and takes another long look at your broken nose and mangled finger. Then she sighs. "Okay," she says. "The man you killed, he was supposed to give us a controller. It's a microchip. It was hidden inside a bag of cocaine, but now it's gone. Some dangerous people will be very upset if we don't find it." The woman's radio crackles. "What is it?" she says into the receiver.</p>
+<p>She pauses and takes another long look at your broken nose and mangled finger. Then she sighs. "Okay," she says. "The man you killed, he was supposed to give us a controller. It's a microchip. It was hidden inside a bag of cocaine, but now it's gone. Some dangerous people are gonna be real upset if we don't find it." The woman's radio crackles. "Yes?" she says into the receiver.</p>
 
-<p>The Russian speaks from the other end. "Kira, I need you here. Now. Police are poking around outside."</p>
+<p>The Russian speaks from the other end. "Kira, I need you. Now. Police poking around outside."</p>
 
-<p>"On my way," she says and shuts off the radio.</p>
+<p>"I'm on my way," she says and shuts off the radio.</p>
 
 /*  narrative-only choice 1 */
 <p><<link "put her in a chokehold while she's distracted">>
@@ -2708,7 +2718,7 @@ $msg[0]
 <<include "parley with woman">>
 
 
-:: parley with woman [include] {"position":"100,975","size":"100,100"}
+:: parley with woman [include] {"position":"225,975","size":"100,100"}
 /*  narrative-only choice 2 */
 <p><<link "tell her you know a thing or two about microchips">>
   <<set $msg = ["let us cooperate", '<<include "know about chips">>', "She shakes her head."]>>
@@ -2722,10 +2732,10 @@ $msg[0]
 <</link>></p>
 
 
-:: tell about cocaine {"position":"225,975","size":"100,100"}
+:: tell about cocaine {"position":"350,975","size":"100,100"}
 <p>"I found your cocaine," you say.</p>
 
-<p>"I know. We recovered it," she replies. "But the chip wasn't there. Did you see the chip?"</p>
+<p>"Oh, I know. We recovered it," she replies. "But that chip wasn't there. Did you see it?"</p>
 
 /*  admit you didn't see chip */
 <p><<link 'say "No, I didn\'t see any chip."'>>
@@ -2739,16 +2749,16 @@ $msg[0]
 <</link>></p>
 
 
-:: too honest {"position":"350,975","size":"100,100"}
+:: too honest {"position":"475,975","size":"100,100"}
 <p>You shake your head. "No, I didn't see any chip."</p>
 
-<p>"Then you're no help to us," she replies.</p>
+<p>"Well, then you're no help at all," she replies.</p>
 
 /*  narrative-only choices 2 and 3 */
 <<include "parley with woman">>
 
 
-:: she gets shot [message] {"position":"475,975","size":"100,100"}
+:: she gets shot [message] {"position":"600,975","size":"100,100"}
 /*  learn that bum stole phone */
 <<if !$knowledge.has("stolenPhone")>>
   <<run $knowledge.add("stolenPhone")>>
@@ -2771,28 +2781,28 @@ $msg[0]
 <</link>></p>
 
 
-:: choking her [include] {"position":"600,975","size":"100,100"}
+:: choking her [include] {"position":"725,975","size":"100,100"}
 /*  one of two possible descriptions in "she gets shot" */
 <p>The second she shuts off her radio, you grab her and put her in a chokehold. She struggles to free herself, but your grip is solid. There's no getting out of it. "Listen," you hiss in her ear. "I didn't kill anyone and I'm not going to jail. You're going to help me find evidence to clear myself."</p>
 
-<p>You can feel her trying to talk, so you loosen your grip a little. "No evidence will clear you," she says. "You //did// kill him."</p>
+<p>You can feel her trying to talk, so you loosen your grip a little. "No evidence'll clear you," she says. "You //did// kill him."</p>
 
 <p>"No!" you shout and choke her hard. "There was a bum hiding in the shower last night. I'm sure of it! It was him. Now tell me what you know."</p>
 
-<p>You loosen your grip again and she coughs. "A bum? Seriously?" she says. You tense your arm threateningly. "Okay, okay, fine. There //was// a bum at the bar last night. Lev lost his phone. After that, the bum was gone. I think he took the phone and used it to find where Lev lived."</p>
+<p>You loosen your grip again and she coughs. "A bum? Seriously?" she says. You tense your arm threateningly. "Okay, stop, please. I'll tell you." She takes a moment to catch her breath. "You're right. There was a bum at the bar last night. Lev lost his phone. After that, the bum was gone. Pretty sure he took the phone and found out where Lev lived. That's all I--"</p>
 
-<p>"Lev?" you ask. "That's the dead guy? I thought his name was Matt. You knew him? He was at the bar with us?"</p>
+<p>"Lev?" you interrupt. "That's the dead guy? I thought his name was Matt. You knew him? He was at the bar with us?"</p>
 
 <p>Suddenly a gunshot rings out. Then more shots. You can hear police shouting in the distance. You hear the Russian's voice shouting back at them. You feel an impact and the woman's body tenses up. You let go of her and she slumps to the ground. She's been shot in the chest and isn't moving.</p>
 
 
-:: let us cooperate [include] {"position":"725,975","size":"100,100"}
+:: let us cooperate [include] {"position":"850,975","size":"100,100"}
 /*  one of two possible descriptions in "she gets shot" */
 
 /*  possible multi-paragraph inclusion here */
 $msg[1]
 
-<p>$msg[2] "No evidence will clear you," she says. "You //did// kill him."</p>
+<p>$msg[2] "No evidence'll clear you," she says. "You //did// kill him."</p>
 
 <p>"No," you insist. "There was a bum hiding in the shower last night. I'm sure of it! It could have been him. Reasonable doubt is all I need."</p>
 
@@ -2800,16 +2810,16 @@ $msg[1]
 
 <p>"Yes! Why was he there? How did he get there? Help me figure this out, please."</p>
 
-<p>She smiles and speaks patronizingly. "Okay, here's what I know. There //was// a bum at the bar last night. Lev lost his phone. And after that the bum was gone. I think he took the phone and used it to find where Lev lived."</p>
+<p>She hesitates, then says, "All right, I'll tell you what I know. But then you better live up to your end of the bargain." You nod in agreement. With a sigh, she says, "You're right. There was a bum at the bar last night. Lev lost his phone. And after that the bum was gone. Pretty sure he took the phone and found out where Lev lived. That's all I--"</p>
 
-<p>"Lev?" you ask. "That's the dead guy? I thought his name was Matt. You knew him? He was at the bar with us?"</p>
+<p>"Lev?" you interrupt. "That's the dead guy? I thought his name was Matt. You knew him? He was at the bar with us?"</p>
 
 <p>Suddenly a gunshot rings out. Then more shots. You cover your head instinctively. You can hear police shouting in the distance. The Russian is shouting back at them.</p>
 
 <p>You uncover your head to see the woman lying on the ground, blood flowing from her chest. She isn't moving at all.</p>
 
 
-:: know about chips [include] {"position":"850,975","size":"100,100"}
+:: know about chips [include] {"position":"975,975","size":"100,100"}
 /*  one of two possible multi-paragraph inclusions in "let us cooperate" */
 <p>"I know a thing or two about microchips," you say. "I work at Hewlett-Packard."</p>
 
@@ -2818,15 +2828,15 @@ $msg[1]
 <p>"I do, yes. Maybe I can help. But I need to find evidence to clear myself. Will you help me with that?"</p>
 
 
-:: big liar [include] {"position":"975,975","size":"100,100"}
+:: big liar [include] {"position":"1100,975","size":"100,100"}
 /*  one of two possible multi-paragraph inclusions in "let us cooperate" */
 <p>"I did, yes," you lie. "I'll tell you where it is, but you need to help me first. I didn't kill that man. Help me find evidence to clear myself."</p>
 
 
-:: end of warehouse [fake] {"position":"1100,975","size":"100,100"}
+:: end of warehouse [fake] {"position":"1225,975","size":"100,100"}
 
 
-:: should you stay {"position":"1225,975","size":"100,100"}
+:: should you stay {"position":"100,1100","size":"100,100"}
 <p>She's dead. She's dead and the cops are in the building. You can hear them trading gunfire with the Russian. You take cover under one of the large shelves. You're far enough away that there's no chance they can see you. But you don't want to take a stray bullet like that woman.</p>
 
 <p>She said the bum stole the victim's phone, and used it to find out where he lived. That phone could be exactly the evidence you're looking for. But where is that phone now? If it's anywhere, it has to be back with the bum's garbage bags.</p>
@@ -2834,8 +2844,13 @@ $msg[1]
 <p>$msg[0] You peer out from your hiding place, getting ready to head back to those garbage bags. You can see the flashing blue and red lights of the cop cars through an open door in the distance. A way out. You're suddenly tempted to make a run for it. But that's crazy. How can you run past a gang of cops in the middle of a firefight and expect to not get caught? And even if you do make it, you'll be on the run your entire life if you don't find the evidence you're looking for.</p>
 
 /*  flee */
-<p><<link "make a mad dash for the exit<<if settings.debug>> (bad end)<</if>>">>
-  <<goto "arrested at warehouse">>
+<p><<link "make a mad dash for the exit<<if settings.debug>> (<<if $player.Level == 1>>bad end<<else>>happy end<</if>>)<</if>>">>
+  <<if $player.Level == 1>>
+    <<set _target = "arrested at warehouse">>
+  <<else>>
+    <<set _target = "happy ending">>
+  <</if>>
+  <<goto _target>>
 <</link>></p>
 
 /*  return to bum stuff */
@@ -2852,7 +2867,7 @@ $msg[1]
 <</link>></p>
 
 
-:: russian dies [message] {"position":"100,1100","size":"100,100"}
+:: russian dies [message] {"position":"225,1100","size":"100,100"}
 <p>As you make your way back to the where the bum's garbage bags are, the gunshots stop. You hear one of the cops yell, "All clear!" The Russian must be dead. They'll be looking for you now.</p>
 
 <p>$msg[0] You pick up the pace. You need to find that stolen phone. Maybe the bum's fingerprints are on it. Maybe he made a call. Maybe he even took a photo. Finding a selfie of the bum hiding in the shower is probably too much to hope for.</p>
@@ -2863,7 +2878,7 @@ $msg[1]
 <</link>></p>
 
 
-:: they found me {"position":"225,1100","size":"100,100"}
+:: they found me {"position":"350,1100","size":"100,100"}
 <p>You make it back to the shelf with the garbage bags. You start rummaging through them but don't immediately see any phone. You find an empty prescription bottle from the free clinic on Grant Street. It's for something called "Haldol". You also find a few sports jerseys like the ones in the victim's bathroom. Why did the bum have the victim's clothes? Was he trying them on? Was he replacing his own tattered clothing?</p>
 
 <p>Then it clicks. In a strange flash of insight, you understand. The bum wanted to //be// the victim. Through some deep mental delusion, the bum thought he could kill this guy and then //become// him. He wanted to swap out his nasty bum life for this guy's fancy life. You're a little surprised and impressed with yourself for figuring this out. Maybe you have a future as a detective.</p>
@@ -2880,7 +2895,7 @@ $msg[1]
   <<if $hasDiscovered.has("detective")>>
     You recognize him. It's the bald police detective from back at the house.
     <<if $player.REL.detective < 0>>
-      "You've given me a lot of trouble today," he says. "Just step back from the shelf with your hands up."
+      "You've been a pain in my ass today," he says. "Just step back from the shelf with your hands up."
     <</if>>
   <<else>>
     He's bald and looks like a police detective.
@@ -2905,7 +2920,7 @@ $msg[1]
 <<include "they found me choices">>
 
 
-:: they found me choices [include] {"position":"350,1100","size":"100,100"}
+:: they found me choices [include] {"position":"475,1100","size":"100,100"}
 /*  cut through shelf */
 <p><<link 'cut through the shelf to the neighboring aisle<<if settings.debug>> <<if !$hasDiscovered.has("phone")>>(phone not discovered, so bad end)<<else>>(-1 HP if Level 1)<</if>><</if>>'>>
   <<set $underShelf = true>>
@@ -2918,7 +2933,7 @@ $msg[1]
 <</link>></p>
 
 
-:: phone not there [include] {"position":"475,1100","size":"100,100"}
+:: phone not there [include] {"position":"600,1100","size":"100,100"}
 /*  included if you kept searching */
 You ignore the detective and keep searching through the garbage bags.
   <<if $hasDiscovered.has("phone")>>
@@ -2928,7 +2943,7 @@ You ignore the detective and keep searching through the garbage bags.
   <</if>>
 
 
-:: detective advancing {"position":"600,1100","size":"100,100"}
+:: detective advancing {"position":"725,1100","size":"100,100"}
 <p>"A bum killed that guy, not me," you say to the detective. "I can prove it."</p>
 
 <p>"Save it for the judge," he says and starts advancing on you, his gun held out in front of him. "Now step away from the shelf. Slowly."</p>
@@ -2936,7 +2951,7 @@ You ignore the detective and keep searching through the garbage bags.
 <<include "they found me choices">>
 
 
-:: to the platform code [include] {"position":"725,1100","size":"100,100"}
+:: to the platform code [include] {"position":"850,1100","size":"100,100"}
 <<set _destination = "to the platform">>
 <<set $msg = ["But with your last step, your foot lands hard on a rusty, three-inch nail. The nail pierces your foot completely and you can see the pointed end coming out the top of your shoe.", "You shout from the sudden pain of it, but adrenaline keeps you moving.", "You lift your foot off the nail and limp into the next aisle.", ""]>>
 
@@ -2973,7 +2988,7 @@ You ignore the detective and keep searching through the garbage bags.
 <<goto _destination>>
 
 
-:: to the platform {"position":"850,1100","size":"100,100"}
+:: to the platform {"position":"975,1100","size":"100,100"}
 <p>You're not about to spend your life in prison for a murder you didn't commit. <<if $underShelf>>You duck under the shelf and run toward the neighboring aisle. You can hear the detective shouting behind you.<<else>>You run away, down the aisle. You can hear the detective shouting behind you. You round the corner toward the neighboring aisle.<</if>></p>
 
 <p>Your path is blocked by a small pile of old two-by-fours, which you easily climb over. $msg[0] $msg[1] $msg[2]</p>
@@ -2995,7 +3010,7 @@ You ignore the detective and keep searching through the garbage bags.
 <</link>></p>
 
 
-:: jump off platform {"position":"975,1100","size":"100,100"}
+:: jump off platform {"position":"1100,1100","size":"100,100"}
 <p>$msg[0] Your right foot hits the ground first and pain shoots up your leg. You tumble and roll on the floor, spraining your elbow.</p>
 
 <p>It hurts to even try to move, but you can't stay here. You wince as you slowly get to your feet. You're in some recessed, pit-type area with walls on all four sides. You can see a ladder on the far wall leading back up, but you're in no shape to climb a ladder.</p>
@@ -3009,7 +3024,7 @@ You ignore the detective and keep searching through the garbage bags.
 <p>[[head over to the office|office]]</p>
 
 
-:: examine forklifts [message] {"position":"1100,1100","size":"100,100"}
+:: examine forklifts [message] {"position":"1225,1100","size":"100,100"}
 <p>You limp over to the forklifts to check them out. Somehow, your brain isn't working. You can't make out any of the controls, even though you know you've driven these things at work. You've never heard of an alcohol blackout messing with other memories.</p>
 
 <p>But there's one thing you can figure out. The forklifts are electrical. And they're dead. All of them. You try to lift the slide-up door, but it won't budge. There's a control panel on the side, but it's also dark and without power.</p>
@@ -3021,7 +3036,7 @@ You ignore the detective and keep searching through the garbage bags.
 <p>[[continue|office]]</p>
 
 
-:: office {"position":"1225,1100","size":"100,100"}
+:: office {"position":"100,1225","size":"100,100"}
 <<if !$hasDiscovered.has("video")>>
   <<run s.discoverThing("video")>>
 <</if>>
@@ -3051,7 +3066,7 @@ You ignore the detective and keep searching through the garbage bags.
 <</link>></p>
 
 
-:: view schematic [message] {"position":"100,1225","size":"100,100"}
+:: view schematic [message] {"position":"225,1225","size":"100,100"}
 <p>You take a look at the schematic that was under your phone. It's some kind of diagram describing a computer chip. You know you've seen plenty of these diagrams at work. You should be able to make sense of this. But for some reason, your brain isn't working right now. It just looks like gibberish to you.</p>
 
 <p>You turn your attention back to the computer screen and the bearded man, frozen in place halfway through the bathroom window. For some reason you feel nervous to watch this video. But you have to see it. You have to know the truth.</p>
@@ -3059,7 +3074,7 @@ You ignore the detective and keep searching through the garbage bags.
 <p>[[play the video|play video]]</p>
 
 
-:: play video [message] {"position":"225,1225","size":"100,100"}
+:: play video [message] {"position":"350,1225","size":"100,100"}
 <p>You play the video. The bum drops his trash bags onto the floor and enters the bathroom, a phone in his hand. Leaving his bags on the floor, he puts the phone in his pocket and leaves the bathroom. After some time, he comes back with a blood-stained chef's knife in one hand and a dead cat in the other. He drops the cat on the floor, puts the knife on the counter, and looks around the bathroom again. He heads into the attached walk-in closet and rummages around. When he comes back, he has some sports jerseys and pants. Standing in front of the mirror, he holds up one of the jerseys against his chest, admiring how he would look in it.</p>
 
 <p>He then makes a sudden movement as though he heard something. He stuffs the clothes into one of the trash bags. A few of the jerseys fall on the floor. He stuffs the cat into another bag, then puts all the bags in the shower. He grabs the knife from the counter, gets into the shower himself, and closes the curtain. For the next thirty seconds, nothing happens.</p>
@@ -3067,7 +3082,7 @@ You ignore the detective and keep searching through the garbage bags.
 <p>[[fast-forward the video|forward video]]</p>
 
 
-:: forward video [message] {"position":"350,1225","size":"100,100"}
+:: forward video [message] {"position":"475,1225","size":"100,100"}
 <p>After some time, the bum jumps out of the shower, agitated. You resume playing the video at normal speed. The bum is looking at the phone, turning it in his hand, as if looking for something, maybe a switch. The phone screen is lighting up, presumably from alerts or text messages. You figure the bum is trying to silence the phone.</p>
 
 <p>Finally, the bum gives up. He walks over and puts the phone in the medicine cabinet. He then gets back in the shower. Again, nothing happens. You fast-forward, but the video ends.</p>
@@ -3079,14 +3094,16 @@ You ignore the detective and keep searching through the garbage bags.
 <p>[[examine the dossier|examine file]]</p>
 
 
-:: examine file {"position":"475,1225","size":"100,100"}
+:: examine file {"position":"600,1225","size":"100,100"}
 <p>You open the dossier. There's a bio sheet with a picture of the victim and his name--Matthew Scott Brady, Jr. Memories of the night at the bar come flooding back.</p>
 
-<p>You were sitting at the bar. The bartender shouted "Order for Brady!" The victim walked up and grabbed a plate of wings from the bar. He nodded at you and smiled. Then his phone chimed. He took it from his pocket and you watched as he typed "2262" and unlocked his phone.</p>
+<p>You were sitting at the bar. The bartender shouted "Order for Brady!" The victim walked up, wearing a Hewlett-Packard work shirt. As he grabbed a plate of wings from the bar, he nodded at you and smiled. Then his phone chimed. He took it from his pocket and you watched as he typed "2262" and unlocked his phone.</p>
 
-<p>The bartender passed him the bill. He set his phone on the counter and took out some money. "Scotty! Hurry up!" someone shouted. The victim shouted something in return and finished paying. Then he headed back to the pool table where the blonde woman was waiting for him. He kissed her and took a selfie with her. The Russian was sitting at a table in the background.</p>
+<p>The bartender passed him the bill. He set his phone on the counter and took out some money. "Scotty! Hurry up, it's your turn!" someone shouted. The victim shouted something in return and finished paying. Then he headed back to the pool table where the blonde woman was waiting for him. The Russian was sitting at a table in the background.</p>
 
-<p>Your memories are interrupted by a voice coming from the office doorway. "You've given us quite the chase." It's the detective.</p>
+<p>The victim's phone was right there beside you, on the counter where he left it. You picked it up.</p>
+
+<p>Your memories are interrupted by a voice coming from the office doorway. "You've given us one hell of a chase." It's the detective.</p>
 
 /*  claim innocence */
 <p><<link "protest your innocence">>
@@ -3107,10 +3124,10 @@ You ignore the detective and keep searching through the garbage bags.
 <</link>></p>
 
 
-:: end of finale [fake] {"position":"600,1225","size":"100,100"}
+:: end of finale [fake] {"position":"725,1225","size":"100,100"}
 
 
-:: Arrested {"position":"725,1225","size":"100,100"}
+:: Arrested {"position":"850,1225","size":"100,100"}
 /*  cops get you before you visit the bathroom, you weren't shot */
 <p>$msg[0]</p>
 
@@ -3121,7 +3138,7 @@ You ignore the detective and keep searching through the garbage bags.
 <</link>></p></div>
 
 
-:: Hospital then prison {"position":"850,1225","size":"100,100"}
+:: Hospital then prison {"position":"975,1225","size":"100,100"}
 /*  cops get you before you visit the bathroom, you were shot */
 <p>$msg[0] The bullet hits you in the shoulder and knocks you to the ground. You've never been shot before. It's strange, but you don't feel any pain at first. Just warmth from the blood running down your arm. But then it starts to burn and soon it's aching more than anything you've ever felt.</p>
 
@@ -3132,7 +3149,7 @@ You ignore the detective and keep searching through the garbage bags.
 <</link>></p></div>
 
 
-:: drilled to death {"position":"975,1225","size":"100,100"}
+:: drilled to death {"position":"1100,1225","size":"100,100"}
 /*  drilled finger took last HP */
 <p>Your train of thought is interrupted by the sound of the drill. The Russian grabs your forearm and holds it down onto the arm of the chair. "Maybe you need motivation," he says as he brings the drill toward your hand. Your body tenses and you struggle to move, but it's no use. He drives the drill bit right through your knuckle.</p>
 
@@ -3145,7 +3162,7 @@ You ignore the detective and keep searching through the garbage bags.
 <</link>></p></div>
 
 
-:: punched to death {"position":"1100,1225","size":"100,100"}
+:: punched to death {"position":"1225,1225","size":"100,100"}
 /*  punch in face took last HP */
 $msg[0]
 
@@ -3160,7 +3177,7 @@ $msg[0]
 <</link>></p></div>
 
 
-:: choked to death {"position":"1225,1225","size":"100,100"}
+:: choked to death {"position":"100,1350","size":"100,100"}
 /*  choked by Russian took last HP */
 <p>It's hard to see anything in the darkness. The only light there is comes from the moonlight through the windows high above. You look carefully at every part of the warehouse you can see. There's no trace of him.</p>
 
@@ -3173,7 +3190,7 @@ $msg[0]
 <</link>></p></div>
 
 
-:: arrested at warehouse {"position":"100,1350","size":"100,100"}
+:: arrested at warehouse {"position":"225,1350","size":"100,100"}
 /*  you stupidly tried to leave the Warehouse with cops everywhere */
 <p>You head toward the exit, sticking to the shadows. As you get closer, you see the cops, crouching behind boxes and trading gunfire with the Russian. All their attention is on him and it isn't hard to go unnoticed. You pass behind them to the open door and when you have a clear shot, you run outside.</p>
 
@@ -3186,7 +3203,25 @@ $msg[0]
 <</link>></p></div>
 
 
-:: nailed it {"position":"225,1350","size":"100,100"}
+:: happy ending {"position":"350,1350","size":"100,100"}
+/*	you stupidly tried to leave the Warehouse with cops everywhere,
+		but you're Level 2, so you found the secret happy ending */
+<p>You slip into the shadows and get as far away from the warehouse as possible. When you're sure you've made it and no one is following you, you rest for the first time all day. A wave of relief washes over you and you fall asleep right there on a park bench.</p>
+
+<p>You wake the next morning in a panic, sure there will be cops standing over you. But there's no one. A few people are biking and walking dogs, but nobody pays any attention to you. You need money. You reach into your pocket and find a diamond ring. //Where did that come from?// you think. Well, there's another missing memory, but this one is in your favor. You pawn the ring and use the money to get yourself cleaned up and make your way to Canada.</p>
+
+<p>Life in Canada is a little boring, but after everything that happened, you're in no mood for excitement. You open a bar and every evening you work behind the counter serving up drinks. You never do remember the events of that night. For a while, you're nagged by doubts about what happened. But with time, those doubts lessen. Now, you hardly ever think about it.</p>
+
+<p>"That's one hell of a story," says the man sitting at the bar. "Is it true?"</p>
+
+<p>You laugh. Customers always ask you that. You guess it //is// pretty unbelievable. "Does it matter?" you reply as you refill the man's scotch. "Have another drink."</p>
+
+<div align="center"><p><<link "''THE END''">>
+	<<goto "acknowledgments">>
+<</link>></p></div>
+
+
+:: nailed it {"position":"475,1350","size":"100,100"}
 /*  stepping on nail took last HP */
 <p>You're not about to spend your life in prison for a murder you didn't commit. <<if $underShelf>>You duck under the shelf and run toward the neighboring aisle. You can hear the detective shouting behind you.<<else>>You run away, down the aisle. You can hear the detective shouting behind you. You round the corner toward the neighboring aisle.<</if>></p>
 
@@ -3201,7 +3236,7 @@ $msg[0]
 <</link>></p></div>
 
 
-:: the truth {"position":"350,1350","size":"100,100"}
+:: the truth {"position":"600,1350","size":"100,100"}
 /*	the intended ending */
 <p>$msg[0]</p>
 
@@ -3212,7 +3247,7 @@ $msg[0]
 <</link>></p></div>
 
 
-:: acknowledgments {"position":"475,1350","size":"100,100"}
+:: acknowledgments {"position":"725,1350","size":"100,100"}
 <h3>Acknowledgments</h3>
 
 <p>Thank you for playing. This story began as a short experiment in creating interactive fiction with Twine. The project ended up being larger and taking longer than I expected. The work involved in creating it gave me a new appreciation for the enormous effort needed for game development in general. I am indebted to the expertise and generosity of the people on the Twine Games Discord server. These include, but are not limited to, GwenTastic, Akjosch, Chapel, Tayruh, Greyelf, TheMadExile, Luna City Hobo, and RynGM. My sincerest apologies to anyone I overlooked.</p>
@@ -3220,6 +3255,6 @@ $msg[0]
 <p>--Jack Weaver, December 2019</p>
 
 
-:: end of endings [fake] {"position":"600,1350","size":"100,100"}
+:: end of endings [fake] {"position":"850,1350","size":"100,100"}
 
 

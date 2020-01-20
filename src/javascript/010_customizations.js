@@ -1,5 +1,5 @@
-setup.lastEdited = "2019-01-18-0901";
-setup.versionNumber = 102;
+setup.lastEdited = "2019-01-20-1000";
+setup.versionNumber = 103;
 
 setup.calcVersion = function(num) {
   let main = Math.floor(num/100);

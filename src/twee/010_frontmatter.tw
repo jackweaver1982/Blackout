@@ -478,9 +478,9 @@ a {
 
 <p>In this story, you control the character by tapping (or clicking) on links. Tap a noun to examine that object in closer detail. Tap a command to follow that action. Tapping a noun will usually not advance the story. Tapping a command, though, is often irreversible.<p>
 
-<p><b style='color:yellow'> Random outcomes.</b> Some actions may have a random outcome which could be good or bad. Your chances of getting a good outcome are related to your character's traits. Click on "bio" in the top menu bar to better understand these traits. The bio also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
+<p><b style='color:lime'> Random outcomes.</b> Some actions may have a random outcome which could be good or bad. Your chances of getting a good outcome are related to your character's traits. Click on "bio" in the top menu bar to better understand these traits. The bio also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
 
-<p><b style='color:yellow'> Saving.</b> The story automatically saves your progress, so if you exit and reload later, you will be able to resume right where you left off. You can also manually save your progress in a bookmark that can be reloaded later. But think carefully about this. You only get one bookmark! (Warning: using private browsing or disabling or clearing your cookies will interfere with the story's saving feature.)</p>
+<p><b style='color:lime'> Saving.</b> The story automatically saves your progress, so if you exit and reload later, you will be able to resume right where you left off. You can also manually save your progress in a bookmark that can be reloaded later. But think carefully about this. You only get one bookmark! (Warning: using private browsing or disabling or clearing your cookies will interfere with the story's saving feature.)</p>
 
 <p><<link "return to story">><<script>>Engine.show()<</script>><</link>></p>
 
@@ -589,6 +589,13 @@ a {
 
 <p>When you get out of the bed, you see it. The body. A man lying on his back, dead, with a knife sticking out of his chest. Before you can do or think anything, someone starts pounding on the front door. Is it the police? Is it the murderer? Are //you// the murderer?</p>
 
-<p>[[continue|bedroom]]</p>
+<p>[[continue|who you are]]</p>
+
+:: who you are
+<p>Scott Allen Brady. Scotty, to your friends. That's your name. You have to remind yourself, to make sure you haven't forgotten //everything//. The last thing you remember is leaving work. You'd finished packing the motherboards into their shipping crates. Then you clocked out and left the plant. You were still wearing your Hewlett-Packard shirt when you got in your truck. You met some friends at the bar. Then...</p>
+
+<p>Nothing. You can't remember. Now here you are, in some surreal nightmare, looking at a dead guy. The pounding on the door makes it hard to concentrate.</p>
+
+<p>[[take a look around|bedroom]]</p>
 
 :: end of frontmatter [fake]

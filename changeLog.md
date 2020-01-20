@@ -1,5 +1,19 @@
 # Change Log
 
+## Version 1.3
+
+* edited detective's dialog for character consistency
+* edited Russian's dialog for character consistency
+* edited woman's dialog for character and narrative consistency
+* extended the intro to include the PC's name and where he works
+* changed help screen heading from yellow to lime
+* added work shirt and name reference when entering bathroom
+* added work shirt on victim to end flashback
+* fixed narrative error in end flashback: victim cannot take a selfie after leaving his phone on the counter
+* in end flashback, victim's friend now says, "it's your turn"
+* in end flashback, you now explicitly take the victim's phone
+* added a secret happy ending
+
 ## Version 1.2
 
 * if the PC goes to the warehouse directly from the house and had one or more things taken from his inventory, the narration now explicitly says your things were taken

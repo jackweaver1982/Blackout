@@ -68,6 +68,23 @@ $msg[0]
 	<<goto "acknowledgments">>
 <</link>></p></div>
 
+:: happy ending
+/*	you stupidly tried to leave the Warehouse with cops everywhere,
+		but you're Level 2, so you found the secret happy ending */
+<p>You slip into the shadows and get as far away from the warehouse as possible. When you're sure you've made it and no one is following you, you rest for the first time all day. A wave of relief washes over you and you fall asleep right there on a park bench.</p>
+
+<p>You wake the next morning in a panic, sure there will be cops standing over you. But there's no one. A few people are biking and walking dogs, but nobody pays any attention to you. You need money. You reach into your pocket and find a diamond ring. //Where did that come from?// you think. Well, there's another missing memory, but this one is in your favor. You pawn the ring and use the money to get yourself cleaned up and make your way to Canada.</p>
+
+<p>Life in Canada is a little boring, but after everything that happened, you're in no mood for excitement. You open a bar and every evening you work behind the counter serving up drinks. You never do remember the events of that night. For a while, you're nagged by doubts about what happened. But with time, those doubts lessen. Now, you hardly ever think about it.</p>
+
+<p>"That's one hell of a story," says the man sitting at the bar. "Is it true?"</p>
+
+<p>You laugh. Customers always ask you that. You guess it //is// pretty unbelievable. "Does it matter?" you reply as you refill the man's scotch. "Have another drink."</p>
+
+<div align="center"><p><<link "''THE END''">>
+	<<goto "acknowledgments">>
+<</link>></p></div>
+
 :: nailed it
 /*  stepping on nail took last HP */
 <p>You're not about to spend your life in prison for a murder you didn't commit. <<if $underShelf>>You duck under the shelf and run toward the neighboring aisle. You can hear the detective shouting behind you.<<else>>You run away, down the aisle. You can hear the detective shouting behind you. You round the corner toward the neighboring aisle.<</if>></p>

@@ -6,8 +6,13 @@
 <p>$msg[0] You peer out from your hiding place, getting ready to head back to those garbage bags. You can see the flashing blue and red lights of the cop cars through an open door in the distance. A way out. You're suddenly tempted to make a run for it. But that's crazy. How can you run past a gang of cops in the middle of a firefight and expect to not get caught? And even if you do make it, you'll be on the run your entire life if you don't find the evidence you're looking for.</p>
 
 /*  flee */
-<p><<link "make a mad dash for the exit<<if settings.debug>> (bad end)<</if>>">>
-  <<goto "arrested at warehouse">>
+<p><<link "make a mad dash for the exit<<if settings.debug>> (<<if $player.Level == 1>>bad end<<else>>happy end<</if>>)<</if>>">>
+  <<if $player.Level == 1>>
+    <<set _target = "arrested at warehouse">>
+  <<else>>
+    <<set _target = "happy ending">>
+  <</if>>
+  <<goto _target>>
 <</link>></p>
 
 /*  return to bum stuff */
@@ -50,7 +55,7 @@
   <<if $hasDiscovered.has("detective")>>
     You recognize him. It's the bald police detective from back at the house.
     <<if $player.REL.detective < 0>>
-      "You've given me a lot of trouble today," he says. "Just step back from the shelf with your hands up."
+      "You've been a pain in my ass today," he says. "Just step back from the shelf with your hands up."
     <</if>>
   <<else>>
     He's bald and looks like a police detective.
@@ -240,11 +245,13 @@ You ignore the detective and keep searching through the garbage bags.
 :: examine file
 <p>You open the dossier. There's a bio sheet with a picture of the victim and his name--Matthew Scott Brady, Jr. Memories of the night at the bar come flooding back.</p>
 
-<p>You were sitting at the bar. The bartender shouted "Order for Brady!" The victim walked up and grabbed a plate of wings from the bar. He nodded at you and smiled. Then his phone chimed. He took it from his pocket and you watched as he typed "2262" and unlocked his phone.</p>
+<p>You were sitting at the bar. The bartender shouted "Order for Brady!" The victim walked up, wearing a Hewlett-Packard work shirt. As he grabbed a plate of wings from the bar, he nodded at you and smiled. Then his phone chimed. He took it from his pocket and you watched as he typed "2262" and unlocked his phone.</p>
 
-<p>The bartender passed him the bill. He set his phone on the counter and took out some money. "Scotty! Hurry up!" someone shouted. The victim shouted something in return and finished paying. Then he headed back to the pool table where the blonde woman was waiting for him. He kissed her and took a selfie with her. The Russian was sitting at a table in the background.</p>
+<p>The bartender passed him the bill. He set his phone on the counter and took out some money. "Scotty! Hurry up, it's your turn!" someone shouted. The victim shouted something in return and finished paying. Then he headed back to the pool table where the blonde woman was waiting for him. The Russian was sitting at a table in the background.</p>
 
-<p>Your memories are interrupted by a voice coming from the office doorway. "You've given us quite the chase." It's the detective.</p>
+<p>The victim's phone was right there beside you, on the counter where he left it. You picked it up.</p>
+
+<p>Your memories are interrupted by a voice coming from the office doorway. "You've given us one hell of a chase." It's the detective.</p>
 
 /*  claim innocence */
 <p><<link "protest your innocence">>

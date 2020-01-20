@@ -79,7 +79,7 @@ You desperately look around. On the shelf to your right you see some things from
 
 <div id="end"></div>
 
-<p>"The man you killed," he says in a thick Russian accent, "he had something of mine. You know where it is." You look at him with a blank stare. "I'm talking about computer chip. Where is it?"</p>
+<p>"That man you killed," he says in a thick Russian accent, "he had something belongs to me. You know where it is." You look at him with a blank stare. "I'm talking about computer chip. Where is it?"</p>
 
 /*  try to remember chip */
 <p><<link "try to remember something about a computer chip<<if settings.debug>> (+1 XP)<</if>>">>
@@ -222,7 +222,7 @@ $msg[0]
 /*  possible inclusion in "woman calls" */
 <p>"I don't know," you say. "Maybe the bum took it." You don't know why, but you're feeling a little spunky.</p>
 
-<p>"The bum!" exclaims the Russian with a hearty laugh. "Okay, friend. Where did the //bum// put it?"</p>
+<p>"The bum!" exclaims the Russian with a hearty laugh. "Okay, friend. Where did //bum// put it?"</p>
 
 <p>"How should I know."</p>
 
@@ -344,19 +344,19 @@ $msg[0]
 
 /*  narrative-only choice 1 */
 <p><<link "say \"Who are you? Are we in love? What's going on!\"">>
-  <<set $msg = ["\"Who are you?\" you ask. \"Are we in love? What's going on!\" She raises her eyebrows and laughs. \"We played pool together,\" you add. \"We were having a good time.\"", "\"Look, I remember you,\" she says. \"But I don't remember playing pool. And we are certainly not in love.\"", ""]>>
+  <<set $msg = ["\"Who are you?\" you ask. \"Are we in love? What's going on!\" She raises her eyebrows and laughs. \"We played pool together,\" you add. \"We were having a good time.\"", "\"I remember you,\" she says. \"I //don't// remember playing pool. And we are //certainly// not in love.\"", ""]>>
   <<goto "she opens up">>
 <</link>></p>
 
 /*  narrative-only choice 2 */
 <p><<link "say \"I recognize you from last night. Please help me.\"">>
-  <<set $msg = ["\"I recognize you from last night,\" you say. \"Please help me.\" She hesitates to respond. \"We played pool together,\" you add. \"We were having a good time.\"", "\"I remember you,\" she says. \"But I don't remember playing pool.\"", ""]>>
+  <<set $msg = ["\"I recognize you from last night,\" you say. \"Please help me.\" She hesitates to respond. \"We played pool together,\" you add. \"We were having a good time.\"", "\"I remember you,\" she says. \"I //don't// remember playing pool.\"", ""]>>
   <<goto "she opens up">>
 <</link>></p>
 
 /*  narrative-only choice 3 */
 <p><<link "say \"Do you know why your friend doesn't like me?\"">>
-  <<set $msg = ["\"Do you know why your friend doesn't like me?\" you ask.", "She raises one eyebrow and continues to look at your injuries with sympathy. \"Well,\" she says. \"He doesn't like losing things.\"", "\"What things?\" you ask. She looks you in the eye but says nothing. "]>>
+  <<set $msg = ["\"Do you know why your friend doesn't like me?\" you ask.", "She raises one eyebrow and continues to look at your injuries with sympathy. \"Well,\" she says, \"he doesn't like losing things.\"", "\"What things?\" you ask. She looks you in the eye but says nothing. "]>>
   <<goto "she opens up">>
 <</link>></p>
 
@@ -367,11 +367,11 @@ $msg[0]
 
 <p>$msg[2] "Please. Just tell me what's going on."</p>
 
-<p>She pauses and takes another long look at your broken nose and mangled finger. Then she sighs. "Okay," she says. "The man you killed, he was supposed to give us a controller. It's a microchip. It was hidden inside a bag of cocaine, but now it's gone. Some dangerous people will be very upset if we don't find it." The woman's radio crackles. "What is it?" she says into the receiver.</p>
+<p>She pauses and takes another long look at your broken nose and mangled finger. Then she sighs. "Okay," she says. "The man you killed, he was supposed to give us a controller. It's a microchip. It was hidden inside a bag of cocaine, but now it's gone. Some dangerous people are gonna be real upset if we don't find it." The woman's radio crackles. "Yes?" she says into the receiver.</p>
 
-<p>The Russian speaks from the other end. "Kira, I need you here. Now. Police are poking around outside."</p>
+<p>The Russian speaks from the other end. "Kira, I need you. Now. Police poking around outside."</p>
 
-<p>"On my way," she says and shuts off the radio.</p>
+<p>"I'm on my way," she says and shuts off the radio.</p>
 
 /*  narrative-only choice 1 */
 <p><<link "put her in a chokehold while she's distracted">>
@@ -406,7 +406,7 @@ $msg[0]
 :: tell about cocaine
 <p>"I found your cocaine," you say.</p>
 
-<p>"I know. We recovered it," she replies. "But the chip wasn't there. Did you see the chip?"</p>
+<p>"Oh, I know. We recovered it," she replies. "But that chip wasn't there. Did you see it?"</p>
 
 /*  admit you didn't see chip */
 <p><<link 'say "No, I didn\'t see any chip."'>>
@@ -422,7 +422,7 @@ $msg[0]
 :: too honest
 <p>You shake your head. "No, I didn't see any chip."</p>
 
-<p>"Then you're no help to us," she replies.</p>
+<p>"Well, then you're no help at all," she replies.</p>
 
 /*  narrative-only choices 2 and 3 */
 <<include "parley with woman">>
@@ -453,13 +453,13 @@ $msg[0]
 /*  one of two possible descriptions in "she gets shot" */
 <p>The second she shuts off her radio, you grab her and put her in a chokehold. She struggles to free herself, but your grip is solid. There's no getting out of it. "Listen," you hiss in her ear. "I didn't kill anyone and I'm not going to jail. You're going to help me find evidence to clear myself."</p>
 
-<p>You can feel her trying to talk, so you loosen your grip a little. "No evidence will clear you," she says. "You //did// kill him."</p>
+<p>You can feel her trying to talk, so you loosen your grip a little. "No evidence'll clear you," she says. "You //did// kill him."</p>
 
 <p>"No!" you shout and choke her hard. "There was a bum hiding in the shower last night. I'm sure of it! It was him. Now tell me what you know."</p>
 
-<p>You loosen your grip again and she coughs. "A bum? Seriously?" she says. You tense your arm threateningly. "Okay, okay, fine. There //was// a bum at the bar last night. Lev lost his phone. After that, the bum was gone. I think he took the phone and used it to find where Lev lived."</p>
+<p>You loosen your grip again and she coughs. "A bum? Seriously?" she says. You tense your arm threateningly. "Okay, stop, please. I'll tell you." She takes a moment to catch her breath. "You're right. There was a bum at the bar last night. Lev lost his phone. After that, the bum was gone. Pretty sure he took the phone and found out where Lev lived. That's all I--"</p>
 
-<p>"Lev?" you ask. "That's the dead guy? I thought his name was Matt. You knew him? He was at the bar with us?"</p>
+<p>"Lev?" you interrupt. "That's the dead guy? I thought his name was Matt. You knew him? He was at the bar with us?"</p>
 
 <p>Suddenly a gunshot rings out. Then more shots. You can hear police shouting in the distance. You hear the Russian's voice shouting back at them. You feel an impact and the woman's body tenses up. You let go of her and she slumps to the ground. She's been shot in the chest and isn't moving.</p>
 
@@ -469,7 +469,7 @@ $msg[0]
 /*  possible multi-paragraph inclusion here */
 $msg[1]
 
-<p>$msg[2] "No evidence will clear you," she says. "You //did// kill him."</p>
+<p>$msg[2] "No evidence'll clear you," she says. "You //did// kill him."</p>
 
 <p>"No," you insist. "There was a bum hiding in the shower last night. I'm sure of it! It could have been him. Reasonable doubt is all I need."</p>
 
@@ -477,9 +477,9 @@ $msg[1]
 
 <p>"Yes! Why was he there? How did he get there? Help me figure this out, please."</p>
 
-<p>She smiles and speaks patronizingly. "Okay, here's what I know. There //was// a bum at the bar last night. Lev lost his phone. And after that the bum was gone. I think he took the phone and used it to find where Lev lived."</p>
+<p>She hesitates, then says, "All right, I'll tell you what I know. But then you better live up to your end of the bargain." You nod in agreement. With a sigh, she says, "You're right. There was a bum at the bar last night. Lev lost his phone. And after that the bum was gone. Pretty sure he took the phone and found out where Lev lived. That's all I--"</p>
 
-<p>"Lev?" you ask. "That's the dead guy? I thought his name was Matt. You knew him? He was at the bar with us?"</p>
+<p>"Lev?" you interrupt. "That's the dead guy? I thought his name was Matt. You knew him? He was at the bar with us?"</p>
 
 <p>Suddenly a gunshot rings out. Then more shots. You cover your head instinctively. You can hear police shouting in the distance. The Russian is shouting back at them.</p>
 

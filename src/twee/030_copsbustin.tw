@@ -151,7 +151,7 @@
       <<set $talking = false>>
       <<goto "tell us later">>
     <<elseif _result == 8>>
-      <<set $msg = ["\"This isn't what it looks like,\" you say. \"I don't know anything.\"", "\"Get down on the ground //now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
+      <<set $msg = ["\"This isn't what it looks like,\" you say. \"I don't know anything.\"", "\"Get on the ground. //Now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
       <<goto "Arrested">>
     <<else>>
       <<script>>
@@ -170,7 +170,7 @@
       <<set $talking = false>>
       <<goto "tell us later">>
     <<elseif _result == 8>>
-      <<set $msg = ["\"This isn't what it looks like,\" you say. \"It's cat blood!\"", "\"Get down on the ground //now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
+      <<set $msg = ["\"This isn't what it looks like,\" you say. \"It's cat blood!\"", "\"Get on the ground. //Now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
       <<goto "Arrested">>
     <<else>>
       <<script>>
@@ -189,7 +189,7 @@
       <<set $talking = false>>
       <<goto "tell us later">>
     <<elseif _result == 8>>
-      <<set $msg = ["\"I'm being set up!\" you shout.", "\"Get down on the ground //now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
+      <<set $msg = ["\"I'm being set up!\" you shout.", "\"Get on the ground. //Now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
       <<goto "Arrested">>
     <<else>>
       <<script>>
@@ -208,7 +208,7 @@
       <<set $talking = false>>
       <<goto "tell us later">>
     <<elseif _result == 8>>
-      <<set $msg = ["\"I'm being set up!\" you shout. \"The real killer is a woman with a strange tattoo.\"", "\"Get down on the ground //now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
+      <<set $msg = ["\"I'm being set up!\" you shout. \"The real killer is a woman with a strange tattoo.\"", "\"Get on the ground. //Now!//\" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. "]>>
       <<goto "Arrested">>
     <<else>>
       <<script>>
@@ -237,7 +237,7 @@
         <<set $talking = false>>
         <<goto "we are not fools">>
       <<elseif _result == 8>>
-        <<set $msg = ["\"I have a bomb,\" you say. \"Back away slowly and leave. Now.\"", "\"Right,\" says the detective. \"Do you take us for fools?\" The two uniformed cops come forward and throw you on the ground. "]>>
+        <<set $msg = ["\"I have a bomb,\" you say. \"Back away slowly and leave. Now.\"", "\"Bullshit,\" says the detective. He gestures to his men. The two uniformed cops come forward and throw you on the ground. "]>>
         <<goto "Arrested">>
       <<else>>
         <<script>>
@@ -291,7 +291,7 @@
 :: buying time [message]
 <p>"I have a bomb," you say. "Back away slowly and leave. Now."</p>
 
-<p>"Okay, okay," the detective says, lowering his gun and holding his other hand up, palm out. He nods to the other cops and they lower their guns. "Just relax. We'll go. But tell us where the bomb is. We'll need to disarm it after you leave." You try to think of some clever-sounding lie, but it's pointless. You can see it in his eyes. He isn't going anywhere. But at least their guns are down. You've bought yourself some time.</p>
+<p>"Okay," the detective says, lowering his gun and holding his other hand up, palm out. He nods to the other cops and they lower their guns. "Just stay calm. We'll go. But tell us where the bomb is. We need to disarm it after you're gone." You try to think of some clever-sounding lie, but it's pointless. You can see it in his eyes. He isn't going anywhere. But at least their guns are down. You've bought yourself some time.</p>
 
 <p>You spot a bookshelf to your right. In one fluid motion, you throw it to the floor between you and the cops and run into the bathroom. That shelf won't slow them down for long. You need a quick decision.</p>
 
@@ -300,18 +300,18 @@
 :: tell us later [message]
 <p>$msg[0]</p>
 
-<p>"Get down on the ground //now!//" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. Your head hits the floor hard, and for a minute you can't see anything.</p>
+<p>"Get down on the ground. //Now!//" the detective bellows. When you don't immediately comply, the two uniformed cops come forward and throw you on the ground. Your head hits the floor hard, and for a minute you can't see anything.</p>
 
-<p>"You can tell us all about it at the station," says the detective, as he comes and <<include "cuff">> what must be a half hour while they talk into their radios and fill out paperwork. Finally, they start driving.</p>
+<p>"Save your stories for the station," says the detective, as he comes and <<include "cuff">> what must be a half hour while they talk into their radios and fill out paperwork. Finally, they start driving.</p>
 
 <p>[[continue|Streets]]</p>
 
 :: we are not fools [message]
 <p>"I have a bomb," you say. "Back away slowly and leave. Now."</p>
 
-<p>"Right," says the detective. The two uniformed cops come forward and throw you on the ground. Your head hits the floor hard, and for a minute you can't see anything.</p>
+<p>"Bullshit," says the detective. The two uniformed cops come forward and throw you on the ground. Your head hits the floor hard, and for a minute you can't see anything.</p>
 
-<p>"Do you take us for fools?" asks the detective, as he comes and <<include "cuff">> what must be a half hour while they talk into their radios and fill out paperwork. Finally, they start driving.</p>
+<p>The detective comes and <<include "cuff">> what must be a half hour while they talk into their radios and fill out paperwork. Finally, they start driving.</p>
 
 <p>[[continue|Streets]]</p>
 

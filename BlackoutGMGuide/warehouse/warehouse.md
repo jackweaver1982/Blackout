@@ -189,7 +189,13 @@ title: Warehouse
 ~~none~~
 
 **~~carry out:~~**  
-*~~You are arrested~~*  
+~~if reached Level 2:~~
+> *~~Escape~~*  
+~~describe outcome~~  
+**~~THE END~~**
+
+~~else:~~
+> *~~You are arrested~~*  
 ~~describe outcome~~  
 **~~THE END~~**
 

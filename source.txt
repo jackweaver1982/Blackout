@@ -77,8 +77,7 @@ s.calcVersion = function(num) {
 
 s.version = setup.calcVersion(setup.versionNumber);
 
-/* s.betaFormURL = 'https://jackweaver1982.github.io/Blackout/betaForm.html'; */
-s.betaFormURL = 'https://jackweaver1982.github.io/Blackout/index.html';
+s.betaFormURL = 'https://jackweaver1982.github.io/Blackout/betaForm.html';
 /* twine-user-script #3: "010_config.js" */
 /*  sets all passages to `nobr` */
 Config.passages.nobr = true;
@@ -348,17 +347,6 @@ setup.rollSpecial = function(mod, omit) {
   }
   return ret;
 }
-
-/*  replaces the HTML element with the given `id` (default is "end") by
-    `objDescription` */
-// setup.examine = function(objDescription, id) {
-//   let txt = jQuery("#" + (id || "end")).html();
-//   jQuery("#" + (id || "end")).empty().wiki(objDescription);
-//   if (txt == jQuery("#" + (id || "end")).html()) {
-//     jQuery("#" + (id || "end")).empty();
-//   }
-//   return;
-// }
 
 /*  replaces the HTML element with the given `id` (default is "end") by
     `objDescription` */
@@ -3257,7 +3245,9 @@ $msg[0]
 	<<goto "acknowledgments">>
 <</link>></p>
 
-<p><a @href=s.betaFormURL target='_blank'>give feedback to developer</a></p>
+<<if settings.beta>>
+	<p><a @href=s.betaFormURL target='_blank'>give feedback to developer</a></p>
+<</if>>
 
 
 :: acknowledgments
@@ -3267,7 +3257,9 @@ $msg[0]
 
 <p>--Jack Weaver, January 2020</p>
 
-<p><a @href=s.betaFormURL target='_blank'>give feedback to developer</a></p>
+<<if settings.beta>>
+	<p><a @href=s.betaFormURL target='_blank'>give feedback to developer</a></p>
+<</if>>
 
 
 :: end of endings [fake]

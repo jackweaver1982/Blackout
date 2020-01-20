@@ -14,7 +14,7 @@
 <p>On your left, the <<link "bedroom door">><<run setup.examine($bedroomDoor.description)>><</link>> is closed. <<if $pounding>>You can hear the pounding on the front door coming from that direction. <<elseif $crowbar>>Outside the bedroom, <<if $knowledge.has("policeAtDoor")>>the police are<<else>>someone is<</if>> breaking into the house with a crowbar. <</if>>To your right, the <<link "door">><<run setup.examine($bathroomDoor.description)>><</link>> to the adjoining bathroom is ajar. On the floor is a <<link "dead man">><<run setup.examine($body.description)>><</link>>, lying on his back in a pool of blood. <<if $containedIn.get("knife") == "bedroom">>What looks like a heavy-duty <<link "chef's knife">><<run setup.examine($knife.description)>><</link>> is sticking out of his chest.<</if>></p>
 
 /*  container for examination prose */
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 /*  take knife */
 <p>
@@ -189,7 +189,7 @@
 <p>You hear the sound of police radios outside. That pounding on the door is definitely the police. You don't have time to waste, but you take a quick look for the man's <<link "wallet">><<run setup.examine($wallet.description)>><</link>>. You find it and check <<link "his ID">><<run setup.examine($sameLastName.description)>><</link>>. Matt Brady. Brady? He has the same last name as you. But who is he?<p>
 
 /*  container for examination prose */
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 /*  take wallet */
 <p>

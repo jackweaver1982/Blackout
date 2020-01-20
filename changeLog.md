@@ -1,12 +1,24 @@
 # Change Log
 
+## Version 1.4
+
+* reorganized JavaScript files
+* created a temporary URL for a fillable feedback form to be developed later
+* in beta mode, added a link to temp URL on title screen
+* in beta mode, added a link to temp URL on every ending
+* in beta mode, added a link to temp URL on acknowledgments
+* updated acknowledgments
+* "THE END" is no longer a link; added a separate link to view acknowledgments
+* noun descriptions are now yellow
+* clicking on a noun description now makes all other noun descriptions disappear
+
 ## Version 1.3
 
 * edited detective's dialog for character consistency
 * edited Russian's dialog for character consistency
 * edited woman's dialog for character and narrative consistency
 * extended the intro to include the PC's name and where he works
-* changed help screen heading from yellow to lime
+* changed help screen headings from yellow to lime
 * added work shirt and name reference when entering bathroom
 * added work shirt on victim to end flashback
 * fixed narrative error in end flashback: victim cannot take a selfie after leaving his phone on the counter

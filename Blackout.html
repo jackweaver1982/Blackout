@@ -100,7 +100,7 @@ var saveAs=saveAs||navigator.msSaveBlob&&navigator.msSaveBlob.bind(navigator)||f
 		<div id="init-lacking">Your browser lacks required capabilities. Please upgrade it or switch to another to continue.</div>
 		<div id="init-loading"><div>Loading&hellip;</div></div>
 	</div>
-	<!-- UUID://B66587F9-7999-4C0E-B614-A8B0774811E0// --><tw-storydata name="Blackout" startnode="6" creator="Tweego" creator-version="2.0.0+089d4ca77e5b" ifid="B66587F9-7999-4C0E-B614-A8B0774811E0" zoom="0.6" format="SugarCube" format-version="2.29.0" options="" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">html {
+	<!-- UUID://B66587F9-7999-4C0E-B614-A8B0774811E0// --><tw-storydata name="Blackout" startnode="6" creator="Tweego" creator-version="2.0.0+089d4ca77e5b" ifid="B66587F9-7999-4C0E-B614-A8B0774811E0" zoom="0.6" format="SugarCube" format-version="2.29.0" options="debug" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">html {
   font: 100% Georgia, serif;
 }
 a {
@@ -122,18 +122,10 @@ a {
     clear: both;
     display: table;
     content: "";
-}</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* twine-user-script #1: "010_customizations.js" */
-setup.lastEdited = "2019-01-20-1000";
-setup.versionNumber = 103;
-
-setup.calcVersion = function(num) {
-  let main = Math.floor(num/100);
-  let sub = num % 100;
-  return main + '.' + sub;
 }
-
-setup.version = setup.calcVersion(setup.versionNumber);
-
+.description {
+  color:yellow;
+}</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* twine-user-script #1: "005_jsShortcuts.js" */
 /*  make "v" a shortcut for "State.variables",
  *  which is equivalent to "variables()" */
 Object.defineProperty(window, "v", {
@@ -156,7 +148,20 @@ Object.defineProperty(window, "s", {
     return setup;
   }
 });
+/* twine-user-script #2: "007_constants.js" */
+s.lastEdited = "2019-01-20-1327";
+s.versionNumber = 104;
 
+s.calcVersion = function(num) {
+  let main = Math.floor(num/100);
+  let sub = num % 100;
+  return main + '.' + sub;
+}
+
+s.version = setup.calcVersion(setup.versionNumber);
+
+s.betaFormURL = 'https://jackweaver1982.github.io/Blackout/betaForm.html';
+/* twine-user-script #3: "010_config.js" */
 /*  sets all passages to `nobr` */
 Config.passages.nobr = true;
 
@@ -213,7 +218,7 @@ Config.saves.version = setup.versionNumber;
 s.checkSave = function(save) {
   return (save.version == setup.versionNumber);
 }
-/* twine-user-script #2: "020_functions.js" */
+/* twine-user-script #4: "020_functions.js" */
 /*  creates a variable `varName` which is a clone of `ClassName`, then sets its
     id to `varName` and adds it to the set of game objects, `gameObjects` */
 setup.make = function(varName, ClassName) {
@@ -430,7 +435,8 @@ setup.rollSpecial = function(mod, omit) {
     `objDescription` */
 setup.examine = function(objDescription, id) {
   let txt = jQuery("#" + (id || "end")).html();
-  jQuery("#" + (id || "end")).empty().wiki(objDescription);
+  jQuery(".description").empty()
+  jQuery("#" + (id || "end")).wiki(objDescription);
   if (txt == jQuery("#" + (id || "end")).html()) {
     jQuery("#" + (id || "end")).empty();
   }
@@ -482,7 +488,7 @@ setup.loadGame = function() {
   }
   return;
 }
-/* twine-user-script #3: "030_rules.js" */
+/* twine-user-script #5: "030_rules.js" */
 /*  fail rule in Bedroom */
 setup.bedroomFail = function() {
   let retVals = [1,2];
@@ -624,7 +630,7 @@ setup.generalRememberMustang = function() {
   }
   return retVal;
 }
-/* twine-user-script #4: "Story JavaScript" */
+/* twine-user-script #6: "Story JavaScript" */
 </script><tw-passagedata pid="1" name="StoryInit" tags="" position="100,100" size="100,100">/*  system variables */
 
   &lt;&lt;set $rollCount = 0&gt;&gt;
@@ -807,7 +813,7 @@ setup.generalRememberMustang = function() {
 
     /*  Person properties */
 
-      &lt;&lt;set $player.description = &quot;&lt;p&gt;You reek of alcohol, your mouth is dry and tastes like vomit, and your head is throbbing. There&#39;s blood on your &lt;&lt;link \&quot;clothes\&quot;&gt;&gt;&lt;&lt;run setup.examine($clothes.description,\&quot;more\&quot;)&gt;&gt;&lt;&lt;/link&gt;&gt;, in your hair, and on your face and hands. You&#39;ve had better days.&lt;/p&gt;&lt;div id=\&quot;more\&quot;&gt;&lt;/div&gt;&quot;&gt;&gt;
+      &lt;&lt;set $player.description = &quot;&lt;p&gt;You reek of alcohol, your mouth is dry and tastes like vomit, and your head is throbbing. There&#39;s blood on your &lt;&lt;link \&quot;clothes\&quot;&gt;&gt;&lt;&lt;run setup.examine($clothes.description,\&quot;more\&quot;)&gt;&gt;&lt;&lt;/link&gt;&gt;, in your hair, and on your face and hands. You&#39;ve had better days.&lt;/p&gt;&lt;div id=\&quot;more\&quot; class=\&quot;description\&quot;&gt;&lt;/div&gt;&quot;&gt;&gt;
       &lt;&lt;set $player.STR = 3&gt;&gt;
       &lt;&lt;set $player.INT = 0&gt;&gt;
       &lt;&lt;set $player.WIS = 1&gt;&gt;
@@ -1102,7 +1108,7 @@ setup.generalRememberMustang = function() {
   &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;div id=&quot;end&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;end&quot; class=&quot;description&quot;&gt;&lt;/div&gt;
 
 &lt;&lt;if settings.debug&gt;&gt;
   &lt;p&gt;Discovered Things:
@@ -1151,6 +1157,9 @@ setup.generalRememberMustang = function() {
     &lt;&lt;else&gt;&gt;
       [[begin|intro]]
     &lt;&lt;/if&gt;&gt;
+    &lt;&lt;if settings.beta&gt;&gt;
+      &lt;br&gt;&lt;br&gt;&lt;a @href=s.betaFormURL target=&#39;_blank&#39;&gt;give feedback to developer&lt;/a&gt;
+    &lt;&lt;/if&gt;&gt;
   &lt;/div&gt;
 &lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="7" name="intro" tags="no-header" position="850,100" size="100,100">&lt;p&gt;It started with one shot of whiskey. Of course, most nights started with one shot of whiskey. Then one became two and two became more. Before long, you were making a fool of yourself. At least you assume you were. You can&#39;t remember.&lt;/p&gt;
 
@@ -1158,7 +1167,7 @@ setup.generalRememberMustang = function() {
 
 &lt;p&gt;When you get out of the bed, you see it. The body. A man lying on his back, dead, with a knife sticking out of his chest. Before you can do or think anything, someone starts pounding on the front door. Is it the police? Is it the murderer? Are //you// the murderer?&lt;/p&gt;
 
-&lt;p&gt;[[continue|who you are]]&lt;/p&gt;</tw-passagedata><tw-passagedata pid="8" name="who you are" tags="" position="975,100" size="100,100">&lt;p&gt;Scott Allen Brady. Scotty, to your friends. That&#39;s your name. You have to remind yourself, to make sure you haven&#39;t forgotten //everything//. The last thing you remember is leaving work. You&#39;d finished packing the motherboards into their shipping crates. Then you clocked out and left the plant. You were still wearing your Hewlett-Packard shirt when you got in your truck. You met some friends at the bar. Then...&lt;/p&gt;
+&lt;p&gt;[[continue|who you are]]&lt;/p&gt;</tw-passagedata><tw-passagedata pid="8" name="who you are" tags="" position="975,100" size="100,100">&lt;p&gt;Scott Allen Brady. Scotty, to your friends. That&#39;s your name. You have to remind yourself, just to make sure you haven&#39;t forgotten //everything//. The last thing you remember is leaving work. You&#39;d finished packing the motherboards into their shipping crates. Then you clocked out and left the plant. You were still wearing your Hewlett-Packard shirt when you got in your truck. You met some friends at the bar. Then...&lt;/p&gt;
 
 &lt;p&gt;Nothing. You can&#39;t remember. Now here you are, in some surreal nightmare, looking at a dead guy. The pounding on the door makes it hard to concentrate.&lt;/p&gt;
 
@@ -1177,7 +1186,7 @@ setup.generalRememberMustang = function() {
 &lt;p&gt;On your left, the &lt;&lt;link &quot;bedroom door&quot;&gt;&gt;&lt;&lt;run setup.examine($bedroomDoor.description)&gt;&gt;&lt;&lt;/link&gt;&gt; is closed. &lt;&lt;if $pounding&gt;&gt;You can hear the pounding on the front door coming from that direction. &lt;&lt;elseif $crowbar&gt;&gt;Outside the bedroom, &lt;&lt;if $knowledge.has(&quot;policeAtDoor&quot;)&gt;&gt;the police are&lt;&lt;else&gt;&gt;someone is&lt;&lt;/if&gt;&gt; breaking into the house with a crowbar. &lt;&lt;/if&gt;&gt;To your right, the &lt;&lt;link &quot;door&quot;&gt;&gt;&lt;&lt;run setup.examine($bathroomDoor.description)&gt;&gt;&lt;&lt;/link&gt;&gt; to the adjoining bathroom is ajar. On the floor is a &lt;&lt;link &quot;dead man&quot;&gt;&gt;&lt;&lt;run setup.examine($body.description)&gt;&gt;&lt;&lt;/link&gt;&gt;, lying on his back in a pool of blood. &lt;&lt;if $containedIn.get(&quot;knife&quot;) == &quot;bedroom&quot;&gt;&gt;What looks like a heavy-duty &lt;&lt;link &quot;chef&#39;s knife&quot;&gt;&gt;&lt;&lt;run setup.examine($knife.description)&gt;&gt;&lt;&lt;/link&gt;&gt; is sticking out of his chest.&lt;&lt;/if&gt;&gt;&lt;/p&gt;
 
 /*  container for examination prose */
-&lt;div id=&quot;end&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;end&quot; class=&quot;description&quot;&gt;&lt;/div&gt;
 
 /*  take knife */
 &lt;p&gt;
@@ -1343,7 +1352,7 @@ setup.generalRememberMustang = function() {
 &lt;p&gt;You hear the sound of police radios outside. That pounding on the door is definitely the police. You don&#39;t have time to waste, but you take a quick look for the man&#39;s &lt;&lt;link &quot;wallet&quot;&gt;&gt;&lt;&lt;run setup.examine($wallet.description)&gt;&gt;&lt;&lt;/link&gt;&gt;. You find it and check &lt;&lt;link &quot;his ID&quot;&gt;&gt;&lt;&lt;run setup.examine($sameLastName.description)&gt;&gt;&lt;&lt;/link&gt;&gt;. Matt Brady. Brady? He has the same last name as you. But who is he?&lt;p&gt;
 
 /*  container for examination prose */
-&lt;div id=&quot;end&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;end&quot; class=&quot;description&quot;&gt;&lt;/div&gt;
 
 /*  take wallet */
 &lt;p&gt;
@@ -1375,7 +1384,7 @@ setup.generalRememberMustang = function() {
 &lt;p&gt;&lt;&lt;= $msg[1]&gt;&gt;Three men rush in. &quot;Get down on the ground!&quot; one shouts. &lt;&lt;if $inventory.has(&quot;knife&quot;)&gt;&gt;&quot;He&#39;s got a knife!&quot; yells another.&lt;&lt;/if&gt;&gt; They all have their guns trained on you. The bald man in the center looks like a police &lt;&lt;link &quot;detective&quot; &gt;&gt;&lt;&lt;run setup.examine(&quot;The detective doesn&#39;t move. He doesn&#39;t blink. He just stands there scowling, waiting for you to make a move.&quot;)&gt;&gt;&lt;&lt;/link&gt;&gt;. The other two are uniformed cops.&lt;/p&gt;
 
 /*  container for examination prose */
-&lt;p id=&quot;end&quot;&gt;&lt;/p&gt;
+&lt;p id=&quot;end&quot; class=&quot;description&quot;&gt;&lt;/p&gt;
 
 /*  basic actions */
 &lt;div id=&quot;basic-actions&quot;&gt;
@@ -1678,12 +1687,12 @@ setup.generalRememberMustang = function() {
 
 &lt;p&gt;There&#39;s a bloody thumbprint on the edge of the &lt;&lt;link &quot;medicine cabinet&quot;&gt;&gt;&lt;&lt;run setup.examine($medCabinet.description, &quot;mid&quot;)&gt;&gt;&lt;&lt;/link&gt;&gt;&#39;s mirrored door. Against the right wall, under the &lt;&lt;link &quot;window&quot;&gt;&gt;&lt;&lt;run setup.examine($window.description, &quot;mid&quot;)&gt;&gt;&lt;&lt;/link&gt;&gt;, is an old, broken toilet&lt;&lt;if !$doorBlocked&gt;&gt; and a pile of &lt;&lt;link &quot;construction materials&quot;&gt;&gt;&lt;&lt;run setup.examine($materials.description, &quot;mid&quot;)&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;&lt;else&gt;&gt;. You&#39;ve blocked the door with construction materials. You can hear people trying to push their way in&lt;&lt;/if&gt;&gt;.&lt;/p&gt;
 
-&lt;div id=&quot;mid&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;mid&quot; class=&quot;description&quot;&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;&lt;if visited(&quot;bathroom&quot;) == 1&gt;&gt;You hear the sound of a car approaching. &lt;&lt;/if&gt;&gt;Through the window, you see a black &lt;&lt;link &quot;Mustang&quot;&gt;&gt;&lt;&lt;run setup.examine($mustang.description)&gt;&gt;&lt;&lt;/link&gt;&gt; &lt;&lt;if visited(&quot;bathroom&quot;) == 1&gt;&gt;pull into&lt;&lt;else&gt;&gt;in&lt;&lt;/if&gt;&gt; the back alley. &lt;&lt;if $containedIn.get(&quot;detective&quot;) == &quot;hallway&quot;&gt;&gt;Several people are rushing into the house.&lt;&lt;/if&gt;&gt;&lt;&lt;if $shelfBedroom.fallen &amp;&amp; !$doorBlocked&gt;&gt;The cops are right behind you.&lt;&lt;/if&gt;&gt; &lt;&lt;if ($containedIn.get(&quot;detective&quot;) == &quot;hallway&quot; || $shelfBedroom.fallen) &amp;&amp; !$doorBlocked&gt;&gt;There&#39;s no time to waste. They&#39;ll be on top of you in seconds.&lt;&lt;/if&gt;&gt;&lt;/p&gt;
 
 /*  container for examination prose */
-&lt;div id=&quot;end&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;end&quot; class=&quot;description&quot;&gt;&lt;/div&gt;
 
 /*  description of tiles/cocaine */
 &lt;p id=&quot;tile-description&quot;&gt;
@@ -1934,7 +1943,7 @@ setup.generalRememberMustang = function() {
 
 &lt;p&gt;&lt;&lt;return &quot;continue&quot;&gt;&gt;&lt;/p&gt;</tw-passagedata><tw-passagedata pid="34" name="finding phone" tags="message" position="475,475" size="100,100">&lt;p&gt;You open the medicine cabinet and there on the shelf is your &lt;&lt;link &quot;phone&quot;&gt;&gt;&lt;&lt;run setup.examine($phone.description)&gt;&gt;&lt;&lt;/link&gt;&gt;. How it got there, you have no idea.&lt;p&gt;
 
-&lt;div id=&quot;end&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;end&quot; class=&quot;description&quot;&gt;&lt;/div&gt;
 
 &lt;div&gt;$msg[0]&lt;/div&gt;
 
@@ -1988,7 +1997,7 @@ setup.generalRememberMustang = function() {
 
 &lt;p&gt;[[continue|alley]]&lt;/p&gt;</tw-passagedata><tw-passagedata pid="46" name="alley" tags="" position="725,600" size="100,100">&lt;p&gt;You drop into the alley beside a dumpster and land on your side. You can hear the engine of the Mustang running. As you get to your feet, the blonde woman behind the wheel leans out the window. &lt;&lt;if $knowledge.has(&quot;womanAtBar&quot;)&gt;&gt;You recognize her. She&#39;s the &lt;&lt;link &quot;woman&quot;&gt;&gt;&lt;&lt;run setup.examine($womanAtBar.description)&gt;&gt;&lt;&lt;/link&gt;&gt; you played pool with last night. &lt;&lt;/if&gt;&gt;&quot;Hey you,&quot; she says with a smile. When you hesitate to answer, she beckons you closer. &quot;Well, what are you waiting for? Come on over here.&quot; She lets out a short laugh.&lt;/p&gt;
 
-&lt;p id=&quot;end&quot;&gt;&lt;/p&gt;
+&lt;p id=&quot;end&quot; class=&quot;description&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;&lt;link &quot;approach the car&quot;&gt;&gt;
   &lt;&lt;set $msg = [&quot;&quot;, &quot;You still aren&#39;t sure who she is, but something about this woman feels familiar and comfortable. You start walking toward the car. You get about five steps when a blunt object hits you hard in the back of the head.&quot;]&gt;&gt;
@@ -2006,7 +2015,7 @@ setup.generalRememberMustang = function() {
   &lt;&lt;goto &quot;kidnapped&quot;&gt;&gt;
 &lt;&lt;/link&gt;&gt;&lt;/p&gt;</tw-passagedata><tw-passagedata pid="47" name="kidnapped" tags="message" position="850,600" size="100,100">&lt;p&gt;$msg[0]&lt;/p&gt;
 
-&lt;div id=&quot;end&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;end&quot; class=&quot;description&quot;&gt;&lt;/div&gt;
 
 &lt;p&gt;$msg[1] Your vision blurs and you lose your balance. You&#39;re unconscious before you even hit the ground.&lt;/p&gt;
 
@@ -2108,7 +2117,7 @@ setup.generalRememberMustang = function() {
   &lt;&lt;/script&gt;&gt;
 &lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="54" name="sitting duck" tags="" position="475,725" size="100,100">&lt;p&gt;You kick open the door and make a run for it. A gunshot rings out behind you and you duck behind a &lt;&lt;link &quot;parked car&quot;&gt;&gt;&lt;&lt;run setup.examine($parkedCar.description)&gt;&gt;&lt;&lt;/link&gt;&gt;. You can see the &lt;&lt;link &quot;shooter&quot;&gt;&gt;&lt;&lt;run setup.examine($shooter.description)&gt;&gt;&lt;&lt;/link&gt;&gt; walking toward you. You look around for somewhere to go. Nothing. Wherever you go, you&#39;ll be out in the open, exposed. There&#39;s a &lt;&lt;link &quot;subway entrance&quot;&gt;&gt;&lt;&lt;run setup.examine($subwayEntrance.description)&gt;&gt;&lt;&lt;/link&gt;&gt; about fifty feet away. You can make a break for it, but that&#39;s a long way to run without cover. You need to decide quick. The shooter is almost on top of you.&lt;/p&gt;
 
-&lt;div id=&quot;end&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;end&quot; class=&quot;description&quot;&gt;&lt;/div&gt;
 
 /*  open parked car */
 &lt;p&gt;&lt;&lt;link &quot;try to open the parked car &lt;&lt;if settings.debug&gt;&gt; (+1 XP)&lt;&lt;/if&gt;&gt;&quot;&gt;&gt;
@@ -2201,7 +2210,7 @@ setup.generalRememberMustang = function() {
 &lt;&lt;/if&gt;&gt;
 You desperately look around. On the shelf to your right you see some things from the house. You can see the &lt;&lt;link &quot;knife&quot;&gt;&gt;&lt;&lt;run setup.examine($knife.description)&gt;&gt;&lt;&lt;/link&gt;&gt; and &lt;&lt;if $wallet.discovered&gt;&gt;the &lt;&lt;link &quot;wallet&quot;&gt;&gt;&lt;&lt;run setup.examine($wallet.description)&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;&lt;else&gt;&gt;a wallet&lt;&lt;/if&gt;&gt;. The &lt;&lt;link &quot;garbage bags&quot;&gt;&gt;&lt;&lt;run setup.examine($bumBags.description)&gt;&gt;&lt;&lt;/link&gt;&gt; from the shower are also there. Most of their contents are dumped out. It even looks like there&#39;s a dead cat among the bum&#39;s stuff.&lt;/p&gt;
 
-&lt;div id=&quot;end&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;end&quot; class=&quot;description&quot;&gt;&lt;/div&gt;
 
 /*  mention the bar */
 &lt;p&gt;&lt;&lt;if $knowledge.has(&quot;russian&quot;)&gt;&gt;
@@ -2239,7 +2248,7 @@ You desperately look around. On the shelf to your right you see some things from
 
 &lt;p&gt;The man at the table turns and looks at you, but says nothing. He picks up a &lt;&lt;link &quot;power drill&quot;&gt;&gt;&lt;&lt;run setup.examine($powerDrill.description)&gt;&gt;&lt;&lt;/link&gt;&gt; from the table and walks over to you. He puts a foot on the chair, right between your legs.&lt;/p&gt;
 
-&lt;div id=&quot;end&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;end&quot; class=&quot;description&quot;&gt;&lt;/div&gt;
 
 &lt;p&gt;&quot;That man you killed,&quot; he says in a thick Russian accent, &quot;he had something belongs to me. You know where it is.&quot; You look at him with a blank stare. &quot;I&#39;m talking about computer chip. Where is it?&quot;&lt;/p&gt;
 
@@ -2373,21 +2382,21 @@ You desperately look around. On the shelf to your right you see some things from
 
 &lt;p&gt;&quot;How should I know.&quot;&lt;/p&gt;</tw-passagedata><tw-passagedata pid="67" name="free yourself" tags="" position="850,850" size="100,100">&lt;p&gt;With the Russian out of sight, you quietly scoot over to the shelf. Using your chin, you slide the &lt;&lt;link &quot;knife&quot;&gt;&gt;&lt;&lt;run setup.examine($knife.description, &quot;early&quot;)&gt;&gt;&lt;&lt;/link&gt;&gt; onto your lap. You grab it with your right hand and cut the ropes binding your right wrist. You then cut the rest of the ropes, stand up, and take a closer look at what&#39;s on the shelf.&lt;&lt;if !$inventory.has(&quot;knife&quot;)&gt;&gt; You put the knife back on the shelf.&lt;&lt;/if&gt;&gt;&lt;/p&gt;
 
-&lt;div id=&quot;early&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;early&quot; class=&quot;description&quot;&gt;&lt;/div&gt;
 
 &lt;p&gt;You were right. There //is// a &lt;&lt;link &quot;dead cat&quot;&gt;&gt;&lt;&lt;run setup.examine($deadCat.description, &quot;early-mid&quot;)&gt;&gt;&lt;&lt;/link&gt;&gt; among the bum&#39;s belongings. He probably killed it to keep it quiet while he was waiting to ambush and murder its owner.&lt;/p&gt;
 
-&lt;div id=&quot;early-mid&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;early-mid&quot; class=&quot;description&quot;&gt;&lt;/div&gt;
 
 &lt;p&gt;$msg[0]&lt;/p&gt;
 
-&lt;div id=&quot;mid&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;mid&quot; class=&quot;description&quot;&gt;&lt;/div&gt;
 
 &lt;p&gt;$msg[1] You fish through the bum&#39;s garbage bags, looking for evidence. You need something to prove he&#39;s the killer. But all you find is trash. Who could live like this, toting around garbage everywhere? Offhandedly, you wonder if he worried about it getting stolen.&lt;/p&gt;
 
 &lt;p&gt;Then you hear a sound. It&#39;s the crackle of the Russian&#39;s radio, somewhere in the distance. You need to move. He could be back at any moment.&lt;/p&gt;
 
-&lt;div id=&quot;end&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;end&quot; class=&quot;description&quot;&gt;&lt;/div&gt;
 
 &lt;p id=&quot;msg&quot;&gt;&lt;&lt;if !$inventory.has(&quot;knife&quot;)&gt;&gt;You put the knife back on the shelf. &lt;&lt;/if&gt;&gt;&lt;&lt;if $inventory.has(&quot;wallet&quot;)&gt;&gt;You take the victim&#39;s wallet.&lt;&lt;/if&gt;&gt;&lt;/p&gt;
 
@@ -2774,7 +2783,7 @@ You ignore the detective and keep searching through the garbage bags.
 
 &lt;p&gt;You quietly limp over to the desk. Its surface is cluttered with things, one of which is the ashtray you smelled when you walked in. You also see &lt;&lt;link &quot;three bags of cocaine&quot;&gt;&gt;&lt;&lt;run s.examine(&quot;&lt;p&gt;You look again at the cocaine on the desk. The Russian and that woman must have been looking for their computer chip inside those bags. Looks like they didn&#39;t find it.&lt;/p&gt;&quot;)&gt;&gt;&lt;&lt;/link&gt;&gt; which have been torn open, the cocaine spilled all over the desk. You see &lt;&lt;link &quot;your phone&quot;&gt;&gt;&lt;&lt;run s.examine(&quot;&lt;p&gt;You pick up your phone. It&#39;s dead. And it has a brand new crack down the middle of the screen.&lt;/p&gt;&quot;)&gt;&gt;&lt;&lt;/link&gt;&gt;. It&#39;s sitting on top of some kind of technical schematic.&lt;/p&gt;
 
-&lt;div id=&quot;end&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;end&quot; class=&quot;description&quot;&gt;&lt;/div&gt;
 
 &lt;p&gt;You turn your attention to the monitor. On the computer screen is a paused video from a security camera in the victim&#39;s house. The image shows the victim&#39;s bathroom. A bearded man in ragged clothes is climbing into the bathroom through the window.&lt;/p&gt;
 
@@ -2836,25 +2845,19 @@ You ignore the detective and keep searching through the garbage bags.
 
 &lt;p&gt;&lt;&lt;=$msg[1]&gt;&gt;They arrest you, there is a trial, you are convicted, and you spend the next twenty years in prison. You never do remember that night. Sometimes, in your prison cell, you wonder. Was there evidence in that house to prove your innocence? You suspect so. You might have found it, if only you&#39;d tried harder.&lt;/p&gt;
 
-&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&lt;&lt;link &quot;&#39;&#39;THE END&#39;&#39;&quot;&gt;&gt;
-	&lt;&lt;goto &quot;acknowledgments&quot;&gt;&gt;
-&lt;&lt;/link&gt;&gt;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="98" name="Hospital then prison" tags="" position="975,1225" size="100,100">/*  cops get you before you visit the bathroom, you were shot */
+&lt;&lt;include &quot;The End&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="98" name="Hospital then prison" tags="" position="975,1225" size="100,100">/*  cops get you before you visit the bathroom, you were shot */
 &lt;p&gt;$msg[0] The bullet hits you in the shoulder and knocks you to the ground. You&#39;ve never been shot before. It&#39;s strange, but you don&#39;t feel any pain at first. Just warmth from the blood running down your arm. But then it starts to burn and soon it&#39;s aching more than anything you&#39;ve ever felt.&lt;/p&gt;
 
 &lt;p&gt;The cops drag you outside and call for an ambulance to take you to the hospital. When you are well enough, there is a trial. You are convicted and spend the next twenty years in prison. You never do remember that night. Sometimes, in your prison cell, you wonder. Was there evidence in that house to prove your innocence? You suspect so. You might have found it, if only you&#39;d tried harder.&lt;/p&gt;
 
-&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&lt;&lt;link &quot;&#39;&#39;THE END&#39;&#39;&quot;&gt;&gt;
-	&lt;&lt;goto &quot;acknowledgments&quot;&gt;&gt;
-&lt;&lt;/link&gt;&gt;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="99" name="drilled to death" tags="" position="1100,1225" size="100,100">/*  drilled finger took last HP */
+&lt;&lt;include &quot;The End&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="99" name="drilled to death" tags="" position="1100,1225" size="100,100">/*  drilled finger took last HP */
 &lt;p&gt;Your train of thought is interrupted by the sound of the drill. The Russian grabs your forearm and holds it down onto the arm of the chair. &quot;Maybe you need motivation,&quot; he says as he brings the drill toward your hand. Your body tenses and you struggle to move, but it&#39;s no use. He drives the drill bit right through your knuckle.&lt;/p&gt;
 
 &lt;p&gt;You don&#39;t even scream. The drill bit has barely touched your knuckle when you slump over unconscious from the shock. The Russian slaps your face a few times. &quot;Bah!&quot; he says when you won&#39;t wake up. He stands up, says something into his radio, and walks away.&lt;/p&gt;
 
 &lt;p&gt;You will not be receiving the medical attention you so desperately need. You will die here today, tied to a chair in an empty warehouse.&lt;/p&gt;
 
-&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&lt;&lt;link &quot;&#39;&#39;THE END&#39;&#39;&quot;&gt;&gt;
-	&lt;&lt;goto &quot;acknowledgments&quot;&gt;&gt;
-&lt;&lt;/link&gt;&gt;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="100" name="punched to death" tags="" position="1225,1225" size="100,100">/*  punch in face took last HP */
+&lt;&lt;include &quot;The End&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="100" name="punched to death" tags="" position="1225,1225" size="100,100">/*  punch in face took last HP */
 $msg[0]
 
 &lt;p&gt;The Russian punches you square in the nose. You hear a crunch sound and taste blood in the back of your throat. You feel an urge to gag and cough, but you&#39;re too weak. Your chest convulses a few times and you can&#39;t breathe. Then you black out.&lt;/p&gt;
@@ -2863,27 +2866,21 @@ $msg[0]
 
 &lt;p&gt;You will not be receiving the medical attention you so desperately need. You will die here today, tied to a chair in an empty warehouse.&lt;/p&gt;
 
-&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&lt;&lt;link &quot;&#39;&#39;THE END&#39;&#39;&quot;&gt;&gt;
-	&lt;&lt;goto &quot;acknowledgments&quot;&gt;&gt;
-&lt;&lt;/link&gt;&gt;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="101" name="choked to death" tags="" position="100,1350" size="100,100">/*  choked by Russian took last HP */
+&lt;&lt;include &quot;The End&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="101" name="choked to death" tags="" position="100,1350" size="100,100">/*  choked by Russian took last HP */
 &lt;p&gt;It&#39;s hard to see anything in the darkness. The only light there is comes from the moonlight through the windows high above. You look carefully at every part of the warehouse you can see. There&#39;s no trace of him.&lt;/p&gt;
 
 &lt;p&gt;You&#39;re about to give up when you feel someone grab your throat. Your heart jumps in your chest and you grab at the hands around your neck. It&#39;s the Russian. He&#39;s behind you, choking you. You try to pull him off you. It&#39;s no use. He&#39;s too strong. You can feel your windpipe being crushed. Pain shoots up your neck and into your face. You try to gasp and it feels like your throat is being stabbed. Your vision blurs and you black out.&lt;/p&gt;
 
 &lt;p&gt;The Russian feels your body go limp and gives your throat one final crushing squeeze. He drops your lifeless body to the floor, steps over it, and continues on his way to meet the woman.&lt;/p&gt;
 
-&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&lt;&lt;link &quot;&#39;&#39;THE END&#39;&#39;&quot;&gt;&gt;
-	&lt;&lt;goto &quot;acknowledgments&quot;&gt;&gt;
-&lt;&lt;/link&gt;&gt;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="102" name="arrested at warehouse" tags="" position="225,1350" size="100,100">/*  you stupidly tried to leave the Warehouse with cops everywhere */
+&lt;&lt;include &quot;The End&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="102" name="arrested at warehouse" tags="" position="225,1350" size="100,100">/*  you stupidly tried to leave the Warehouse with cops everywhere */
 &lt;p&gt;You head toward the exit, sticking to the shadows. As you get closer, you see the cops, crouching behind boxes and trading gunfire with the Russian. All their attention is on him and it isn&#39;t hard to go unnoticed. You pass behind them to the open door and when you have a clear shot, you run outside.&lt;/p&gt;
 
 &lt;p&gt;&quot;Freeze!&quot; you hear someone shout. You squint to see past the blaring lights and see a line of five cops with their guns pointed straight at you. &quot;Get on the ground!&quot; one of them shouts. It&#39;s over. They have you.&lt;/p&gt;
 
 &lt;p&gt;They arrest you, there&#39;s a trial, you&#39;re convicted, and you spend the next twenty years in prison. You never do remember that night, but you protest your innocence the entire time. Although no one believes you, you know. Somewhere, some bum has gotten away with murder. In your prison cell, you often wonder. If you had found the stolen cell phone, would things have turned out differently? You suspect so.&lt;/p&gt;
 
-&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&lt;&lt;link &quot;&#39;&#39;THE END&#39;&#39;&quot;&gt;&gt;
-	&lt;&lt;goto &quot;acknowledgments&quot;&gt;&gt;
-&lt;&lt;/link&gt;&gt;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="103" name="happy ending" tags="" position="350,1350" size="100,100">/*	you stupidly tried to leave the Warehouse with cops everywhere,
+&lt;&lt;include &quot;The End&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="103" name="happy ending" tags="" position="350,1350" size="100,100">/*	you stupidly tried to leave the Warehouse with cops everywhere,
 		but you&#39;re Level 2, so you found the secret happy ending */
 &lt;p&gt;You slip into the shadows and get as far away from the warehouse as possible. When you&#39;re sure you&#39;ve made it and no one is following you, you rest for the first time all day. A wave of relief washes over you and you fall asleep right there on a park bench.&lt;/p&gt;
 
@@ -2895,9 +2892,7 @@ $msg[0]
 
 &lt;p&gt;You laugh. Customers always ask you that. You guess it //is// pretty unbelievable. &quot;Does it matter?&quot; you reply as you refill the man&#39;s scotch. &quot;Have another drink.&quot;&lt;/p&gt;
 
-&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&lt;&lt;link &quot;&#39;&#39;THE END&#39;&#39;&quot;&gt;&gt;
-	&lt;&lt;goto &quot;acknowledgments&quot;&gt;&gt;
-&lt;&lt;/link&gt;&gt;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="104" name="nailed it" tags="" position="475,1350" size="100,100">/*  stepping on nail took last HP */
+&lt;&lt;include &quot;The End&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="104" name="nailed it" tags="" position="475,1350" size="100,100">/*  stepping on nail took last HP */
 &lt;p&gt;You&#39;re not about to spend your life in prison for a murder you didn&#39;t commit. &lt;&lt;if $underShelf&gt;&gt;You duck under the shelf and run toward the neighboring aisle. You can hear the detective shouting behind you.&lt;&lt;else&gt;&gt;You run away, down the aisle. You can hear the detective shouting behind you. You round the corner toward the neighboring aisle.&lt;&lt;/if&gt;&gt;&lt;/p&gt;
 
 &lt;p&gt;Your path is blocked by a small pile of old two-by-fours, which you easily climb over. But with your last step, your foot lands hard on a rusty, three-inch nail. The nail pierces your foot completely and you can see the pointed end coming out the top of your shoe. You shout from the sudden pain of it, but adrenaline keeps you moving. You lift your foot off the nail and limp into the next aisle. Blood is pouring out of your shoe onto the floor. You can&#39;t even feel your foot. You take one step and immediately collapse, unable to support your own weight. Dizziness overcomes you and you pass out.&lt;/p&gt;
@@ -2906,20 +2901,28 @@ $msg[0]
 
 &lt;p&gt;$msg[1]&lt;/p&gt;
 
-&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&lt;&lt;link &quot;&#39;&#39;THE END&#39;&#39;&quot;&gt;&gt;
-	&lt;&lt;goto &quot;acknowledgments&quot;&gt;&gt;
-&lt;&lt;/link&gt;&gt;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="105" name="the truth" tags="" position="600,1350" size="100,100">/*	the intended ending */
+&lt;&lt;include &quot;The End&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="105" name="the truth" tags="" position="600,1350" size="100,100">/*	the intended ending */
 &lt;p&gt;$msg[0]&lt;/p&gt;
 
 &lt;p&gt;$msg[1] The detective walks toward you. &quot;You have the right to remain silent,&quot; he says. He continues to recite the Miranda warning as he cuffs your hands behind your back. You stand passively, a feeling of confusion clouding your mind. You face the glass window and in it you see your reflection. It looks like a stranger. Ragged beard, matted hair, tired eyes, leathery face. Your whole visage stands in stark contrast to the clothes you&#39;re wearing. You have the face of a poverty-stricken old man, and the blood-stained clothes of an affluent young one. Your head hurts trying to make sense of it all and you look away. With a tug on your arm, the detective leads you out of the office.&lt;/p&gt;
 
-&lt;div align=&quot;center&quot;&gt;&lt;p&gt;&lt;&lt;link &quot;&#39;&#39;THE END&#39;&#39;&quot;&gt;&gt;
+&lt;&lt;include &quot;The End&quot;&gt;&gt;</tw-passagedata><tw-passagedata pid="106" name="The End" tags="include" position="725,1350" size="100,100">&lt;div align=&quot;center&quot;&gt;&lt;p&gt;THE END&lt;/p&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;&lt;link &quot;view acknowledgments&quot;&gt;&gt;
 	&lt;&lt;goto &quot;acknowledgments&quot;&gt;&gt;
-&lt;&lt;/link&gt;&gt;&lt;/p&gt;&lt;/div&gt;</tw-passagedata><tw-passagedata pid="106" name="acknowledgments" tags="" position="725,1350" size="100,100">&lt;h3&gt;Acknowledgments&lt;/h3&gt;
+&lt;&lt;/link&gt;&gt;&lt;/p&gt;
 
-&lt;p&gt;Thank you for playing. This story began as a short experiment in creating interactive fiction with Twine. The project ended up being larger and taking longer than I expected. The work involved in creating it gave me a new appreciation for the enormous effort needed for game development in general. I am indebted to the expertise and generosity of the people on the Twine Games Discord server. These include, but are not limited to, GwenTastic, Akjosch, Chapel, Tayruh, Greyelf, TheMadExile, Luna City Hobo, and RynGM. My sincerest apologies to anyone I overlooked.&lt;/p&gt;
+&lt;&lt;if settings.beta&gt;&gt;
+	&lt;p&gt;&lt;a @href=s.betaFormURL target=&#39;_blank&#39;&gt;give feedback to developer&lt;/a&gt;&lt;/p&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="107" name="acknowledgments" tags="" position="850,1350" size="100,100">&lt;h3&gt;Acknowledgments&lt;/h3&gt;
 
-&lt;p&gt;--Jack Weaver, December 2019&lt;/p&gt;</tw-passagedata><tw-passagedata pid="107" name="end of endings" tags="fake" position="850,1350" size="100,100"></tw-passagedata></tw-storydata>
+&lt;p&gt;Thank you for playing. This story began as a short experiment in creating interactive fiction with Twine. The project ended up being larger and taking longer than I expected. The work involved in creating it gave me a new appreciation for the enormous effort needed for game development in general. Special thanks to all of my alpha testers for giving great feedback and putting up with my nagging. I am indebted to the expertise and generosity of the people on the Twine Games Discord server. These include, but are not limited to, GwenTastic, Akjosch, Chapel, Tayruh, Greyelf, TheMadExile, Luna City Hobo, RynGM, and Cyrus Firheir. My sincerest apologies to anyone I overlooked.&lt;/p&gt;
+
+&lt;p&gt;--Jack Weaver, January 2020&lt;/p&gt;
+
+&lt;&lt;if settings.beta&gt;&gt;
+	&lt;p&gt;&lt;a @href=s.betaFormURL target=&#39;_blank&#39;&gt;give feedback to developer&lt;/a&gt;&lt;/p&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="108" name="end of endings" tags="fake" position="975,1350" size="100,100"></tw-passagedata></tw-storydata>
 	<script id="script-sugarcube" type="text/javascript">
 	/*! SugarCube JS */
 	if(document.documentElement.getAttribute("data-init")==="loading"){!function(window,document,jQuery,undefined){"use strict";function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function _toConsumableArray(e){if(Array.isArray(e)){for(var t=0,r=Array(e.length);t<e.length;t++)r[t]=e[t];return r}return Array.from(e)}var _createClass=function(){function e(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,r,n){return r&&e(t.prototype,r),n&&e(t,n),t}}(),_slicedToArray=function(){function e(e,t){var r=[],n=!0,a=!1,i=undefined;try{for(var o,s=e[Symbol.iterator]();!(n=(o=s.next()).done)&&(r.push(o.value),!t||r.length!==t);n=!0);}catch(e){a=!0,i=e}finally{try{!n&&s.return&&s.return()}finally{if(a)throw i}}return r}return function(t,r){if(Array.isArray(t))return t;if(Symbol.iterator in Object(t))return e(t,r);throw new TypeError("Invalid attempt to destructure non-iterable instance")}}(),_typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},errorPrologRegExp=/^(?:(?:uncaught\s+(?:exception:\s+)?)?\w*(?:error|exception|_err):\s+)+/i,Alert=function(){function e(e,t,r,n){var a="fatal"===e,i="Apologies! "+(a?"A fatal":"An")+" error has occurred.";i+=a?" Aborting.":" You may be able to continue, but some parts may not work properly.",null==t&&null==r||(i+="\n\nError",null!=t&&(i+=" ["+t+"]"),i+=null!=r?": "+r.replace(errorPrologRegExp,"")+".":": unknown error."),"object"===(void 0===n?"undefined":_typeof(n))&&n.stack&&(i+="\n\nStack Trace:\n"+n.stack),window.alert(i)}function t(t,r,n){e(null,t,r,n)}function r(t,r,n){e("fatal",t,r,n)}return function(e){window.onerror=function(n,a,i,o,s){"complete"===document.readyState?t(null,n,s):(r(null,n,s),window.onerror=e,"function"==typeof window.onerror&&window.onerror.apply(this,arguments))}}(window.onerror),Object.freeze(Object.defineProperties({},{error:{value:t},fatal:{value:r}}))}(),Patterns=function(){var e=function(){var e=new Map([[" ","\\u0020"],["\f","\\f"],["\n","\\n"],["\r","\\r"],["\t","\\t"],["\v","\\v"],[" ","\\u00a0"],[" ","\\u1680"],["᠎","\\u180e"],[" ","\\u2000"],[" ","\\u2001"],[" ","\\u2002"],[" ","\\u2003"],[" ","\\u2004"],[" ","\\u2005"],[" ","\\u2006"],[" ","\\u2007"],[" ","\\u2008"],[" ","\\u2009"],[" ","\\u200a"],["\u2028","\\u2028"],["\u2029","\\u2029"],[" ","\\u202f"],[" ","\\u205f"],["　","\\u3000"],["\ufeff","\\ufeff"]]),t=/^\s$/,r="";return e.forEach(function(e,n){t.test(n)||(r+=e)}),r?"[\\s"+r+"]":"\\s"}(),t="\\s"===e?"\\S":e.replace(/^\[/,"[^"),r="[0-9A-Z_a-z\\-\\u00c0-\\u00d6\\u00d8-\\u00f6\\u00f8-\\u00ff\\u0150\\u0170\\u0151\\u0171]",n=r.replace("\\-",""),a=function(){return"("+r+"+)\\(([^\\)\\|\\n]+)\\):|("+r+"+):([^;\\|\\n]+);|((?:\\."+r+"+)+);|((?:#"+r+"+)+);"}();return Object.freeze({space:e,spaceNoTerminator:"[\\u0020\\f\\t\\v\\u00a0\\u1680\\u180e\\u2000-\\u200a\\u202f\\u205f\\u3000\\ufeff]",lineTerminator:"[\\n\\r\\u2028\\u2029]",notSpace:t,anyChar:"(?:.|[\\n\\r\\u2028\\u2029])",anyLetter:r,anyLetterStrict:n,identifierFirstChar:"[$A-Z_a-z]",identifierNextChar:"[$0-9A-Z_a-z]",identifier:"[$A-Z_a-z][$0-9A-Z_a-z]*",variableSigil:"[$_]",variable:"[$_][$A-Z_a-z][$0-9A-Z_a-z]*",macroName:"[A-Za-z][\\w-]*|[=-]",templateName:"[A-Za-z][\\w-]*",cssImage:"\\[[<>]?[Ii][Mm][Gg]\\[(?:\\s|\\S)*?\\]\\]+",inlineCss:a,url:"(?:file|https?|mailto|ftp|javascript|irc|news|data):[^\\s'\"]+"})}();!function(){!function(e){if(e&&e.prototype&&null==e.prototype.firstElementChild){var t=Node.ELEMENT_NODE;Object.defineProperty(e.prototype,"firstElementChild",{get:function(){for(var e=this.childNodes,r=0;r<e.length;++r){var n=e[r];if(n.nodeType===t)return n}return null}})}}(window.Node||window.Element)}(),function(){function e(e,t){var r=Number.parseInt(e,10)||0;if(r<1)return"";var n=void 0===t?"":String(t);for(""===n&&(n=" ");n.length<r;){var a=n.length,i=r-a;n+=a>i?n.slice(0,i):n}return n.length>r&&(n=n.slice(0,r)),n}var t=function(){function e(e,n){var a=String(e);if(!a)return a;switch(n){case"start":return t.test(a)?a.replace(t,""):a;case"end":return r.test(a)?a.replace(r,""):a;default:throw new Error('_trimString called with incorrect where parameter value: "'+n+'"')}}var t=new RegExp("^"+Patterns.space+Patterns.space+"*"),r=new RegExp(""+Patterns.space+Patterns.space+"*$");return e}();Array.prototype.flat||Object.defineProperty(Array.prototype,"flat",{configurable:!0,writable:!0,value:function(){function e(){if(null==this)throw new TypeError("Array.prototype.flat called on null or undefined");var t=0===arguments.length?1:Number(arguments[0])||0;return t<1?Array.prototype.slice.call(this):Array.prototype.reduce.call(this,function(r,n){return n instanceof Array?r.push.apply(r,_toConsumableArray(e.call(n,t-1))):r.push(n),r},[])}return e}()}),Array.prototype.flatMap||Object.defineProperty(Array.prototype,"flatMap",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.flatMap called on null or undefined");return Array.prototype.map.apply(this,arguments).flat()}}),Array.prototype.includes||Object.defineProperty(Array.prototype,"includes",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.includes called on null or undefined");if(0===arguments.length)return!1;var e=this.length>>>0;if(0===e)return!1;var t=arguments[0],r=Number(arguments[1])||0;for(r<0&&(r=Math.max(0,e+r));r<e;++r){var n=this[r];if(n===t||n!==n&&t!==t)return!0}return!1}}),Object.entries||Object.defineProperty(Object,"entries",{configurable:!0,writable:!0,value:function(e){if("object"!==(void 0===e?"undefined":_typeof(e))||null===e)throw new TypeError("Object.entries object parameter must be an object");return Object.keys(e).map(function(t){return[t,e[t]]})}}),Object.fromEntries||Object.defineProperty(Object,"fromEntries",{configurable:!0,writable:!0,value:function(e){return Array.from(e).reduce(function(e,t){if(Object(t)!==t)throw new TypeError("Object.fromEntries iterable parameter must yield objects");return t[0]in e?Object.defineProperty(e,t[0],{configurable:!0,enumerable:!0,writable:!0,value:t[1]}):e[t[0]]=t[1],e},{})}}),Object.getOwnPropertyDescriptors||Object.defineProperty(Object,"getOwnPropertyDescriptors",{configurable:!0,writable:!0,value:function(e){if(null==e)throw new TypeError("Object.getOwnPropertyDescriptors object parameter is null or undefined");var t=Object(e);return Reflect.ownKeys(t).reduce(function(e,r){var n=Object.getOwnPropertyDescriptor(t,r);return void 0!==n&&(r in e?Object.defineProperty(e,r,{configurable:!0,enumerable:!0,writable:!0,value:n}):e[r]=n),e},{})}}),Object.values||Object.defineProperty(Object,"values",{configurable:!0,writable:!0,value:function(e){if("object"!==(void 0===e?"undefined":_typeof(e))||null===e)throw new TypeError("Object.values object parameter must be an object");return Object.keys(e).map(function(t){return e[t]})}}),String.prototype.padStart||Object.defineProperty(String.prototype,"padStart",{configurable:!0,writable:!0,value:function(t,r){if(null==this)throw new TypeError("String.prototype.padStart called on null or undefined");var n=String(this),a=n.length,i=Number.parseInt(t,10);return i<=a?n:e(i-a,r)+n}}),String.prototype.padEnd||Object.defineProperty(String.prototype,"padEnd",{configurable:!0,writable:!0,value:function(t,r){if(null==this)throw new TypeError("String.prototype.padEnd called on null or undefined");var n=String(this),a=n.length,i=Number.parseInt(t,10);return i<=a?n:n+e(i-a,r)}}),String.prototype.trimStart||Object.defineProperty(String.prototype,"trimStart",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("String.prototype.trimStart called on null or undefined");return t(this,"start")}}),String.prototype.trimLeft||Object.defineProperty(String.prototype,"trimLeft",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("String.prototype.trimLeft called on null or undefined");return t(this,"start")}}),String.prototype.trimEnd||Object.defineProperty(String.prototype,"trimEnd",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("String.prototype.trimEnd called on null or undefined");return t(this,"end")}}),String.prototype.trimRight||Object.defineProperty(String.prototype,"trimRight",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("String.prototype.trimRight called on null or undefined");return t(this,"end")}})}(),function(){function _random(){var e=void 0,t=void 0;switch(arguments.length){case 0:throw new Error("_random called with insufficient parameters");case 1:e=0,t=arguments[0];break;default:e=arguments[0],t=arguments[1]}if(e>t){var r=[t,e];e=r[0],t=r[1]}return Math.floor(_nativeMathRandom()*(t-e+1))+e}function _randomIndex(e,t){var r=void 0,n=void 0;switch(t.length){case 1:r=0,n=e-1;break;case 2:r=0,n=Math.trunc(t[1]);break;default:r=Math.trunc(t[1]),n=Math.trunc(t[2])}return Number.isNaN(r)?r=0:!Number.isFinite(r)||r>=e?r=e-1:r<0&&(r=e+r)<0&&(r=0),Number.isNaN(n)?n=0:!Number.isFinite(n)||n>=e?n=e-1:n<0&&(n=e+n)<0&&(n=e-1),_random(r,n)}function _getCodePointStartAndEnd(e,t){var r=e.charCodeAt(t);if(Number.isNaN(r))return{char:"",start:-1,end:-1};if(r<55296||r>57343)return{char:e.charAt(t),start:t,end:t};if(r>=55296&&r<=56319){var n=t+1;if(n>=e.length)throw new Error("high surrogate without trailing low surrogate");var a=e.charCodeAt(n);if(a<56320||a>57343)throw new Error("high surrogate without trailing low surrogate");return{char:e.charAt(t)+e.charAt(n),start:t,end:n}}if(0===t)throw new Error("low surrogate without leading high surrogate");var i=t-1,o=e.charCodeAt(i);if(o<55296||o>56319)throw new Error("low surrogate without leading high surrogate");return{char:e.charAt(i)+e.charAt(t),start:i,end:t}}var _nativeMathRandom=Math.random;Object.defineProperty(Array,"random",{configurable:!0,writable:!0,value:function(e){if("object"!==(void 0===e?"undefined":_typeof(e))||null===e||!Object.prototype.hasOwnProperty.call(e,"length"))throw new TypeError("Array.random array parameter must be an array or array-lke object");var t=e.length>>>0;if(0!==t){return e[0===arguments.length?_random(0,t-1):_randomIndex(t,Array.prototype.slice.call(arguments,1))]}}}),Object.defineProperty(Array.prototype,"concatUnique",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.concatUnique called on null or undefined");var e=Array.from(this);if(0===arguments.length)return e;var t=Array.prototype.reduce.call(arguments,function(e,t){return e.concat(t)},[]),r=t.length;if(0===r)return e;for(var n=Array.prototype.indexOf,a=Array.prototype.push,i=0;i<r;++i){var o=t[i];-1===n.call(e,o)&&a.call(e,o)}return e}}),Object.defineProperty(Array.prototype,"count",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.count called on null or undefined");for(var e=Array.prototype.indexOf,t=arguments[0],r=Number(arguments[1])||0,n=0;-1!==(r=e.call(this,t,r));)++n,++r;return n}}),Object.defineProperty(Array.prototype,"delete",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.delete called on null or undefined");if(0===arguments.length)return[];var e=this.length>>>0;if(0===e)return[];for(var t=Array.prototype.concat.apply([],arguments),r=t.length,n=[],a=0;a<e;++a)for(var i=this[a],o=0;o<r;++o){var s=t[o];if(i===s||i!==i&&s!==s){n.push(a);break}}for(var u=[],l=0,c=n.length;l<c;++l)u[l]=this[n[l]];for(var d=Array.prototype.splice,f=n.length-1;f>=0;--f)d.call(this,n[f],1);return u}}),Object.defineProperty(Array.prototype,"deleteAt",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.deleteAt called on null or undefined");if(0===arguments.length)return[];var e=this.length>>>0;if(0===e)return[];for(var t=Array.prototype.splice,r=[].concat(_toConsumableArray(new Set(Array.prototype.concat.apply([],arguments).map(function(t){return t<0?Math.max(0,e+t):t})).values())),n=[].concat(_toConsumableArray(r)).sort(function(e,t){return t-e}),a=[],i=0,o=r.length;i<o;++i)a[i]=this[r[i]];for(var s=0,u=n.length;s<u;++s)t.call(this,n[s],1);return a}}),Object.defineProperty(Array.prototype,"deleteWith",{configurable:!0,writable:!0,value:function(e,t){if(null==this)throw new TypeError("Array.prototype.deleteWith called on null or undefined");if("function"!=typeof e)throw new Error("Array.prototype.deleteWith predicate parameter must be a function");var r=this.length>>>0;if(0===r)return[];for(var n=Array.prototype.splice,a=[],i=[],o=0;o<r;++o)e.call(t,this[o],o,this)&&(i.push(this[o]),a.push(o));for(var s=a.length-1;s>=0;--s)n.call(this,a[s],1);return i}}),Object.defineProperty(Array.prototype,"first",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.first called on null or undefined");if(0!=this.length>>>0)return this[0]}}),Object.defineProperty(Array.prototype,"includesAll",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.includesAll called on null or undefined");if(1===arguments.length)return Array.isArray(arguments[0])?Array.prototype.includesAll.apply(this,arguments[0]):Array.prototype.includes.apply(this,arguments);for(var e=0,t=arguments.length;e<t;++e)if(!Array.prototype.some.call(this,function(e){return e===this.val||e!==e&&this.val!==this.val},{val:arguments[e]}))return!1;return!0}}),Object.defineProperty(Array.prototype,"includesAny",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.includesAny called on null or undefined");if(1===arguments.length)return Array.isArray(arguments[0])?Array.prototype.includesAny.apply(this,arguments[0]):Array.prototype.includes.apply(this,arguments);for(var e=0,t=arguments.length;e<t;++e)if(Array.prototype.some.call(this,function(e){return e===this.val||e!==e&&this.val!==this.val},{val:arguments[e]}))return!0;return!1}}),Object.defineProperty(Array.prototype,"last",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.last called on null or undefined");var e=this.length>>>0;if(0!==e)return this[e-1]}}),Object.defineProperty(Array.prototype,"pluck",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.pluck called on null or undefined");var e=this.length>>>0;if(0!==e){var t=0===arguments.length?_random(0,e-1):_randomIndex(e,[].concat(Array.prototype.slice.call(arguments)));return Array.prototype.splice.call(this,t,1)[0]}}}),Object.defineProperty(Array.prototype,"pluckMany",{configurable:!0,writable:!0,value:function(e){if(null==this)throw new TypeError("Array.prototype.pluckMany called on null or undefined");var t=this.length>>>0;if(0===t)return[];var r=Math.trunc(e);if(!Number.isInteger(r))throw new Error("Array.prototype.pluckMany want parameter must be an integer");if(r<1)return[];r>t&&(r=t);var n=Array.prototype.splice,a=[],i=t-1;do{a.push(n.call(this,_random(0,i--),1)[0])}while(a.length<r);return a}}),Object.defineProperty(Array.prototype,"pushUnique",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.pushUnique called on null or undefined");var e=arguments.length;if(0===e)return this.length>>>0;for(var t=Array.prototype.indexOf,r=Array.prototype.push,n=0;n<e;++n){var a=arguments[n];-1===t.call(this,a)&&r.call(this,a)}return this.length>>>0}}),Object.defineProperty(Array.prototype,"random",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.random called on null or undefined");var e=this.length>>>0;if(0!==e){return this[0===arguments.length?_random(0,e-1):_randomIndex(e,[].concat(Array.prototype.slice.call(arguments)))]}}}),Object.defineProperty(Array.prototype,"randomMany",{configurable:!0,writable:!0,value:function(e){if(null==this)throw new TypeError("Array.prototype.randomMany called on null or undefined");var t=this.length>>>0;if(0===t)return[];var r=Math.trunc(e);if(!Number.isInteger(r))throw new Error("Array.prototype.randomMany want parameter must be an integer");if(r<1)return[];r>t&&(r=t);var n=new Map,a=[],i=t-1;do{var o=void 0;do{o=_random(0,i)}while(n.has(o));n.set(o,!0),a.push(this[o])}while(a.length<r);return a}}),Object.defineProperty(Array.prototype,"shuffle",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.shuffle called on null or undefined");var e=this.length>>>0;if(0===e)return this;for(var t=e-1;t>0;--t){var r=Math.floor(_nativeMathRandom()*(t+1));if(t!==r){var n=this[t];this[t]=this[r],this[r]=n}}return this}}),Object.defineProperty(Array.prototype,"unshiftUnique",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.unshiftUnique called on null or undefined");var e=arguments.length;if(0===e)return this.length>>>0;for(var t=Array.prototype.indexOf,r=Array.prototype.unshift,n=0;n<e;++n){var a=arguments[n];-1===t.call(this,a)&&r.call(this,a)}return this.length>>>0}}),Object.defineProperty(Function.prototype,"partial",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Function.prototype.partial called on null or undefined");var e=Array.prototype.slice,t=this,r=e.call(arguments,0);return function(){for(var n=[],a=0,i=0;i<r.length;++i)n.push(r[i]===undefined?arguments[a++]:r[i]);return t.apply(this,n.concat(e.call(arguments,a)))}}}),Object.defineProperty(Math,"clamp",{configurable:!0,writable:!0,value:function(e,t,r){var n=Number(e);return Number.isNaN(n)?NaN:n.clamp(t,r)}}),Object.defineProperty(Math,"easeInOut",{configurable:!0,writable:!0,value:function(e){return 1-(Math.cos(Number(e)*Math.PI)+1)/2}}),Object.defineProperty(Number.prototype,"clamp",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Number.prototype.clamp called on null or undefined");if(2!==arguments.length)throw new Error("Number.prototype.clamp called with an incorrect number of parameters");var e=Number(arguments[0]),t=Number(arguments[1]);if(e>t){var r=[t,e];e=r[0],t=r[1]}return Math.min(Math.max(this,e),t)}}),RegExp.escape||function(){var e=/[\\^$*+?.()|[\]{}]/g,t=new RegExp(e.source);Object.defineProperty(RegExp,"escape",{configurable:!0,writable:!0,value:function(r){var n=String(r);return n&&t.test(n)?n.replace(e,"\\$&"):n}})}(),function(){var e=/{(\d+)(?:,([+-]?\d+))?}/g,t=new RegExp(e.source);Object.defineProperty(String,"format",{configurable:!0,writable:!0,value:function(r){function n(e,t,r){if(!t)return e;var n=Math.abs(t)-e.length;if(n<1)return e;var a=String(r).repeat(n);return t<0?e+a:a+e}if(arguments.length<2)return 0===arguments.length?"":r;var a=2===arguments.length&&Array.isArray(arguments[1])?[].concat(_toConsumableArray(arguments[1])):Array.prototype.slice.call(arguments,1);return 0===a.length?r:t.test(r)?(e.lastIndex=0,r.replace(e,function(e,t,r){var i=a[t];if(null==i)return"";for(;"function"==typeof i;)i=i();switch(void 0===i?"undefined":_typeof(i)){case"string":break;case"object":i=JSON.stringify(i);break;default:i=String(i)}return n(i,r?Number.parseInt(r,10):0," ")})):r}})}(),Object.defineProperty(String.prototype,"contains",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("String.prototype.contains called on null or undefined");return-1!==String.prototype.indexOf.apply(this,arguments)}}),Object.defineProperty(String.prototype,"count",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("String.prototype.count called on null or undefined");var e=String(arguments[0]||"");if(""===e)return 0;for(var t=String.prototype.indexOf,r=e.length,n=Number(arguments[1])||0,a=0;-1!==(n=t.call(this,e,n));)++a,n+=r;return a}}),Object.defineProperty(String.prototype,"first",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("String.prototype.first called on null or undefined");return _getCodePointStartAndEnd(String(this),0).char}}),Object.defineProperty(String.prototype,"last",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("String.prototype.last called on null or undefined");var e=String(this);return _getCodePointStartAndEnd(e,e.length-1).char}}),Object.defineProperty(String.prototype,"splice",{configurable:!0,writable:!0,value:function(e,t,r){if(null==this)throw new TypeError("String.prototype.splice called on null or undefined");var n=this.length>>>0;if(0===n)return"";var a=Number(e);Number.isSafeInteger(a)?a<0&&(a+=n)<0&&(a=0):a=0,a>n&&(a=n);var i=Number(t);(!Number.isSafeInteger(i)||i<0)&&(i=0);var o=this.slice(0,a);return void 0!==r&&(o+=r),a+i<n&&(o+=this.slice(a+i)),o}}),Object.defineProperty(String.prototype,"splitOrEmpty",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("String.prototype.splitOrEmpty called on null or undefined");return""===String(this)?[]:String.prototype.split.apply(this,arguments)}}),Object.defineProperty(String.prototype,"toLocaleUpperFirst",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("String.prototype.toLocaleUpperFirst called on null or undefined");var e=String(this),t=_getCodePointStartAndEnd(e,0),r=t.char,n=t.end;return-1===n?"":r.toLocaleUpperCase()+e.slice(n+1)}}),Object.defineProperty(String.prototype,"toUpperFirst",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("String.prototype.toUpperFirst called on null or undefined");var e=String(this),t=_getCodePointStartAndEnd(e,0),r=t.char,n=t.end;return-1===n?"":r.toUpperCase()+e.slice(n+1)}}),Object.defineProperty(Date.prototype,"toJSON",{configurable:!0,writable:!0,value:function(){return["(revive:date)",this.toISOString()]}}),Object.defineProperty(Function.prototype,"toJSON",{configurable:!0,writable:!0,value:function(){return["(revive:eval)","("+this.toString()+")"]}}),Object.defineProperty(Map.prototype,"toJSON",{configurable:!0,writable:!0,value:function(){return["(revive:map)",[].concat(_toConsumableArray(this))]}}),Object.defineProperty(RegExp.prototype,"toJSON",{configurable:!0,writable:!0,value:function(){return["(revive:eval)",this.toString()]}}),Object.defineProperty(Set.prototype,"toJSON",{configurable:!0,writable:!0,value:function(){return["(revive:set)",[].concat(_toConsumableArray(this))]}}),Object.defineProperty(JSON,"reviveWrapper",{configurable:!0,writable:!0,value:function(e,t){if("string"!=typeof e)throw new TypeError("JSON.reviveWrapper code parameter must be a string");return["(revive:eval)",[e,t]]}}),Object.defineProperty(JSON,"_real_parse",{value:JSON.parse}),Object.defineProperty(JSON,"parse",{configurable:!0,writable:!0,value:function value(text,reviver){return JSON._real_parse(text,function(key,val){var value=val;if(Array.isArray(value)&&2===value.length)switch(value[0]){case"(revive:set)":value=new Set(value[1]);break;case"(revive:map)":value=new Map(value[1]);break;case"(revive:date)":value=new Date(value[1]);break;case"(revive:eval)":try{if(Array.isArray(value[1])){var $ReviveData$=value[1][1];value=eval(value[1][0])}else value=eval(value[1])}catch(e){}}else if("string"==typeof value&&"@@revive@@"===value.slice(0,10))try{value=eval(value.slice(10))}catch(e){}if("function"==typeof reviver)try{value=reviver(key,value)}catch(e){}return value})}}),Object.defineProperty(Array.prototype,"contains",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.contains called on null or undefined");return Array.prototype.includes.apply(this,arguments)}}),Object.defineProperty(Array.prototype,"containsAll",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.containsAll called on null or undefined");return Array.prototype.includesAll.apply(this,arguments)}}),Object.defineProperty(Array.prototype,"containsAny",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.containsAny called on null or undefined");return Array.prototype.includesAny.apply(this,arguments)}}),Object.defineProperty(Array.prototype,"flatten",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("Array.prototype.flatten called on null or undefined");return Array.prototype.flat.call(this,1/0)}}),Object.defineProperty(String.prototype,"readBracketedList",{configurable:!0,writable:!0,value:function(){if(null==this)throw new TypeError("String.prototype.readBracketedList called on null or undefined");for(var e=new RegExp("(?:\\[\\[((?:\\s|\\S)*?)\\]\\])|([^\"'\\s]\\S*)","gm"),t=[],r=void 0;null!==(r=e.exec(this));)r[1]?t.push(r[1]):r[2]&&t.push(r[2]);return t}})}();var Browser=function(){var e=navigator.userAgent.toLowerCase(),t=e.includes("windows phone"),r=Object.freeze({Android:!t&&e.includes("android"),BlackBerry:/blackberry|bb10/.test(e),iOS:!t&&/ip(?:hone|ad|od)/.test(e),Windows:t||e.includes("iemobile"),any:function(){return r.Android||r.BlackBerry||r.iOS||r.Windows}}),n=!r.Windows&&!/khtml|trident|edge/.test(e)&&e.includes("gecko"),a=!e.includes("opera")&&/msie|trident/.test(e),i=a?function(){var t=/(?:msie\s+|rv:)(\d+\.\d)/.exec(e);return t?Number(t[1]):0}():null,o=e.includes("opera")||e.includes(" opr/"),s=o?function(){var t=new RegExp((/khtml|chrome/.test(e)?"opr":"version")+"\\/(\\d+\\.\\d+)"),r=t.exec(e);return r?Number(r[1]):0}():null,u=e.includes("vivaldi");return Object.freeze({userAgent:e,isMobile:r,isGecko:n,isIE:a,ieVersion:i,isOpera:o,operaVersion:s,isVivaldi:u})}(),Has=function(){var e=function(){try{return"function"==typeof document.createElement("audio").canPlayType}catch(e){}return!1}(),t=e&&function(){try{var e=document.createElement("audio").play();return e.catch(function(){}),e instanceof Promise}catch(e){}return!1}(),r=function(){try{return"Blob"in window&&"File"in window&&"FileList"in window&&"FileReader"in window&&!Browser.isMobile.any()&&(!Browser.isOpera||Browser.operaVersion>=15)}catch(e){}return!1}(),n=function(){try{return"geolocation"in navigator&&"function"==typeof navigator.geolocation.getCurrentPosition&&"function"==typeof navigator.geolocation.watchPosition}catch(e){}return!1}(),a=function(){try{return"MutationObserver"in window&&"function"==typeof window.MutationObserver}catch(e){}return!1}(),i=function(){try{return"performance"in window&&"function"==typeof window.performance.now}catch(e){}return!1}(),o=function(){try{for(var e=new Map([["transition","transitionend"],["MSTransition","msTransitionEnd"],["WebkitTransition","webkitTransitionEnd"],["MozTransition","transitionend"]]),t=[].concat(_toConsumableArray(e.keys())),r=document.createElement("div"),n=0;n<t.length;++n)if(r.style[t[n]]!==undefined)return e.get(t[n])}catch(e){}return!1}();return Object.freeze({audio:e,audioPromise:t,fileAPI:r,geolocation:n,mutationObserver:a,performance:i,transitionEndEvent:o})}(),Visibility=function(){function e(){return Boolean(r&&document[r.hiddenProperty])}function t(){return r&&document[r.stateProperty]||"visible"}var r=function(){try{return Object.freeze([{hiddenProperty:"hidden",stateProperty:"visibilityState",changeEvent:"visibilitychange"},{hiddenProperty:"webkitHidden",stateProperty:"webkitVisibilityState",changeEvent:"webkitvisibilitychange"},{hiddenProperty:"mozHidden",stateProperty:"mozVisibilityState",changeEvent:"mozvisibilitychange"},{hiddenProperty:"msHidden",stateProperty:"msVisibilityState",changeEvent:"msvisibilitychange"}].find(function(e){return e.hiddenProperty in document}))}catch(e){}return null}();return Object.freeze(Object.defineProperties({},{isHidden:{value:e},state:{value:t},hiddenProperty:{value:r.hiddenProperty},stateProperty:{value:r.stateProperty},changeEvent:{value:r.changeEvent}}))}(),_ref3=function(){function e(t){if("object"!==(void 0===t?"undefined":_typeof(t))||null===t)return t;if(t instanceof String)return String(t);if(t instanceof Number)return Number(t);if(t instanceof Boolean)return Boolean(t);if("function"==typeof t.clone)return t.clone(!0);if(t.nodeType&&"function"==typeof t.cloneNode)return t.cloneNode(!0);var r=void 0;return t instanceof Array?r=new Array(t.length):t instanceof Date?r=new Date(t.getTime()):t instanceof Map?(r=new Map,t.forEach(function(t,n){return r.set(n,e(t))})):t instanceof RegExp?r=new RegExp(t):t instanceof Set?(r=new Set,t.forEach(function(t){return r.add(e(t))})):r=Object.create(Object.getPrototypeOf(t)),Object.keys(t).forEach(function(n){return r[n]=e(t[n])}),r}function t(e){for(var t=document.createDocumentFragment(),r=document.createElement("p"),n=void 0;null!==(n=e.firstChild);){if(n.nodeType===Node.ELEMENT_NODE){switch(n.nodeName.toUpperCase()){case"BR":if(null!==n.nextSibling&&n.nextSibling.nodeType===Node.ELEMENT_NODE&&"BR"===n.nextSibling.nodeName.toUpperCase()){e.removeChild(n.nextSibling),e.removeChild(n),t.appendChild(r),r=document.createElement("p");continue}if(!r.hasChildNodes()){e.removeChild(n);continue}break;case"ADDRESS":case"ARTICLE":case"ASIDE":case"BLOCKQUOTE":case"CENTER":case"DIV":case"DL":case"FIGURE":case"FOOTER":case"FORM":case"H1":case"H2":case"H3":case"H4":case"H5":case"H6":case"HEADER":case"HR":case"MAIN":case"NAV":case"OL":case"P":case"PRE":case"SECTION":case"TABLE":case"UL":r.hasChildNodes()&&(t.appendChild(r),r=document.createElement("p")),t.appendChild(n);continue}}r.appendChild(n)}r.hasChildNodes()&&t.appendChild(r),e.appendChild(t)}function r(){try{return document.activeElement||null}catch(e){return null}}function n(e,t,r){var n="object"===(void 0===e?"undefined":_typeof(e))?e:document.getElementById(e);if(null==n)return null;var a=Array.isArray(t)?t:[t];jQuery(n).empty();for(var i=0,o=a.length;i<o;++i)if(Story.has(a[i]))return new Wikifier(n,Story.get(a[i]).processText().trim()),n;if(null!=r){var s=String(r).trim();""!==s&&new Wikifier(n,s)}return n}function a(e,t,r){var n=jQuery(document.createElement("div")),a=jQuery(document.createElement("button")),i=jQuery(document.createElement("pre")),o=L10n.get("errorTitle")+": "+(t||"unknown error");return a.addClass("error-toggle").ariaClick({label:L10n.get("errorToggle")},function(){a.hasClass("enabled")?(a.removeClass("enabled"),i.attr({"aria-hidden":!0,hidden:"hidden"})):(a.addClass("enabled"),i.removeAttr("aria-hidden hidden"))}).appendTo(n),jQuery(document.createElement("span")).addClass("error").text(o).appendTo(n),jQuery(document.createElement("code")).text(r).appendTo(i),i.addClass("error-source").attr({"aria-hidden":!0,hidden:"hidden"}).appendTo(n),n.addClass("error-view").appendTo(e),console.warn(o+"\n\t"+r.replace(/\n/g,"\n\t")),!1}function i(e,t){var r=i;switch(void 0===e?"undefined":_typeof(e)){case"number":if(Number.isNaN(e))return t;break;case"object":if(null===e)return t;if(Array.isArray(e))return e.map(function(e){return r(e,t)}).join(", ");if(e instanceof Set)return[].concat(_toConsumableArray(e)).map(function(e){return r(e,t)}).join(", ");if(e instanceof Map){return"{ "+[].concat(_toConsumableArray(e)).map(function(e){var n=_slicedToArray(e,2),a=n[0],i=n[1];return r(a,t)+" → "+r(i,t)}).join(", ")+" }"}return e instanceof Date?e.toLocaleString():"function"==typeof e.toString?e.toString():Object.prototype.toString.call(e);case"function":case"undefined":return t}return String(e)}return Object.freeze(Object.defineProperties({},{clone:{value:e},convertBreaks:{value:t},safeActiveElement:{value:r},setPageElement:{value:n},throwError:{value:a},toStringOrDefault:{value:i}}))}(),clone=_ref3.clone,convertBreaks=_ref3.convertBreaks,safeActiveElement=_ref3.safeActiveElement,setPageElement=_ref3.setPageElement,throwError=_ref3.throwError,toStringOrDefault=_ref3.toStringOrDefault;!function(){function e(e){13!==e.which&&32!==e.which||(e.preventDefault(),jQuery(safeActiveElement()||this).trigger("click"))}function t(e){return function(){var t=jQuery(this)

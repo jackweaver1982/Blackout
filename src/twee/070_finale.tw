@@ -200,7 +200,7 @@ You ignore the detective and keep searching through the garbage bags.
 
 <p>You quietly limp over to the desk. Its surface is cluttered with things, one of which is the ashtray you smelled when you walked in. You also see <<link "three bags of cocaine">><<run s.examine("<p>You look again at the cocaine on the desk. The Russian and that woman must have been looking for their computer chip inside those bags. Looks like they didn't find it.</p>")>><</link>> which have been torn open, the cocaine spilled all over the desk. You see <<link "your phone">><<run s.examine("<p>You pick up your phone. It's dead. And it has a brand new crack down the middle of the screen.</p>")>><</link>>. It's sitting on top of some kind of technical schematic.</p>
 
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 <p>You turn your attention to the monitor. On the computer screen is a paused video from a security camera in the victim's house. The image shows the victim's bathroom. A bearded man in ragged clothes is climbing into the bathroom through the window.</p>
 

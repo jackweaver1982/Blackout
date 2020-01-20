@@ -36,7 +36,7 @@
 <</if>>
 You desperately look around. On the shelf to your right you see some things from the house. You can see the <<link "knife">><<run setup.examine($knife.description)>><</link>> and <<if $wallet.discovered>>the <<link "wallet">><<run setup.examine($wallet.description)>><</link>><<else>>a wallet<</if>>. The <<link "garbage bags">><<run setup.examine($bumBags.description)>><</link>> from the shower are also there. Most of their contents are dumped out. It even looks like there's a dead cat among the bum's stuff.</p>
 
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 /*  mention the bar */
 <p><<if $knowledge.has("russian")>>
@@ -77,7 +77,7 @@ You desperately look around. On the shelf to your right you see some things from
 
 <p>The man at the table turns and looks at you, but says nothing. He picks up a <<link "power drill">><<run setup.examine($powerDrill.description)>><</link>> from the table and walks over to you. He puts a foot on the chair, right between your legs.</p>
 
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 <p>"That man you killed," he says in a thick Russian accent, "he had something belongs to me. You know where it is." You look at him with a blank stare. "I'm talking about computer chip. Where is it?"</p>
 
@@ -229,21 +229,21 @@ $msg[0]
 :: free yourself
 <p>With the Russian out of sight, you quietly scoot over to the shelf. Using your chin, you slide the <<link "knife">><<run setup.examine($knife.description, "early")>><</link>> onto your lap. You grab it with your right hand and cut the ropes binding your right wrist. You then cut the rest of the ropes, stand up, and take a closer look at what's on the shelf.<<if !$inventory.has("knife")>> You put the knife back on the shelf.<</if>></p>
 
-<div id="early"></div>
+<div id="early" class="description"></div>
 
 <p>You were right. There //is// a <<link "dead cat">><<run setup.examine($deadCat.description, "early-mid")>><</link>> among the bum's belongings. He probably killed it to keep it quiet while he was waiting to ambush and murder its owner.</p>
 
-<div id="early-mid"></div>
+<div id="early-mid" class="description"></div>
 
 <p>$msg[0]</p>
 
-<div id="mid"></div>
+<div id="mid" class="description"></div>
 
 <p>$msg[1] You fish through the bum's garbage bags, looking for evidence. You need something to prove he's the killer. But all you find is trash. Who could live like this, toting around garbage everywhere? Offhandedly, you wonder if he worried about it getting stolen.</p>
 
 <p>Then you hear a sound. It's the crackle of the Russian's radio, somewhere in the distance. You need to move. He could be back at any moment.</p>
 
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 <p id="msg"><<if !$inventory.has("knife")>>You put the knife back on the shelf. <</if>><<if $inventory.has("wallet")>>You take the victim's wallet.<</if>></p>
 

@@ -97,7 +97,7 @@
 :: sitting duck
 <p>You kick open the door and make a run for it. A gunshot rings out behind you and you duck behind a <<link "parked car">><<run setup.examine($parkedCar.description)>><</link>>. You can see the <<link "shooter">><<run setup.examine($shooter.description)>><</link>> walking toward you. You look around for somewhere to go. Nothing. Wherever you go, you'll be out in the open, exposed. There's a <<link "subway entrance">><<run setup.examine($subwayEntrance.description)>><</link>> about fifty feet away. You can make a break for it, but that's a long way to run without cover. You need to decide quick. The shooter is almost on top of you.</p>
 
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 /*  open parked car */
 <p><<link "try to open the parked car <<if settings.debug>> (+1 XP)<</if>>">>

@@ -14,12 +14,12 @@
 
 <p>There's a bloody thumbprint on the edge of the <<link "medicine cabinet">><<run setup.examine($medCabinet.description, "mid")>><</link>>'s mirrored door. Against the right wall, under the <<link "window">><<run setup.examine($window.description, "mid")>><</link>>, is an old, broken toilet<<if !$doorBlocked>> and a pile of <<link "construction materials">><<run setup.examine($materials.description, "mid")>><</link>><<else>>. You've blocked the door with construction materials. You can hear people trying to push their way in<</if>>.</p>
 
-<div id="mid"></div>
+<div id="mid" class="description"></div>
 
 <p><<if visited("bathroom") == 1>>You hear the sound of a car approaching. <</if>>Through the window, you see a black <<link "Mustang">><<run setup.examine($mustang.description)>><</link>> <<if visited("bathroom") == 1>>pull into<<else>>in<</if>> the back alley. <<if $containedIn.get("detective") == "hallway">>Several people are rushing into the house.<</if>><<if $shelfBedroom.fallen && !$doorBlocked>>The cops are right behind you.<</if>> <<if ($containedIn.get("detective") == "hallway" || $shelfBedroom.fallen) && !$doorBlocked>>There's no time to waste. They'll be on top of you in seconds.<</if>></p>
 
 /*  container for examination prose */
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 /*  description of tiles/cocaine */
 <p id="tile-description">
@@ -279,7 +279,7 @@
 :: finding phone [message]
 <p>You open the medicine cabinet and there on the shelf is your <<link "phone">><<run setup.examine($phone.description)>><</link>>. How it got there, you have no idea.<p>
 
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 <div>$msg[0]</div>
 
@@ -369,7 +369,7 @@
 :: alley
 <p>You drop into the alley beside a dumpster and land on your side. You can hear the engine of the Mustang running. As you get to your feet, the blonde woman behind the wheel leans out the window. <<if $knowledge.has("womanAtBar")>>You recognize her. She's the <<link "woman">><<run setup.examine($womanAtBar.description)>><</link>> you played pool with last night. <</if>>"Hey you," she says with a smile. When you hesitate to answer, she beckons you closer. "Well, what are you waiting for? Come on over here." She lets out a short laugh.</p>
 
-<p id="end"></p>
+<p id="end" class="description"></p>
 
 <p><<link "approach the car">>
   <<set $msg = ["", "You still aren't sure who she is, but something about this woman feels familiar and comfortable. You start walking toward the car. You get about five steps when a blunt object hits you hard in the back of the head."]>>
@@ -390,7 +390,7 @@
 :: kidnapped [message]
 <p>$msg[0]</p>
 
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 <p>$msg[1] Your vision blurs and you lose your balance. You're unconscious before you even hit the ground.</p>
 

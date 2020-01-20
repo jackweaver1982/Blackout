@@ -214,7 +214,8 @@ setup.rollSpecial = function(mod, omit) {
     `objDescription` */
 setup.examine = function(objDescription, id) {
   let txt = jQuery("#" + (id || "end")).html();
-  jQuery("#" + (id || "end")).empty().wiki(objDescription);
+  jQuery(".description").empty()
+  jQuery("#" + (id || "end")).wiki(objDescription);
   if (txt == jQuery("#" + (id || "end")).html()) {
     jQuery("#" + (id || "end")).empty();
   }

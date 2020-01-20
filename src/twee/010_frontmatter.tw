@@ -34,6 +34,9 @@ a {
     display: table;
     content: "";
 }
+.description {
+  color:yellow;
+}
 
 :: Story JavaScript [script]
 
@@ -220,7 +223,7 @@ a {
 
     /*  Person properties */
 
-      <<set $player.description = "<p>You reek of alcohol, your mouth is dry and tastes like vomit, and your head is throbbing. There's blood on your <<link \"clothes\">><<run setup.examine($clothes.description,\"more\")>><</link>>, in your hair, and on your face and hands. You've had better days.</p><div id=\"more\"></div>">>
+      <<set $player.description = "<p>You reek of alcohol, your mouth is dry and tastes like vomit, and your head is throbbing. There's blood on your <<link \"clothes\">><<run setup.examine($clothes.description,\"more\")>><</link>>, in your hair, and on your face and hands. You've had better days.</p><div id=\"more\" class=\"description\"></div>">>
       <<set $player.STR = 3>>
       <<set $player.INT = 0>>
       <<set $player.WIS = 1>>
@@ -527,7 +530,7 @@ a {
   </div>
 </div>
 
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 <<if settings.debug>>
   <p>Discovered Things:
@@ -579,6 +582,9 @@ a {
     <<else>>
       [[begin|intro]]
     <</if>>
+    <<if settings.beta>>
+      <br><br><a @href=s.betaFormURL target='_blank'>give feedback to developer</a>
+    <</if>>
   </div>
 <</if>>
 
@@ -592,7 +598,7 @@ a {
 <p>[[continue|who you are]]</p>
 
 :: who you are
-<p>Scott Allen Brady. Scotty, to your friends. That's your name. You have to remind yourself, to make sure you haven't forgotten //everything//. The last thing you remember is leaving work. You'd finished packing the motherboards into their shipping crates. Then you clocked out and left the plant. You were still wearing your Hewlett-Packard shirt when you got in your truck. You met some friends at the bar. Then...</p>
+<p>Scott Allen Brady. Scotty, to your friends. That's your name. You have to remind yourself, just to make sure you haven't forgotten //everything//. The last thing you remember is leaving work. You'd finished packing the motherboards into their shipping crates. Then you clocked out and left the plant. You were still wearing your Hewlett-Packard shirt when you got in your truck. You met some friends at the bar. Then...</p>
 
 <p>Nothing. You can't remember. Now here you are, in some surreal nightmare, looking at a dead guy. The pounding on the door makes it hard to concentrate.</p>
 

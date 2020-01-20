@@ -8,7 +8,7 @@
 <p><<= $msg[1]>>Three men rush in. "Get down on the ground!" one shouts. <<if $inventory.has("knife")>>"He's got a knife!" yells another.<</if>> They all have their guns trained on you. The bald man in the center looks like a police <<link "detective" >><<run setup.examine("The detective doesn't move. He doesn't blink. He just stands there scowling, waiting for you to make a move.")>><</link>>. The other two are uniformed cops.</p>
 
 /*  container for examination prose */
-<p id="end"></p>
+<p id="end" class="description"></p>
 
 /*  basic actions */
 <div id="basic-actions">

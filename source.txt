@@ -36,21 +36,13 @@ a {
     display: table;
     content: "";
 }
+.description {
+  color:yellow;
+}
 
 
 :: Story JavaScript [script]
-/* twine-user-script #1: "010_customizations.js" */
-setup.lastEdited = "2019-01-20-1000";
-setup.versionNumber = 103;
-
-setup.calcVersion = function(num) {
-  let main = Math.floor(num/100);
-  let sub = num % 100;
-  return main + '.' + sub;
-}
-
-setup.version = setup.calcVersion(setup.versionNumber);
-
+/* twine-user-script #1: "005_jsShortcuts.js" */
 /*  make "v" a shortcut for "State.variables",
  *  which is equivalent to "variables()" */
 Object.defineProperty(window, "v", {
@@ -73,7 +65,21 @@ Object.defineProperty(window, "s", {
     return setup;
   }
 });
+/* twine-user-script #2: "007_constants.js" */
+s.lastEdited = "2019-01-20-1327";
+s.versionNumber = 104;
 
+s.calcVersion = function(num) {
+  let main = Math.floor(num/100);
+  let sub = num % 100;
+  return main + '.' + sub;
+}
+
+s.version = setup.calcVersion(setup.versionNumber);
+
+/* s.betaFormURL = 'https://jackweaver1982.github.io/Blackout/betaForm.html'; */
+s.betaFormURL = 'https://jackweaver1982.github.io/Blackout/index.html';
+/* twine-user-script #3: "010_config.js" */
 /*  sets all passages to `nobr` */
 Config.passages.nobr = true;
 
@@ -130,7 +136,7 @@ Config.saves.version = setup.versionNumber;
 s.checkSave = function(save) {
   return (save.version == setup.versionNumber);
 }
-/* twine-user-script #2: "020_functions.js" */
+/* twine-user-script #4: "020_functions.js" */
 /*  creates a variable `varName` which is a clone of `ClassName`, then sets its
     id to `varName` and adds it to the set of game objects, `gameObjects` */
 setup.make = function(varName, ClassName) {
@@ -345,9 +351,21 @@ setup.rollSpecial = function(mod, omit) {
 
 /*  replaces the HTML element with the given `id` (default is "end") by
     `objDescription` */
+// setup.examine = function(objDescription, id) {
+//   let txt = jQuery("#" + (id || "end")).html();
+//   jQuery("#" + (id || "end")).empty().wiki(objDescription);
+//   if (txt == jQuery("#" + (id || "end")).html()) {
+//     jQuery("#" + (id || "end")).empty();
+//   }
+//   return;
+// }
+
+/*  replaces the HTML element with the given `id` (default is "end") by
+    `objDescription` */
 setup.examine = function(objDescription, id) {
   let txt = jQuery("#" + (id || "end")).html();
-  jQuery("#" + (id || "end")).empty().wiki(objDescription);
+  jQuery(".description").empty()
+  jQuery("#" + (id || "end")).wiki(objDescription);
   if (txt == jQuery("#" + (id || "end")).html()) {
     jQuery("#" + (id || "end")).empty();
   }
@@ -399,7 +417,7 @@ setup.loadGame = function() {
   }
   return;
 }
-/* twine-user-script #3: "030_rules.js" */
+/* twine-user-script #5: "030_rules.js" */
 /*  fail rule in Bedroom */
 setup.bedroomFail = function() {
   let retVals = [1,2];
@@ -541,7 +559,7 @@ setup.generalRememberMustang = function() {
   }
   return retVal;
 }
-/* twine-user-script #4: "Story JavaScript" */
+/* twine-user-script #6: "Story JavaScript" */
 
 
 :: StoryInit
@@ -727,7 +745,7 @@ setup.generalRememberMustang = function() {
 
     /*  Person properties */
 
-      <<set $player.description = "<p>You reek of alcohol, your mouth is dry and tastes like vomit, and your head is throbbing. There's blood on your <<link \"clothes\">><<run setup.examine($clothes.description,\"more\")>><</link>>, in your hair, and on your face and hands. You've had better days.</p><div id=\"more\"></div>">>
+      <<set $player.description = "<p>You reek of alcohol, your mouth is dry and tastes like vomit, and your head is throbbing. There's blood on your <<link \"clothes\">><<run setup.examine($clothes.description,\"more\")>><</link>>, in your hair, and on your face and hands. You've had better days.</p><div id=\"more\" class=\"description\"></div>">>
       <<set $player.STR = 3>>
       <<set $player.INT = 0>>
       <<set $player.WIS = 1>>
@@ -1038,7 +1056,7 @@ setup.generalRememberMustang = function() {
   </div>
 </div>
 
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 <<if settings.debug>>
   <p>Discovered Things:
@@ -1091,6 +1109,9 @@ setup.generalRememberMustang = function() {
     <<else>>
       [[begin|intro]]
     <</if>>
+    <<if settings.beta>>
+      <br><br><a @href=s.betaFormURL target='_blank'>give feedback to developer</a>
+    <</if>>
   </div>
 <</if>>
 
@@ -1106,7 +1127,7 @@ setup.generalRememberMustang = function() {
 
 
 :: who you are
-<p>Scott Allen Brady. Scotty, to your friends. That's your name. You have to remind yourself, to make sure you haven't forgotten //everything//. The last thing you remember is leaving work. You'd finished packing the motherboards into their shipping crates. Then you clocked out and left the plant. You were still wearing your Hewlett-Packard shirt when you got in your truck. You met some friends at the bar. Then...</p>
+<p>Scott Allen Brady. Scotty, to your friends. That's your name. You have to remind yourself, just to make sure you haven't forgotten //everything//. The last thing you remember is leaving work. You'd finished packing the motherboards into their shipping crates. Then you clocked out and left the plant. You were still wearing your Hewlett-Packard shirt when you got in your truck. You met some friends at the bar. Then...</p>
 
 <p>Nothing. You can't remember. Now here you are, in some surreal nightmare, looking at a dead guy. The pounding on the door makes it hard to concentrate.</p>
 
@@ -1132,7 +1153,7 @@ setup.generalRememberMustang = function() {
 <p>On your left, the <<link "bedroom door">><<run setup.examine($bedroomDoor.description)>><</link>> is closed. <<if $pounding>>You can hear the pounding on the front door coming from that direction. <<elseif $crowbar>>Outside the bedroom, <<if $knowledge.has("policeAtDoor")>>the police are<<else>>someone is<</if>> breaking into the house with a crowbar. <</if>>To your right, the <<link "door">><<run setup.examine($bathroomDoor.description)>><</link>> to the adjoining bathroom is ajar. On the floor is a <<link "dead man">><<run setup.examine($body.description)>><</link>>, lying on his back in a pool of blood. <<if $containedIn.get("knife") == "bedroom">>What looks like a heavy-duty <<link "chef's knife">><<run setup.examine($knife.description)>><</link>> is sticking out of his chest.<</if>></p>
 
 /*  container for examination prose */
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 /*  take knife */
 <p>
@@ -1310,7 +1331,7 @@ setup.generalRememberMustang = function() {
 <p>You hear the sound of police radios outside. That pounding on the door is definitely the police. You don't have time to waste, but you take a quick look for the man's <<link "wallet">><<run setup.examine($wallet.description)>><</link>>. You find it and check <<link "his ID">><<run setup.examine($sameLastName.description)>><</link>>. Matt Brady. Brady? He has the same last name as you. But who is he?<p>
 
 /*  container for examination prose */
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 /*  take wallet */
 <p>
@@ -1357,7 +1378,7 @@ setup.generalRememberMustang = function() {
 <p><<= $msg[1]>>Three men rush in. "Get down on the ground!" one shouts. <<if $inventory.has("knife")>>"He's got a knife!" yells another.<</if>> They all have their guns trained on you. The bald man in the center looks like a police <<link "detective" >><<run setup.examine("The detective doesn't move. He doesn't blink. He just stands there scowling, waiting for you to make a move.")>><</link>>. The other two are uniformed cops.</p>
 
 /*  container for examination prose */
-<p id="end"></p>
+<p id="end" class="description"></p>
 
 /*  basic actions */
 <div id="basic-actions">
@@ -1715,12 +1736,12 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 
 <p>There's a bloody thumbprint on the edge of the <<link "medicine cabinet">><<run setup.examine($medCabinet.description, "mid")>><</link>>'s mirrored door. Against the right wall, under the <<link "window">><<run setup.examine($window.description, "mid")>><</link>>, is an old, broken toilet<<if !$doorBlocked>> and a pile of <<link "construction materials">><<run setup.examine($materials.description, "mid")>><</link>><<else>>. You've blocked the door with construction materials. You can hear people trying to push their way in<</if>>.</p>
 
-<div id="mid"></div>
+<div id="mid" class="description"></div>
 
 <p><<if visited("bathroom") == 1>>You hear the sound of a car approaching. <</if>>Through the window, you see a black <<link "Mustang">><<run setup.examine($mustang.description)>><</link>> <<if visited("bathroom") == 1>>pull into<<else>>in<</if>> the back alley. <<if $containedIn.get("detective") == "hallway">>Several people are rushing into the house.<</if>><<if $shelfBedroom.fallen && !$doorBlocked>>The cops are right behind you.<</if>> <<if ($containedIn.get("detective") == "hallway" || $shelfBedroom.fallen) && !$doorBlocked>>There's no time to waste. They'll be on top of you in seconds.<</if>></p>
 
 /*  container for examination prose */
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 /*  description of tiles/cocaine */
 <p id="tile-description">
@@ -1983,7 +2004,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 :: finding phone [message]
 <p>You open the medicine cabinet and there on the shelf is your <<link "phone">><<run setup.examine($phone.description)>><</link>>. How it got there, you have no idea.<p>
 
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 <div>$msg[0]</div>
 
@@ -2085,7 +2106,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 :: alley
 <p>You drop into the alley beside a dumpster and land on your side. You can hear the engine of the Mustang running. As you get to your feet, the blonde woman behind the wheel leans out the window. <<if $knowledge.has("womanAtBar")>>You recognize her. She's the <<link "woman">><<run setup.examine($womanAtBar.description)>><</link>> you played pool with last night. <</if>>"Hey you," she says with a smile. When you hesitate to answer, she beckons you closer. "Well, what are you waiting for? Come on over here." She lets out a short laugh.</p>
 
-<p id="end"></p>
+<p id="end" class="description"></p>
 
 <p><<link "approach the car">>
   <<set $msg = ["", "You still aren't sure who she is, but something about this woman feels familiar and comfortable. You start walking toward the car. You get about five steps when a blunt object hits you hard in the back of the head."]>>
@@ -2107,7 +2128,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 :: kidnapped [message]
 <p>$msg[0]</p>
 
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 <p>$msg[1] Your vision blurs and you lose your balance. You're unconscious before you even hit the ground.</p>
 
@@ -2236,7 +2257,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 :: sitting duck
 <p>You kick open the door and make a run for it. A gunshot rings out behind you and you duck behind a <<link "parked car">><<run setup.examine($parkedCar.description)>><</link>>. You can see the <<link "shooter">><<run setup.examine($shooter.description)>><</link>> walking toward you. You look around for somewhere to go. Nothing. Wherever you go, you'll be out in the open, exposed. There's a <<link "subway entrance">><<run setup.examine($subwayEntrance.description)>><</link>> about fifty feet away. You can make a break for it, but that's a long way to run without cover. You need to decide quick. The shooter is almost on top of you.</p>
 
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 /*  open parked car */
 <p><<link "try to open the parked car <<if settings.debug>> (+1 XP)<</if>>">>
@@ -2352,7 +2373,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <</if>>
 You desperately look around. On the shelf to your right you see some things from the house. You can see the <<link "knife">><<run setup.examine($knife.description)>><</link>> and <<if $wallet.discovered>>the <<link "wallet">><<run setup.examine($wallet.description)>><</link>><<else>>a wallet<</if>>. The <<link "garbage bags">><<run setup.examine($bumBags.description)>><</link>> from the shower are also there. Most of their contents are dumped out. It even looks like there's a dead cat among the bum's stuff.</p>
 
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 /*  mention the bar */
 <p><<if $knowledge.has("russian")>>
@@ -2394,7 +2415,7 @@ You desperately look around. On the shelf to your right you see some things from
 
 <p>The man at the table turns and looks at you, but says nothing. He picks up a <<link "power drill">><<run setup.examine($powerDrill.description)>><</link>> from the table and walks over to you. He puts a foot on the chair, right between your legs.</p>
 
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 <p>"That man you killed," he says in a thick Russian accent, "he had something belongs to me. You know where it is." You look at him with a blank stare. "I'm talking about computer chip. Where is it?"</p>
 
@@ -2552,21 +2573,21 @@ $msg[0]
 :: free yourself
 <p>With the Russian out of sight, you quietly scoot over to the shelf. Using your chin, you slide the <<link "knife">><<run setup.examine($knife.description, "early")>><</link>> onto your lap. You grab it with your right hand and cut the ropes binding your right wrist. You then cut the rest of the ropes, stand up, and take a closer look at what's on the shelf.<<if !$inventory.has("knife")>> You put the knife back on the shelf.<</if>></p>
 
-<div id="early"></div>
+<div id="early" class="description"></div>
 
 <p>You were right. There //is// a <<link "dead cat">><<run setup.examine($deadCat.description, "early-mid")>><</link>> among the bum's belongings. He probably killed it to keep it quiet while he was waiting to ambush and murder its owner.</p>
 
-<div id="early-mid"></div>
+<div id="early-mid" class="description"></div>
 
 <p>$msg[0]</p>
 
-<div id="mid"></div>
+<div id="mid" class="description"></div>
 
 <p>$msg[1] You fish through the bum's garbage bags, looking for evidence. You need something to prove he's the killer. But all you find is trash. Who could live like this, toting around garbage everywhere? Offhandedly, you wonder if he worried about it getting stolen.</p>
 
 <p>Then you hear a sound. It's the crackle of the Russian's radio, somewhere in the distance. You need to move. He could be back at any moment.</p>
 
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 <p id="msg"><<if !$inventory.has("knife")>>You put the knife back on the shelf. <</if>><<if $inventory.has("wallet")>>You take the victim's wallet.<</if>></p>
 
@@ -3048,7 +3069,7 @@ You ignore the detective and keep searching through the garbage bags.
 
 <p>You quietly limp over to the desk. Its surface is cluttered with things, one of which is the ashtray you smelled when you walked in. You also see <<link "three bags of cocaine">><<run s.examine("<p>You look again at the cocaine on the desk. The Russian and that woman must have been looking for their computer chip inside those bags. Looks like they didn't find it.</p>")>><</link>> which have been torn open, the cocaine spilled all over the desk. You see <<link "your phone">><<run s.examine("<p>You pick up your phone. It's dead. And it has a brand new crack down the middle of the screen.</p>")>><</link>>. It's sitting on top of some kind of technical schematic.</p>
 
-<div id="end"></div>
+<div id="end" class="description"></div>
 
 <p>You turn your attention to the monitor. On the computer screen is a paused video from a security camera in the victim's house. The image shows the victim's bathroom. A bearded man in ragged clothes is climbing into the bathroom through the window.</p>
 
@@ -3133,9 +3154,7 @@ You ignore the detective and keep searching through the garbage bags.
 
 <p><<=$msg[1]>>They arrest you, there is a trial, you are convicted, and you spend the next twenty years in prison. You never do remember that night. Sometimes, in your prison cell, you wonder. Was there evidence in that house to prove your innocence? You suspect so. You might have found it, if only you'd tried harder.</p>
 
-<div align="center"><p><<link "''THE END''">>
-	<<goto "acknowledgments">>
-<</link>></p></div>
+<<include "The End">>
 
 
 :: Hospital then prison
@@ -3144,9 +3163,7 @@ You ignore the detective and keep searching through the garbage bags.
 
 <p>The cops drag you outside and call for an ambulance to take you to the hospital. When you are well enough, there is a trial. You are convicted and spend the next twenty years in prison. You never do remember that night. Sometimes, in your prison cell, you wonder. Was there evidence in that house to prove your innocence? You suspect so. You might have found it, if only you'd tried harder.</p>
 
-<div align="center"><p><<link "''THE END''">>
-	<<goto "acknowledgments">>
-<</link>></p></div>
+<<include "The End">>
 
 
 :: drilled to death
@@ -3157,9 +3174,7 @@ You ignore the detective and keep searching through the garbage bags.
 
 <p>You will not be receiving the medical attention you so desperately need. You will die here today, tied to a chair in an empty warehouse.</p>
 
-<div align="center"><p><<link "''THE END''">>
-	<<goto "acknowledgments">>
-<</link>></p></div>
+<<include "The End">>
 
 
 :: punched to death
@@ -3172,9 +3187,7 @@ $msg[0]
 
 <p>You will not be receiving the medical attention you so desperately need. You will die here today, tied to a chair in an empty warehouse.</p>
 
-<div align="center"><p><<link "''THE END''">>
-	<<goto "acknowledgments">>
-<</link>></p></div>
+<<include "The End">>
 
 
 :: choked to death
@@ -3185,9 +3198,7 @@ $msg[0]
 
 <p>The Russian feels your body go limp and gives your throat one final crushing squeeze. He drops your lifeless body to the floor, steps over it, and continues on his way to meet the woman.</p>
 
-<div align="center"><p><<link "''THE END''">>
-	<<goto "acknowledgments">>
-<</link>></p></div>
+<<include "The End">>
 
 
 :: arrested at warehouse
@@ -3198,9 +3209,7 @@ $msg[0]
 
 <p>They arrest you, there's a trial, you're convicted, and you spend the next twenty years in prison. You never do remember that night, but you protest your innocence the entire time. Although no one believes you, you know. Somewhere, some bum has gotten away with murder. In your prison cell, you often wonder. If you had found the stolen cell phone, would things have turned out differently? You suspect so.</p>
 
-<div align="center"><p><<link "''THE END''">>
-	<<goto "acknowledgments">>
-<</link>></p></div>
+<<include "The End">>
 
 
 :: happy ending
@@ -3216,9 +3225,7 @@ $msg[0]
 
 <p>You laugh. Customers always ask you that. You guess it //is// pretty unbelievable. "Does it matter?" you reply as you refill the man's scotch. "Have another drink."</p>
 
-<div align="center"><p><<link "''THE END''">>
-	<<goto "acknowledgments">>
-<</link>></p></div>
+<<include "The End">>
 
 
 :: nailed it
@@ -3231,9 +3238,7 @@ $msg[0]
 
 <p>$msg[1]</p>
 
-<div align="center"><p><<link "''THE END''">>
-	<<goto "acknowledgments">>
-<</link>></p></div>
+<<include "The End">>
 
 
 :: the truth
@@ -3242,17 +3247,27 @@ $msg[0]
 
 <p>$msg[1] The detective walks toward you. "You have the right to remain silent," he says. He continues to recite the Miranda warning as he cuffs your hands behind your back. You stand passively, a feeling of confusion clouding your mind. You face the glass window and in it you see your reflection. It looks like a stranger. Ragged beard, matted hair, tired eyes, leathery face. Your whole visage stands in stark contrast to the clothes you're wearing. You have the face of a poverty-stricken old man, and the blood-stained clothes of an affluent young one. Your head hurts trying to make sense of it all and you look away. With a tug on your arm, the detective leads you out of the office.</p>
 
-<div align="center"><p><<link "''THE END''">>
+<<include "The End">>
+
+
+:: The End [include]
+<div align="center"><p>THE END</p></div>
+
+<p><<link "view acknowledgments">>
 	<<goto "acknowledgments">>
-<</link>></p></div>
+<</link>></p>
+
+<p><a @href=s.betaFormURL target='_blank'>give feedback to developer</a></p>
 
 
 :: acknowledgments
 <h3>Acknowledgments</h3>
 
-<p>Thank you for playing. This story began as a short experiment in creating interactive fiction with Twine. The project ended up being larger and taking longer than I expected. The work involved in creating it gave me a new appreciation for the enormous effort needed for game development in general. I am indebted to the expertise and generosity of the people on the Twine Games Discord server. These include, but are not limited to, GwenTastic, Akjosch, Chapel, Tayruh, Greyelf, TheMadExile, Luna City Hobo, and RynGM. My sincerest apologies to anyone I overlooked.</p>
+<p>Thank you for playing. This story began as a short experiment in creating interactive fiction with Twine. The project ended up being larger and taking longer than I expected. The work involved in creating it gave me a new appreciation for the enormous effort needed for game development in general. Special thanks to all of my alpha testers for giving great feedback and putting up with my nagging. I am indebted to the expertise and generosity of the people on the Twine Games Discord server. These include, but are not limited to, GwenTastic, Akjosch, Chapel, Tayruh, Greyelf, TheMadExile, Luna City Hobo, RynGM, and Cyrus Firheir. My sincerest apologies to anyone I overlooked.</p>
 
-<p>--Jack Weaver, December 2019</p>
+<p>--Jack Weaver, January 2020</p>
+
+<p><a @href=s.betaFormURL target='_blank'>give feedback to developer</a></p>
 
 
 :: end of endings [fake]

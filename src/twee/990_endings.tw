@@ -4,9 +4,7 @@
 
 <p><<=$msg[1]>>They arrest you, there is a trial, you are convicted, and you spend the next twenty years in prison. You never do remember that night. Sometimes, in your prison cell, you wonder. Was there evidence in that house to prove your innocence? You suspect so. You might have found it, if only you'd tried harder.</p>
 
-<div align="center"><p><<link "''THE END''">>
-	<<goto "acknowledgments">>
-<</link>></p></div>
+<<include "The End">>
 
 :: Hospital then prison
 /*  cops get you before you visit the bathroom, you were shot */
@@ -14,9 +12,7 @@
 
 <p>The cops drag you outside and call for an ambulance to take you to the hospital. When you are well enough, there is a trial. You are convicted and spend the next twenty years in prison. You never do remember that night. Sometimes, in your prison cell, you wonder. Was there evidence in that house to prove your innocence? You suspect so. You might have found it, if only you'd tried harder.</p>
 
-<div align="center"><p><<link "''THE END''">>
-	<<goto "acknowledgments">>
-<</link>></p></div>
+<<include "The End">>
 
 :: drilled to death
 /*  drilled finger took last HP */
@@ -26,9 +22,7 @@
 
 <p>You will not be receiving the medical attention you so desperately need. You will die here today, tied to a chair in an empty warehouse.</p>
 
-<div align="center"><p><<link "''THE END''">>
-	<<goto "acknowledgments">>
-<</link>></p></div>
+<<include "The End">>
 
 :: punched to death
 /*  punch in face took last HP */
@@ -40,9 +34,7 @@ $msg[0]
 
 <p>You will not be receiving the medical attention you so desperately need. You will die here today, tied to a chair in an empty warehouse.</p>
 
-<div align="center"><p><<link "''THE END''">>
-	<<goto "acknowledgments">>
-<</link>></p></div>
+<<include "The End">>
 
 :: choked to death
 /*  choked by Russian took last HP */
@@ -52,9 +44,7 @@ $msg[0]
 
 <p>The Russian feels your body go limp and gives your throat one final crushing squeeze. He drops your lifeless body to the floor, steps over it, and continues on his way to meet the woman.</p>
 
-<div align="center"><p><<link "''THE END''">>
-	<<goto "acknowledgments">>
-<</link>></p></div>
+<<include "The End">>
 
 :: arrested at warehouse
 /*  you stupidly tried to leave the Warehouse with cops everywhere */
@@ -64,9 +54,7 @@ $msg[0]
 
 <p>They arrest you, there's a trial, you're convicted, and you spend the next twenty years in prison. You never do remember that night, but you protest your innocence the entire time. Although no one believes you, you know. Somewhere, some bum has gotten away with murder. In your prison cell, you often wonder. If you had found the stolen cell phone, would things have turned out differently? You suspect so.</p>
 
-<div align="center"><p><<link "''THE END''">>
-	<<goto "acknowledgments">>
-<</link>></p></div>
+<<include "The End">>
 
 :: happy ending
 /*	you stupidly tried to leave the Warehouse with cops everywhere,
@@ -81,9 +69,7 @@ $msg[0]
 
 <p>You laugh. Customers always ask you that. You guess it //is// pretty unbelievable. "Does it matter?" you reply as you refill the man's scotch. "Have another drink."</p>
 
-<div align="center"><p><<link "''THE END''">>
-	<<goto "acknowledgments">>
-<</link>></p></div>
+<<include "The End">>
 
 :: nailed it
 /*  stepping on nail took last HP */
@@ -95,9 +81,7 @@ $msg[0]
 
 <p>$msg[1]</p>
 
-<div align="center"><p><<link "''THE END''">>
-	<<goto "acknowledgments">>
-<</link>></p></div>
+<<include "The End">>
 
 :: the truth
 /*	the intended ending */
@@ -105,15 +89,28 @@ $msg[0]
 
 <p>$msg[1] The detective walks toward you. "You have the right to remain silent," he says. He continues to recite the Miranda warning as he cuffs your hands behind your back. You stand passively, a feeling of confusion clouding your mind. You face the glass window and in it you see your reflection. It looks like a stranger. Ragged beard, matted hair, tired eyes, leathery face. Your whole visage stands in stark contrast to the clothes you're wearing. You have the face of a poverty-stricken old man, and the blood-stained clothes of an affluent young one. Your head hurts trying to make sense of it all and you look away. With a tug on your arm, the detective leads you out of the office.</p>
 
-<div align="center"><p><<link "''THE END''">>
+<<include "The End">>
+
+:: The End [include]
+<div align="center"><p>THE END</p></div>
+
+<p><<link "view acknowledgments">>
 	<<goto "acknowledgments">>
-<</link>></p></div>
+<</link>></p>
+
+<<if settings.beta>>
+	<p><a @href=s.betaFormURL target='_blank'>give feedback to developer</a></p>
+<</if>>
 
 :: acknowledgments
 <h3>Acknowledgments</h3>
 
-<p>Thank you for playing. This story began as a short experiment in creating interactive fiction with Twine. The project ended up being larger and taking longer than I expected. The work involved in creating it gave me a new appreciation for the enormous effort needed for game development in general. I am indebted to the expertise and generosity of the people on the Twine Games Discord server. These include, but are not limited to, GwenTastic, Akjosch, Chapel, Tayruh, Greyelf, TheMadExile, Luna City Hobo, and RynGM. My sincerest apologies to anyone I overlooked.</p>
+<p>Thank you for playing. This story began as a short experiment in creating interactive fiction with Twine. The project ended up being larger and taking longer than I expected. The work involved in creating it gave me a new appreciation for the enormous effort needed for game development in general. Special thanks to all of my alpha testers for giving great feedback and putting up with my nagging. I am indebted to the expertise and generosity of the people on the Twine Games Discord server. These include, but are not limited to, GwenTastic, Akjosch, Chapel, Tayruh, Greyelf, TheMadExile, Luna City Hobo, RynGM, and Cyrus Firheir. My sincerest apologies to anyone I overlooked.</p>
 
-<p>--Jack Weaver, December 2019</p>
+<p>--Jack Weaver, January 2020</p>
+
+<<if settings.beta>>
+	<p><a @href=s.betaFormURL target='_blank'>give feedback to developer</a></p>
+<</if>>
 
 :: end of endings [fake]

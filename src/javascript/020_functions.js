@@ -12,6 +12,13 @@ setup.make = function(varName, ClassName) {
   }
 }
 
+/*  check if two sets are equal */
+setup.eqSet = function(as, bs) {
+    if (as.size !== bs.size) return false;
+    for (var a of as) if (!bs.has(a)) return false;
+    return true;
+}
+
 /*  check type */
 setup.checkType = function(obj, type) {
   do {

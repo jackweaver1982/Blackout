@@ -39,6 +39,9 @@ a {
 .description {
   color:yellow;
 }
+.changes {
+  color:yellow;
+}
 .headings {
   color:lime;
 }
@@ -69,8 +72,8 @@ Object.defineProperty(window, "s", {
   }
 });
 /* twine-user-script #2: "007_constants.js" */
-s.lastEdited = "2019-01-20-1601";
-s.versionNumber = 105;
+s.lastEdited = "2019-01-20-1830";
+s.versionNumber = 106;
 
 s.calcVersion = function(num) {
   let main = Math.floor(num/100);
@@ -151,6 +154,13 @@ setup.make = function(varName, ClassName) {
     v.gameObjects.add(varName);
     return;
   }
+}
+
+/*  check if two sets are equal */
+setup.eqSet = function(as, bs) {
+    if (as.size !== bs.size) return false;
+    for (var a of as) if (!bs.has(a)) return false;
+    return true;
 }
 
 /*  check type */
@@ -973,9 +983,18 @@ setup.generalRememberMustang = function() {
 :: PassageFooter
 <<timed 0s>><<if !tags().includes("no-header")>>
   <hr>
-  <p><em><<link "view Character Sheet">>
-    <<script>>Engine.play("bio", true)<</script>>
-  <</link>></em></p>
+  <p>
+    <em><<link "view Character Sheet">>
+      <<script>>Engine.play("bio", true)<</script>>
+    <</link>></em>
+    <<if $bioLastViewed.Level != $player.Level ||
+         !s.eqSet($bioLastViewed.injuries, $injuries) ||
+         $bioLastViewed.HP != $player.HP ||
+         !s.eqSet($bioLastViewed.inventory, $inventory) ||
+         !s.eqSet($bioLastViewed.knowledge, $knowledge)>>
+      <span class='changes'>&#9679;</span>
+    <</if>>
+  </p>
   <<if settings.debug>>
     <p>//Random number between 1 and <span id="maxNumber">5</span>:// <span id="randomNumber">''<<= random(1, 5)>>''</span></p>
     <<for _i = 2; _i <= 10; _i++>>
@@ -1027,20 +1046,40 @@ setup.generalRememberMustang = function() {
   <<if $player.Level === 1>>
     None.
   <<else>>
-    Your headache is gone. You can think a little more clearly now.
+    <<if $bioLastViewed.Level != $player.Level>>
+      <<set _style = 'changes'>>
+    <<else>>
+      <<set _style = ''>>
+    <</if>>
+    <span @class=_style>Your headache is gone. You can think a little more clearly now.</span>
   <</if>>
 </p>
 
 <p><b class="headings">Injuries: </b>
   <<if $injuries.size == 0>>
-    None.
+    <<if $bioLastViewed.injuries.size > 0>>
+      <<set _style = 'changes'>>
+    <<else>>
+      <<set _style = ''>>
+    <</if>>
+    <span @class=_style>None.</span>
   <<else>>
     <<for _item range $injuries>>
-      <<= v[_item].description + " ">>
+      <<if !$bioLastViewed.injuries.has(_item)>>
+        <<set _style = 'changes'>>
+      <<else>>
+        <<set _style = ''>>
+      <</if>>
+      <span @class=_style><<= v[_item].description + " ">></span>
     <</for>>
   <</if>>
   <<if $player.HP == 1>>
-    You feel weak and light-headed. You're not sure how much more of this physical abuse you can take.
+    <<if $bioLastViewed.HP > 1>>
+      <<set _style = 'changes'>>
+    <<else>>
+      <<set _style = ''>>
+    <</if>>
+    <span @class=_style>You feel weak and light-headed. You're not sure how much more of this physical abuse you can take.</span>
   <</if>>
 </p>
 
@@ -1051,8 +1090,16 @@ setup.generalRememberMustang = function() {
       <<= "<br>nothing">>
     <<else>>
       <<for _item range $inventory>>
-        <<= "<br>" + v[_item].printedName>>
+        <<if !$bioLastViewed.inventory.has(_item)>>
+          <<set _style = 'changes'>>
+        <<else>>
+          <<set _style = ''>>
+        <</if>>
+        <span @class=_style><<= "<br>" + v[_item].printedName>></span>
       <</for>>
+    <</if>>
+    <<if $bioLastViewed.inventory.size > $inventory.size>>
+      <br><span class='changes'><em>[you lost one or more items]</em></span>
     <</if>>
   </div>
   <div class="rightcolumn">
@@ -1061,7 +1108,12 @@ setup.generalRememberMustang = function() {
       <<= "<br>nothing">>
     <<else>>
       <<for _item range $knowledge>>
-        <<= "<br>" + v[_item].printedName>>
+        <<if !$bioLastViewed.knowledge.has(_item)>>
+          <<set _style = 'changes'>>
+        <<else>>
+          <<set _style = ''>>
+        <</if>>
+        <span @class=_style><<= "<br>" + v[_item].printedName>></span>
       <</for>>
     <</if>>
   </div>
@@ -1079,7 +1131,16 @@ setup.generalRememberMustang = function() {
   Handled Things: $hasHandled</p>
 <</if>>
 
-<p><<link "return to story">><<script>>Engine.show()<</script>><</link>></p>
+<p><<link "return to story">>
+  <<set $bioLastViewed = {
+    Level: clone($player.Level),
+    injuries: clone($injuries),
+    HP: clone($player.HP),
+    inventory: clone($inventory),
+    knowledge: clone($knowledge)
+  }>>
+  <<script>>Engine.show()<</script>>
+<</link>></p>
 
 
 :: Start [no-header]
@@ -1089,6 +1150,14 @@ setup.generalRememberMustang = function() {
 <<if !$inventory.has("clothes")>>
   <<run setup.takeThing("clothes")>>
 <</if>>
+
+<<set $bioLastViewed = {
+  Level: clone($player.Level),
+  injuries: clone($injuries),
+  HP: clone($player.HP),
+  inventory: clone($inventory),
+  knowledge: clone($knowledge)
+}>>
 
 <<if settings.debug>>
   <<goto "bedroom">>

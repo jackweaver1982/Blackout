@@ -1,5 +1,9 @@
 # Change Log
 
+## Version 1.6
+
+* implemented a system to notify the player of changes to the Character Sheet
+
 ## Version 1.5
 
 * changed "bio" link to "view Character Sheet" and moved to footer

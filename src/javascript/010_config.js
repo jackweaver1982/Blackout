@@ -12,6 +12,12 @@ Setting.addToggle("beta", {
   default: true
 });
 
+/*  add bio notifications to settings */
+Setting.addToggle("bioNotify", {
+  label: "bio notifications",
+  default: true
+});
+
 /*  enable autosaves and autoloading */
 Config.saves.autosave = true;
 Config.saves.autoload = function () {

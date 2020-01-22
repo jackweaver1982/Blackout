@@ -71,9 +71,16 @@ Object.defineProperty(window, "s", {
     return setup;
   }
 });
+
+/*  make "ss" a shortcut for "setup" */
+Object.defineProperty(window, "ss", {
+  get: function() {
+    return settings;
+  }
+});
 /* twine-user-script #2: "007_constants.js" */
-s.lastEdited = "2019-01-20-1830";
-s.versionNumber = 106;
+s.lastEdited = "2019-01-22-0813";
+s.versionNumber = 107;
 
 s.calcVersion = function(num) {
   let main = Math.floor(num/100);
@@ -96,6 +103,12 @@ Setting.addToggle("debug", {
 /*  add beta mode to settings */
 Setting.addToggle("beta", {
   label: "beta mode",
+  default: true
+});
+
+/*  add bio notifications to settings */
+Setting.addToggle("bioNotify", {
+  label: "bio notifications",
   default: true
 });
 
@@ -141,7 +154,7 @@ Config.saves.version = setup.versionNumber;
 s.checkSave = function(save) {
   return (save.version == setup.versionNumber);
 }
-/* twine-user-script #4: "020_functions.js" */
+/* twine-user-script #4: "015_funcObj.js" */
 /*  creates a variable `varName` which is a clone of `ClassName`, then sets its
     id to `varName` and adds it to the set of game objects, `gameObjects` */
 setup.make = function(varName, ClassName) {
@@ -154,13 +167,6 @@ setup.make = function(varName, ClassName) {
     v.gameObjects.add(varName);
     return;
   }
-}
-
-/*  check if two sets are equal */
-setup.eqSet = function(as, bs) {
-    if (as.size !== bs.size) return false;
-    for (var a of as) if (!bs.has(a)) return false;
-    return true;
 }
 
 /*  check type */
@@ -321,7 +327,7 @@ setup.checkType = function(obj, type) {
     v.player.REL[NPC] = (v.player.REL[NPC] + n).clamp(-1,3);
     return;
   }
-
+/* twine-user-script #5: "020_funcGameplay.js" */
 /*  the dice rolling function */
 setup.roll = function() {
   v.rollCount++;
@@ -418,7 +424,15 @@ setup.loadGame = function() {
   }
   return;
 }
-/* twine-user-script #5: "030_rules.js" */
+/* twine-user-script #6: "025_funcBioView.js" */
+/*  check if two sets are equal */
+setup.eqSet = function(set1, set2) {
+    if (set1.size !== set2.size) return false;
+    for (var x of set1) if (!set2.has(x)) return false;
+    return true;
+}
+
+/* twine-user-script #7: "030_rules.js" */
 /*  fail rule in Bedroom */
 setup.bedroomFail = function() {
   let retVals = [1,2];
@@ -560,7 +574,7 @@ setup.generalRememberMustang = function() {
   }
   return retVal;
 }
-/* twine-user-script #6: "Story JavaScript" */
+/* twine-user-script #8: "Story JavaScript" */
 
 
 :: StoryInit
@@ -987,11 +1001,12 @@ setup.generalRememberMustang = function() {
     <em><<link "view Character Sheet">>
       <<script>>Engine.play("bio", true)<</script>>
     <</link>></em>
-    <<if $bioLastViewed.Level != $player.Level ||
+    <<if ss.bioNotify &&
+         ($bioLastViewed.Level != $player.Level ||
          !s.eqSet($bioLastViewed.injuries, $injuries) ||
          $bioLastViewed.HP != $player.HP ||
          !s.eqSet($bioLastViewed.inventory, $inventory) ||
-         !s.eqSet($bioLastViewed.knowledge, $knowledge)>>
+         !s.eqSet($bioLastViewed.knowledge, $knowledge))>>
       <span class='changes'>&#9679;</span>
     <</if>>
   </p>
@@ -1046,7 +1061,7 @@ setup.generalRememberMustang = function() {
   <<if $player.Level === 1>>
     None.
   <<else>>
-    <<if $bioLastViewed.Level != $player.Level>>
+    <<if ss.bioNotify && $bioLastViewed.Level != $player.Level>>
       <<set _style = 'changes'>>
     <<else>>
       <<set _style = ''>>
@@ -1057,7 +1072,7 @@ setup.generalRememberMustang = function() {
 
 <p><b class="headings">Injuries: </b>
   <<if $injuries.size == 0>>
-    <<if $bioLastViewed.injuries.size > 0>>
+    <<if ss.bioNotify && $bioLastViewed.injuries.size > 0>>
       <<set _style = 'changes'>>
     <<else>>
       <<set _style = ''>>
@@ -1065,7 +1080,7 @@ setup.generalRememberMustang = function() {
     <span @class=_style>None.</span>
   <<else>>
     <<for _item range $injuries>>
-      <<if !$bioLastViewed.injuries.has(_item)>>
+      <<if ss.bioNotify && !$bioLastViewed.injuries.has(_item)>>
         <<set _style = 'changes'>>
       <<else>>
         <<set _style = ''>>
@@ -1074,7 +1089,7 @@ setup.generalRememberMustang = function() {
     <</for>>
   <</if>>
   <<if $player.HP == 1>>
-    <<if $bioLastViewed.HP > 1>>
+    <<if ss.bioNotify && $bioLastViewed.HP > 1>>
       <<set _style = 'changes'>>
     <<else>>
       <<set _style = ''>>
@@ -1090,7 +1105,7 @@ setup.generalRememberMustang = function() {
       <<= "<br>nothing">>
     <<else>>
       <<for _item range $inventory>>
-        <<if !$bioLastViewed.inventory.has(_item)>>
+        <<if ss.bioNotify && !$bioLastViewed.inventory.has(_item)>>
           <<set _style = 'changes'>>
         <<else>>
           <<set _style = ''>>
@@ -1098,7 +1113,7 @@ setup.generalRememberMustang = function() {
         <span @class=_style><<= "<br>" + v[_item].printedName>></span>
       <</for>>
     <</if>>
-    <<if $bioLastViewed.inventory.size > $inventory.size>>
+    <<if ss.bioNotify && $bioLastViewed.inventory.size > $inventory.size>>
       <br><span class='changes'><em>[you lost one or more items]</em></span>
     <</if>>
   </div>
@@ -1108,7 +1123,7 @@ setup.generalRememberMustang = function() {
       <<= "<br>nothing">>
     <<else>>
       <<for _item range $knowledge>>
-        <<if !$bioLastViewed.knowledge.has(_item)>>
+        <<if ss.bioNotify && !$bioLastViewed.knowledge.has(_item)>>
           <<set _style = 'changes'>>
         <<else>>
           <<set _style = ''>>

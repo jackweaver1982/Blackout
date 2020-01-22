@@ -468,11 +468,12 @@ a {
     <em><<link "view Character Sheet">>
       <<script>>Engine.play("bio", true)<</script>>
     <</link>></em>
-    <<if $bioLastViewed.Level != $player.Level ||
+    <<if ss.bioNotify &&
+         ($bioLastViewed.Level != $player.Level ||
          !s.eqSet($bioLastViewed.injuries, $injuries) ||
          $bioLastViewed.HP != $player.HP ||
          !s.eqSet($bioLastViewed.inventory, $inventory) ||
-         !s.eqSet($bioLastViewed.knowledge, $knowledge)>>
+         !s.eqSet($bioLastViewed.knowledge, $knowledge))>>
       <span class='changes'>&#9679;</span>
     <</if>>
   </p>
@@ -525,7 +526,7 @@ a {
   <<if $player.Level === 1>>
     None.
   <<else>>
-    <<if $bioLastViewed.Level != $player.Level>>
+    <<if ss.bioNotify && $bioLastViewed.Level != $player.Level>>
       <<set _style = 'changes'>>
     <<else>>
       <<set _style = ''>>
@@ -536,7 +537,7 @@ a {
 
 <p><b class="headings">Injuries: </b>
   <<if $injuries.size == 0>>
-    <<if $bioLastViewed.injuries.size > 0>>
+    <<if ss.bioNotify && $bioLastViewed.injuries.size > 0>>
       <<set _style = 'changes'>>
     <<else>>
       <<set _style = ''>>
@@ -544,7 +545,7 @@ a {
     <span @class=_style>None.</span>
   <<else>>
     <<for _item range $injuries>>
-      <<if !$bioLastViewed.injuries.has(_item)>>
+      <<if ss.bioNotify && !$bioLastViewed.injuries.has(_item)>>
         <<set _style = 'changes'>>
       <<else>>
         <<set _style = ''>>
@@ -553,7 +554,7 @@ a {
     <</for>>
   <</if>>
   <<if $player.HP == 1>>
-    <<if $bioLastViewed.HP > 1>>
+    <<if ss.bioNotify && $bioLastViewed.HP > 1>>
       <<set _style = 'changes'>>
     <<else>>
       <<set _style = ''>>
@@ -569,7 +570,7 @@ a {
       <<= "<br>nothing">>
     <<else>>
       <<for _item range $inventory>>
-        <<if !$bioLastViewed.inventory.has(_item)>>
+        <<if ss.bioNotify && !$bioLastViewed.inventory.has(_item)>>
           <<set _style = 'changes'>>
         <<else>>
           <<set _style = ''>>
@@ -577,7 +578,7 @@ a {
         <span @class=_style><<= "<br>" + v[_item].printedName>></span>
       <</for>>
     <</if>>
-    <<if $bioLastViewed.inventory.size > $inventory.size>>
+    <<if ss.bioNotify && $bioLastViewed.inventory.size > $inventory.size>>
       <br><span class='changes'><em>[you lost one or more items]</em></span>
     <</if>>
   </div>
@@ -587,7 +588,7 @@ a {
       <<= "<br>nothing">>
     <<else>>
       <<for _item range $knowledge>>
-        <<if !$bioLastViewed.knowledge.has(_item)>>
+        <<if ss.bioNotify && !$bioLastViewed.knowledge.has(_item)>>
           <<set _style = 'changes'>>
         <<else>>
           <<set _style = ''>>

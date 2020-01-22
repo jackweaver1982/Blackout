@@ -20,3 +20,10 @@ Object.defineProperty(window, "s", {
     return setup;
   }
 });
+
+/*  make "ss" a shortcut for "setup" */
+Object.defineProperty(window, "ss", {
+  get: function() {
+    return settings;
+  }
+});

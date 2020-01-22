@@ -1,5 +1,12 @@
 # Change Log
 
+## Version 1.7
+
+* added `ss` as a JS shortcut for `settings`
+* added a setting to turn on and off Character Sheet notifications
+* edited `setup.eqSet()` for readability
+* split JS function file into multiple files
+
 ## Version 1.6
 
 * implemented a system to notify the player of changes to the Character Sheet

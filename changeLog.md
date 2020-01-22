@@ -1,5 +1,15 @@
 # Change Log
 
+## Version 1.8
+
+* split `eqSet()` into two functions, one of which checks for subset
+* corrected `you lost one or more items` notification to not check for size of inventory, but for actually missing items (using the new subset function)
+* moved the updating of the bio view into a JS function
+* removed "view Character Sheet" link from the Character Sheet
+* added an initialization of the `bioLastViewed` object
+* moved checking for bio view differences to a JS function
+* moved setting the style of bio diffs to a JS function
+
 ## Version 1.7
 
 * added `ss` as a JS shortcut for `settings`

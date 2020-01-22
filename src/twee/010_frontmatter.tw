@@ -59,6 +59,8 @@ a {
   <<set $cheatCode = [1, 1, 1, 1, 1, 1]>>
   /* an array used to pass text from one passage to another */
   <<set $msg = []>>
+  <<set $bioLastViewed = {}>>
+  <<set $viewingBio = false>>
 
 /*  the "classes" used in the game */
 
@@ -464,19 +466,14 @@ a {
 :: PassageFooter
 <<timed 0s>><<if !tags().includes("no-header")>>
   <hr>
-  <p>
+  <p><<if !$viewingBio>>
     <em><<link "view Character Sheet">>
       <<script>>Engine.play("bio", true)<</script>>
     <</link>></em>
-    <<if ss.bioNotify &&
-         ($bioLastViewed.Level != $player.Level ||
-         !s.eqSet($bioLastViewed.injuries, $injuries) ||
-         $bioLastViewed.HP != $player.HP ||
-         !s.eqSet($bioLastViewed.inventory, $inventory) ||
-         !s.eqSet($bioLastViewed.knowledge, $knowledge))>>
+    <<if ss.bioNotify && s.bioChanged()>>
       <span class='changes'>&#9679;</span>
     <</if>>
-  </p>
+  <</if>></p>
   <<if settings.debug>>
     <p>//Random number between 1 and <span id="maxNumber">5</span>:// <span id="randomNumber">''<<= random(1, 5)>>''</span></p>
     <<for _i = 2; _i <= 10; _i++>>
@@ -510,6 +507,8 @@ a {
   <<run setup.visitMenu("bio")>>
 <</timed>>
 
+<<set $viewingBio = true>>
+
 <p><b class="headings">Name:</b> Scott Allen Brady, a.k.a. "Scotty"</p>
 
 <p><b class="headings">Occupation:</b> Hewlett-Packard shipping worker</p>
@@ -526,40 +525,28 @@ a {
   <<if $player.Level === 1>>
     None.
   <<else>>
-    <<if ss.bioNotify && $bioLastViewed.Level != $player.Level>>
-      <<set _style = 'changes'>>
-    <<else>>
-      <<set _style = ''>>
-    <</if>>
-    <span @class=_style>Your headache is gone. You can think a little more clearly now.</span>
+    <<set _style = s.bioStyle(v.bioLastViewed.Level != v.player.Level)>>
+    <span @class=_style>
+      Your headache is gone. You can think a little more clearly now.
+    </span>
   <</if>>
 </p>
 
 <p><b class="headings">Injuries: </b>
   <<if $injuries.size == 0>>
-    <<if ss.bioNotify && $bioLastViewed.injuries.size > 0>>
-      <<set _style = 'changes'>>
-    <<else>>
-      <<set _style = ''>>
-    <</if>>
+    <<set _style = s.bioStyle($bioLastViewed.injuries.size > 0)>>
     <span @class=_style>None.</span>
   <<else>>
     <<for _item range $injuries>>
-      <<if ss.bioNotify && !$bioLastViewed.injuries.has(_item)>>
-        <<set _style = 'changes'>>
-      <<else>>
-        <<set _style = ''>>
-      <</if>>
+      <<set _style = s.bioStyle(!$bioLastViewed.injuries.has(_item))>>
       <span @class=_style><<= v[_item].description + " ">></span>
     <</for>>
   <</if>>
   <<if $player.HP == 1>>
-    <<if ss.bioNotify && $bioLastViewed.HP > 1>>
-      <<set _style = 'changes'>>
-    <<else>>
-      <<set _style = ''>>
-    <</if>>
-    <span @class=_style>You feel weak and light-headed. You're not sure how much more of this physical abuse you can take.</span>
+    <<set _style = s.bioStyle($bioLastViewed.HP > 1)>>
+    <span @class=_style>
+      You feel weak and light-headed. You're not sure how much more of this physical abuse you can take.
+    </span>
   <</if>>
 </p>
 
@@ -570,15 +557,11 @@ a {
       <<= "<br>nothing">>
     <<else>>
       <<for _item range $inventory>>
-        <<if ss.bioNotify && !$bioLastViewed.inventory.has(_item)>>
-          <<set _style = 'changes'>>
-        <<else>>
-          <<set _style = ''>>
-        <</if>>
+        <<set _style = s.bioStyle(!$bioLastViewed.inventory.has(_item))>>
         <span @class=_style><<= "<br>" + v[_item].printedName>></span>
       <</for>>
     <</if>>
-    <<if ss.bioNotify && $bioLastViewed.inventory.size > $inventory.size>>
+    <<if ss.bioNotify && !s.isSubset($bioLastViewed.inventory, $inventory)>>
       <br><span class='changes'><em>[you lost one or more items]</em></span>
     <</if>>
   </div>
@@ -588,11 +571,7 @@ a {
       <<= "<br>nothing">>
     <<else>>
       <<for _item range $knowledge>>
-        <<if ss.bioNotify && !$bioLastViewed.knowledge.has(_item)>>
-          <<set _style = 'changes'>>
-        <<else>>
-          <<set _style = ''>>
-        <</if>>
+        <<set _style = s.bioStyle(!$bioLastViewed.knowledge.has(_item))>>
         <span @class=_style><<= "<br>" + v[_item].printedName>></span>
       <</for>>
     <</if>>
@@ -612,13 +591,8 @@ a {
 <</if>>
 
 <p><<link "return to story">>
-  <<set $bioLastViewed = {
-    Level: clone($player.Level),
-    injuries: clone($injuries),
-    HP: clone($player.HP),
-    inventory: clone($inventory),
-    knowledge: clone($knowledge)
-  }>>
+  <<run s.updateBioView()>>
+  <<set $viewingBio = false>>
   <<script>>Engine.show()<</script>>
 <</link>></p>
 
@@ -630,13 +604,7 @@ a {
   <<run setup.takeThing("clothes")>>
 <</if>>
 
-<<set $bioLastViewed = {
-  Level: clone($player.Level),
-  injuries: clone($injuries),
-  HP: clone($player.HP),
-  inventory: clone($inventory),
-  knowledge: clone($knowledge)
-}>>
+<<run s.updateBioView()>>
 
 <<if settings.debug>>
   <<goto "bedroom">>

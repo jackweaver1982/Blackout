@@ -37,13 +37,16 @@ a {
     content: "";
 }
 .description {
-  color:yellow;
+  color: yellow;
 }
 .changes {
-  color:yellow;
+  color: yellow;
+}
+.changes a {
+  color: #FF8800;
 }
 .headings {
-  color:lime;
+  color: lime;
 }
 
 
@@ -79,8 +82,8 @@ Object.defineProperty(window, "ss", {
   }
 });
 /* twine-user-script #2: "007_constants.js" */
-s.lastEdited = "2019-01-23-1605";
-s.versionNumber = 109;
+s.lastEdited = "2019-01-24-0826";
+s.versionNumber = 110;
 
 s.calcVersion = function(num) {
   let main = Math.floor(num/100);
@@ -383,12 +386,12 @@ setup.examine = function(objDescription, id) {
     function checks for it every time you enter a menu screen. */
 setup.visitMenu = function(psgName) {
   if (turns() != v.lastMenuTurn) {
-    v.cheatCode = [1, 1, 1, 1, 1, 1];
+    v.cheatCode = [1, 1, 1, 1, 1, 1, 1];
     v.lastMenuTurn = turns();
   }
   v.cheatCode.push(psgName == "help" ? 0 : 1);
   v.cheatCode.shift();
-  if (JSON.stringify(v.cheatCode) == "[0,0,1,0,1,0]") {
+  if (JSON.stringify(v.cheatCode) == "[0,0,1,0,1,0,0]") {
     settings.debug = !settings.debug;
     Setting.save();
     if (settings.debug) {
@@ -613,13 +616,9 @@ setup.generalRememberMustang = function() {
   return retVal;
 }
 /* twine-user-script #8: "040_navEvents.js" */
-/*	don't display the footer bio link on the bio */
+/*	get the current passage, regardless of whether saving to history or not */
 $(document).on(':passageinit', function (ev) {
-  if (ev.passage.title == "bio") {
-    v.viewingBio = true;
-  } else {
-    v.viewingBio = false;
-  }
+  v.curPassage = ev.passage;
 });
 /* twine-user-script #9: "Story JavaScript" */
 
@@ -634,11 +633,10 @@ $(document).on(':passageinit', function (ev) {
   <<set $diceMethod = "random">>
   <<set $diceMethodSpecial = "random">>
   <<set $lastMenuTurn = 0>> /* turn # of last visit to help/bio */
-  <<set $cheatCode = [1, 1, 1, 1, 1, 1]>>
+  <<set $cheatCode = [1, 1, 1, 1, 1, 1, 1]>>
   /* an array used to pass text from one passage to another */
   <<set $msg = []>>
   <<set $bioLastViewed = {}>>
-  <<set $viewingBio = false>>
 
 /*  the "classes" used in the game */
 
@@ -1046,13 +1044,18 @@ $(document).on(':passageinit', function (ev) {
 :: PassageFooter
 <<timed 0s>><<if !tags().includes("no-header")>>
   <hr>
-  <p><<if !$viewingBio>>
+  <p><<if $curPassage.title !== "bio">>
     <em><<link "view Character Sheet">>
       <<script>>Engine.play("bio", true)<</script>>
     <</link>></em>
     <<if ss.bioNotify && s.bioChanged()>>
       <span class='changes'>&#9679;</span>
     <</if>>
+  <<else>>
+    <em><<link "exit Character Sheet">>
+      <<run s.updateBioView()>>
+      <<script>>Engine.show()<</script>>
+    <</link>></em>
   <</if>></p>
   <<if settings.debug>>
     <p>//Random number between 1 and <span id="maxNumber">5</span>:// <span id="randomNumber">''<<= random(1, 5)>>''</span></p>
@@ -1169,11 +1172,6 @@ $(document).on(':passageinit', function (ev) {
     _display<br>
   Handled Things: $hasHandled</p>
 <</if>>
-
-<p><<link "return to story">>
-  <<run s.updateBioView()>>
-  <<script>>Engine.show()<</script>>
-<</link>></p>
 
 
 :: Start [no-header]

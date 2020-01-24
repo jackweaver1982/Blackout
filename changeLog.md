@@ -1,5 +1,12 @@
 # Change Log
 
+## Version 1.10
+
+* changed cheat code to help-help-bio-help-bio-help-help
+* edit cheat code description in GM info section of repository
+* in bio, moved "return to story" link to footer and changed text to "exit character sheet"
+* changed links inside a yellow line of text to be orange instead of blue
+
 ## Version 1.9
 
 * fixed error where visiting help from character sheet would result in no link back to character sheet

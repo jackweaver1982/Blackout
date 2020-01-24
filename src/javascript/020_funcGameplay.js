@@ -53,12 +53,12 @@ setup.examine = function(objDescription, id) {
     function checks for it every time you enter a menu screen. */
 setup.visitMenu = function(psgName) {
   if (turns() != v.lastMenuTurn) {
-    v.cheatCode = [1, 1, 1, 1, 1, 1];
+    v.cheatCode = [1, 1, 1, 1, 1, 1, 1];
     v.lastMenuTurn = turns();
   }
   v.cheatCode.push(psgName == "help" ? 0 : 1);
   v.cheatCode.shift();
-  if (JSON.stringify(v.cheatCode) == "[0,0,1,0,1,0]") {
+  if (JSON.stringify(v.cheatCode) == "[0,0,1,0,1,0,0]") {
     settings.debug = !settings.debug;
     Setting.save();
     if (settings.debug) {

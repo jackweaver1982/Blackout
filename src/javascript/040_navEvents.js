@@ -1,8 +1,4 @@
-/*	don't display the footer bio link on the bio */
+/*	get the current passage, regardless of whether saving to history or not */
 $(document).on(':passageinit', function (ev) {
-  if (ev.passage.title == "bio") {
-    v.viewingBio = true;
-  } else {
-    v.viewingBio = false;
-  }
+  v.curPassage = ev.passage;
 });

@@ -1,5 +1,5 @@
-s.lastEdited = "2019-01-23-1916";
-s.versionNumber = 109;
+s.lastEdited = "2019-01-24-0826";
+s.versionNumber = 110;
 
 s.calcVersion = function(num) {
   let main = Math.floor(num/100);

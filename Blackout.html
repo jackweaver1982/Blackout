@@ -124,13 +124,16 @@ a {
     content: "";
 }
 .description {
-  color:yellow;
+  color: yellow;
 }
 .changes {
-  color:yellow;
+  color: yellow;
+}
+.changes a {
+  color: #FF8800;
 }
 .headings {
-  color:lime;
+  color: lime;
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* twine-user-script #1: "005_jsShortcuts.js" */
 /*  make "v" a shortcut for "State.variables",
  *  which is equivalent to "variables()" */
@@ -162,8 +165,8 @@ Object.defineProperty(window, "ss", {
   }
 });
 /* twine-user-script #2: "007_constants.js" */
-s.lastEdited = "2019-01-23-1605";
-s.versionNumber = 109;
+s.lastEdited = "2019-01-24-0826";
+s.versionNumber = 110;
 
 s.calcVersion = function(num) {
   let main = Math.floor(num/100);
@@ -466,12 +469,12 @@ setup.examine = function(objDescription, id) {
     function checks for it every time you enter a menu screen. */
 setup.visitMenu = function(psgName) {
   if (turns() != v.lastMenuTurn) {
-    v.cheatCode = [1, 1, 1, 1, 1, 1];
+    v.cheatCode = [1, 1, 1, 1, 1, 1, 1];
     v.lastMenuTurn = turns();
   }
   v.cheatCode.push(psgName == "help" ? 0 : 1);
   v.cheatCode.shift();
-  if (JSON.stringify(v.cheatCode) == "[0,0,1,0,1,0]") {
+  if (JSON.stringify(v.cheatCode) == "[0,0,1,0,1,0,0]") {
     settings.debug = !settings.debug;
     Setting.save();
     if (settings.debug) {
@@ -696,13 +699,9 @@ setup.generalRememberMustang = function() {
   return retVal;
 }
 /* twine-user-script #8: "040_navEvents.js" */
-/*	don't display the footer bio link on the bio */
+/*	get the current passage, regardless of whether saving to history or not */
 $(document).on(':passageinit', function (ev) {
-  if (ev.passage.title == "bio") {
-    v.viewingBio = true;
-  } else {
-    v.viewingBio = false;
-  }
+  v.curPassage = ev.passage;
 });
 /* twine-user-script #9: "Story JavaScript" */
 </script><tw-passagedata pid="1" name="StoryInit" tags="" position="100,100" size="100,100">/*  system variables */
@@ -714,11 +713,10 @@ $(document).on(':passageinit', function (ev) {
   &lt;&lt;set $diceMethod = &quot;random&quot;&gt;&gt;
   &lt;&lt;set $diceMethodSpecial = &quot;random&quot;&gt;&gt;
   &lt;&lt;set $lastMenuTurn = 0&gt;&gt; /* turn # of last visit to help/bio */
-  &lt;&lt;set $cheatCode = [1, 1, 1, 1, 1, 1]&gt;&gt;
+  &lt;&lt;set $cheatCode = [1, 1, 1, 1, 1, 1, 1]&gt;&gt;
   /* an array used to pass text from one passage to another */
   &lt;&lt;set $msg = []&gt;&gt;
   &lt;&lt;set $bioLastViewed = {}&gt;&gt;
-  &lt;&lt;set $viewingBio = false&gt;&gt;
 
 /*  the &quot;classes&quot; used in the game */
 
@@ -1118,13 +1116,18 @@ $(document).on(':passageinit', function (ev) {
   &lt;br&gt;&lt;hr&gt;
 &lt;&lt;/if&gt;&gt;&lt;&lt;/timed&gt;&gt;</tw-passagedata><tw-passagedata pid="3" name="PassageFooter" tags="" position="350,100" size="100,100">&lt;&lt;timed 0s&gt;&gt;&lt;&lt;if !tags().includes(&quot;no-header&quot;)&gt;&gt;
   &lt;hr&gt;
-  &lt;p&gt;&lt;&lt;if !$viewingBio&gt;&gt;
+  &lt;p&gt;&lt;&lt;if $curPassage.title !== &quot;bio&quot;&gt;&gt;
     &lt;em&gt;&lt;&lt;link &quot;view Character Sheet&quot;&gt;&gt;
       &lt;&lt;script&gt;&gt;Engine.play(&quot;bio&quot;, true)&lt;&lt;/script&gt;&gt;
     &lt;&lt;/link&gt;&gt;&lt;/em&gt;
     &lt;&lt;if ss.bioNotify &amp;&amp; s.bioChanged()&gt;&gt;
       &lt;span class=&#39;changes&#39;&gt;&amp;#9679;&lt;/span&gt;
     &lt;&lt;/if&gt;&gt;
+  &lt;&lt;else&gt;&gt;
+    &lt;em&gt;&lt;&lt;link &quot;exit Character Sheet&quot;&gt;&gt;
+      &lt;&lt;run s.updateBioView()&gt;&gt;
+      &lt;&lt;script&gt;&gt;Engine.show()&lt;&lt;/script&gt;&gt;
+    &lt;&lt;/link&gt;&gt;&lt;/em&gt;
   &lt;&lt;/if&gt;&gt;&lt;/p&gt;
   &lt;&lt;if settings.debug&gt;&gt;
     &lt;p&gt;//Random number between 1 and &lt;span id=&quot;maxNumber&quot;&gt;5&lt;/span&gt;:// &lt;span id=&quot;randomNumber&quot;&gt;&#39;&#39;&lt;&lt;= random(1, 5)&gt;&gt;&#39;&#39;&lt;/span&gt;&lt;/p&gt;
@@ -1232,12 +1235,7 @@ $(document).on(':passageinit', function (ev) {
     &lt;&lt;/for&gt;&gt;
     _display&lt;br&gt;
   Handled Things: $hasHandled&lt;/p&gt;
-&lt;&lt;/if&gt;&gt;
-
-&lt;p&gt;&lt;&lt;link &quot;return to story&quot;&gt;&gt;
-  &lt;&lt;run s.updateBioView()&gt;&gt;
-  &lt;&lt;script&gt;&gt;Engine.show()&lt;&lt;/script&gt;&gt;
-&lt;&lt;/link&gt;&gt;&lt;/p&gt;</tw-passagedata><tw-passagedata pid="6" name="Start" tags="no-header" position="725,100" size="100,100">&lt;&lt;if !$injuries.has(&quot;headache&quot;)&gt;&gt;
+&lt;&lt;/if&gt;&gt;</tw-passagedata><tw-passagedata pid="6" name="Start" tags="no-header" position="725,100" size="100,100">&lt;&lt;if !$injuries.has(&quot;headache&quot;)&gt;&gt;
   &lt;&lt;run setup.addInjury(&quot;headache&quot;)&gt;&gt;
 &lt;&lt;/if&gt;&gt;
 &lt;&lt;if !$inventory.has(&quot;clothes&quot;)&gt;&gt;

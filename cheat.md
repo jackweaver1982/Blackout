@@ -8,7 +8,13 @@ On any screen except the title screen and the initial introductory text, click t
 
 <div align="center">
 
-`help`-`help`-`bio`-`help`-`bio`-`bio`
+`help`  
+`help`  
+`view Character Sheet`  
+`help`  
+`view Character Sheet`  
+`help`  
+`help`
 
 </div>
 

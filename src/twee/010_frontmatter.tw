@@ -35,13 +35,16 @@ a {
     content: "";
 }
 .description {
-  color:yellow;
+  color: yellow;
 }
 .changes {
-  color:yellow;
+  color: yellow;
+}
+.changes a {
+  color: #FF8800;
 }
 .headings {
-  color:lime;
+  color: lime;
 }
 
 :: Story JavaScript [script]
@@ -56,11 +59,10 @@ a {
   <<set $diceMethod = "random">>
   <<set $diceMethodSpecial = "random">>
   <<set $lastMenuTurn = 0>> /* turn # of last visit to help/bio */
-  <<set $cheatCode = [1, 1, 1, 1, 1, 1]>>
+  <<set $cheatCode = [1, 1, 1, 1, 1, 1, 1]>>
   /* an array used to pass text from one passage to another */
   <<set $msg = []>>
   <<set $bioLastViewed = {}>>
-  <<set $viewingBio = false>>
 
 /*  the "classes" used in the game */
 
@@ -466,13 +468,18 @@ a {
 :: PassageFooter
 <<timed 0s>><<if !tags().includes("no-header")>>
   <hr>
-  <p><<if !$viewingBio>>
+  <p><<if $curPassage.title !== "bio">>
     <em><<link "view Character Sheet">>
       <<script>>Engine.play("bio", true)<</script>>
     <</link>></em>
     <<if ss.bioNotify && s.bioChanged()>>
       <span class='changes'>&#9679;</span>
     <</if>>
+  <<else>>
+    <em><<link "exit Character Sheet">>
+      <<run s.updateBioView()>>
+      <<script>>Engine.show()<</script>>
+    <</link>></em>
   <</if>></p>
   <<if settings.debug>>
     <p>//Random number between 1 and <span id="maxNumber">5</span>:// <span id="randomNumber">''<<= random(1, 5)>>''</span></p>
@@ -587,11 +594,6 @@ a {
     _display<br>
   Handled Things: $hasHandled</p>
 <</if>>
-
-<p><<link "return to story">>
-  <<run s.updateBioView()>>
-  <<script>>Engine.show()<</script>>
-<</link>></p>
 
 :: Start [no-header]
 <<if !$injuries.has("headache")>>

@@ -58,7 +58,7 @@ setup.visitMenu = function(psgName) {
   }
   v.cheatCode.push(psgName == "help" ? 0 : 1);
   v.cheatCode.shift();
-  if (JSON.stringify(v.cheatCode) == "[0,0,1,0,1,1]") {
+  if (JSON.stringify(v.cheatCode) == "[0,0,1,0,1,0]") {
     settings.debug = !settings.debug;
     Setting.save();
     if (settings.debug) {

@@ -241,9 +241,9 @@ $msg[0]
 
 <p>$msg[1] You fish through the bum's garbage bags, looking for evidence. You need something to prove he's the killer. But all you find is trash. Who could live like this, toting around garbage everywhere? Offhandedly, you wonder if he worried about it getting stolen.</p>
 
-<p>Then you hear a sound. It's the crackle of the Russian's radio, somewhere in the distance. You need to move. He could be back at any moment.</p>
-
 <div id="end" class="description"></div>
+
+<p>Then you hear a sound. It's the crackle of the Russian's radio, somewhere in the distance. You need to move. He could be back at any moment.</p>
 
 <p id="msg"><<if !$inventory.has("knife")>>You put the knife back on the shelf. <</if>><<if $inventory.has("wallet")>>You take the victim's wallet.<</if>></p>
 

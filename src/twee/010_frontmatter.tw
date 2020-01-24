@@ -507,8 +507,6 @@ a {
   <<run setup.visitMenu("bio")>>
 <</timed>>
 
-<<set $viewingBio = true>>
-
 <p><b class="headings">Name:</b> Scott Allen Brady, a.k.a. "Scotty"</p>
 
 <p><b class="headings">Occupation:</b> Hewlett-Packard shipping worker</p>
@@ -592,7 +590,6 @@ a {
 
 <p><<link "return to story">>
   <<run s.updateBioView()>>
-  <<set $viewingBio = false>>
   <<script>>Engine.show()<</script>>
 <</link>></p>
 

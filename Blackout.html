@@ -162,8 +162,8 @@ Object.defineProperty(window, "ss", {
   }
 });
 /* twine-user-script #2: "007_constants.js" */
-s.lastEdited = "2019-01-22-1018";
-s.versionNumber = 108;
+s.lastEdited = "2019-01-23-1605";
+s.versionNumber = 109;
 
 s.calcVersion = function(num) {
   let main = Math.floor(num/100);
@@ -471,7 +471,7 @@ setup.visitMenu = function(psgName) {
   }
   v.cheatCode.push(psgName == "help" ? 0 : 1);
   v.cheatCode.shift();
-  if (JSON.stringify(v.cheatCode) == "[0,0,1,0,1,1]") {
+  if (JSON.stringify(v.cheatCode) == "[0,0,1,0,1,0]") {
     settings.debug = !settings.debug;
     Setting.save();
     if (settings.debug) {
@@ -695,7 +695,16 @@ setup.generalRememberMustang = function() {
   }
   return retVal;
 }
-/* twine-user-script #8: "Story JavaScript" */
+/* twine-user-script #8: "040_navEvents.js" */
+/*	don't display the footer bio link on the bio */
+$(document).on(':passageinit', function (ev) {
+  if (ev.passage.title == "bio") {
+    v.viewingBio = true;
+  } else {
+    v.viewingBio = false;
+  }
+});
+/* twine-user-script #9: "Story JavaScript" */
 </script><tw-passagedata pid="1" name="StoryInit" tags="" position="100,100" size="100,100">/*  system variables */
 
   &lt;&lt;set $rollCount = 0&gt;&gt;
@@ -1144,8 +1153,6 @@ setup.generalRememberMustang = function() {
   &lt;&lt;run setup.visitMenu(&quot;bio&quot;)&gt;&gt;
 &lt;&lt;/timed&gt;&gt;
 
-&lt;&lt;set $viewingBio = true&gt;&gt;
-
 &lt;p&gt;&lt;b class=&quot;headings&quot;&gt;Name:&lt;/b&gt; Scott Allen Brady, a.k.a. &quot;Scotty&quot;&lt;/p&gt;
 
 &lt;p&gt;&lt;b class=&quot;headings&quot;&gt;Occupation:&lt;/b&gt; Hewlett-Packard shipping worker&lt;/p&gt;
@@ -1169,7 +1176,7 @@ setup.generalRememberMustang = function() {
   &lt;&lt;/if&gt;&gt;
 &lt;/p&gt;
 
-&lt;p&gt;&lt;b class=&quot;headings&quot;&gt;Injuries: &lt;/b&gt;&lt;&lt;= s.bioStyle(v.bioLastViewed.Level!=v.player.Level)&gt;&gt;
+&lt;p&gt;&lt;b class=&quot;headings&quot;&gt;Injuries: &lt;/b&gt;
   &lt;&lt;if $injuries.size == 0&gt;&gt;
     &lt;&lt;set _style = s.bioStyle($bioLastViewed.injuries.size &gt; 0)&gt;&gt;
     &lt;span @class=_style&gt;None.&lt;/span&gt;
@@ -1229,7 +1236,6 @@ setup.generalRememberMustang = function() {
 
 &lt;p&gt;&lt;&lt;link &quot;return to story&quot;&gt;&gt;
   &lt;&lt;run s.updateBioView()&gt;&gt;
-  &lt;&lt;set $viewingBio = false&gt;&gt;
   &lt;&lt;script&gt;&gt;Engine.show()&lt;&lt;/script&gt;&gt;
 &lt;&lt;/link&gt;&gt;&lt;/p&gt;</tw-passagedata><tw-passagedata pid="6" name="Start" tags="no-header" position="725,100" size="100,100">&lt;&lt;if !$injuries.has(&quot;headache&quot;)&gt;&gt;
   &lt;&lt;run setup.addInjury(&quot;headache&quot;)&gt;&gt;
@@ -2509,9 +2515,9 @@ You desperately look around. On the shelf to your right you see some things from
 
 &lt;p&gt;$msg[1] You fish through the bum&#39;s garbage bags, looking for evidence. You need something to prove he&#39;s the killer. But all you find is trash. Who could live like this, toting around garbage everywhere? Offhandedly, you wonder if he worried about it getting stolen.&lt;/p&gt;
 
-&lt;p&gt;Then you hear a sound. It&#39;s the crackle of the Russian&#39;s radio, somewhere in the distance. You need to move. He could be back at any moment.&lt;/p&gt;
-
 &lt;div id=&quot;end&quot; class=&quot;description&quot;&gt;&lt;/div&gt;
+
+&lt;p&gt;Then you hear a sound. It&#39;s the crackle of the Russian&#39;s radio, somewhere in the distance. You need to move. He could be back at any moment.&lt;/p&gt;
 
 &lt;p id=&quot;msg&quot;&gt;&lt;&lt;if !$inventory.has(&quot;knife&quot;)&gt;&gt;You put the knife back on the shelf. &lt;&lt;/if&gt;&gt;&lt;&lt;if $inventory.has(&quot;wallet&quot;)&gt;&gt;You take the victim&#39;s wallet.&lt;&lt;/if&gt;&gt;&lt;/p&gt;
 

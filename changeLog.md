@@ -1,5 +1,11 @@
 # Change Log
 
+## Version 1.9
+
+* fixed error where visiting help from character sheet would result in no link back to character sheet
+* changed cheat code to help-help-bio-help-bio-help, to avoid two consecutive bio clicks
+* fixed a bug where if you discovered the wallet in the house, then when you saw it in the warehouse and clicked on it, the description would appear one paragraph lower than it should
+
 ## Version 1.8
 
 * split `eqSet()` into two functions, one of which checks for subset

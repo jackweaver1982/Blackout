@@ -79,8 +79,8 @@ Object.defineProperty(window, "ss", {
   }
 });
 /* twine-user-script #2: "007_constants.js" */
-s.lastEdited = "2019-01-22-1018";
-s.versionNumber = 108;
+s.lastEdited = "2019-01-23-1605";
+s.versionNumber = 109;
 
 s.calcVersion = function(num) {
   let main = Math.floor(num/100);
@@ -388,7 +388,7 @@ setup.visitMenu = function(psgName) {
   }
   v.cheatCode.push(psgName == "help" ? 0 : 1);
   v.cheatCode.shift();
-  if (JSON.stringify(v.cheatCode) == "[0,0,1,0,1,1]") {
+  if (JSON.stringify(v.cheatCode) == "[0,0,1,0,1,0]") {
     settings.debug = !settings.debug;
     Setting.save();
     if (settings.debug) {
@@ -612,7 +612,16 @@ setup.generalRememberMustang = function() {
   }
   return retVal;
 }
-/* twine-user-script #8: "Story JavaScript" */
+/* twine-user-script #8: "040_navEvents.js" */
+/*	don't display the footer bio link on the bio */
+$(document).on(':passageinit', function (ev) {
+  if (ev.passage.title == "bio") {
+    v.viewingBio = true;
+  } else {
+    v.viewingBio = false;
+  }
+});
+/* twine-user-script #9: "Story JavaScript" */
 
 
 :: StoryInit
@@ -1080,8 +1089,6 @@ setup.generalRememberMustang = function() {
   <<run setup.visitMenu("bio")>>
 <</timed>>
 
-<<set $viewingBio = true>>
-
 <p><b class="headings">Name:</b> Scott Allen Brady, a.k.a. "Scotty"</p>
 
 <p><b class="headings">Occupation:</b> Hewlett-Packard shipping worker</p>
@@ -1105,7 +1112,7 @@ setup.generalRememberMustang = function() {
   <</if>>
 </p>
 
-<p><b class="headings">Injuries: </b><<= s.bioStyle(v.bioLastViewed.Level!=v.player.Level)>>
+<p><b class="headings">Injuries: </b>
   <<if $injuries.size == 0>>
     <<set _style = s.bioStyle($bioLastViewed.injuries.size > 0)>>
     <span @class=_style>None.</span>
@@ -1165,7 +1172,6 @@ setup.generalRememberMustang = function() {
 
 <p><<link "return to story">>
   <<run s.updateBioView()>>
-  <<set $viewingBio = false>>
   <<script>>Engine.show()<</script>>
 <</link>></p>
 
@@ -2692,9 +2698,9 @@ $msg[0]
 
 <p>$msg[1] You fish through the bum's garbage bags, looking for evidence. You need something to prove he's the killer. But all you find is trash. Who could live like this, toting around garbage everywhere? Offhandedly, you wonder if he worried about it getting stolen.</p>
 
-<p>Then you hear a sound. It's the crackle of the Russian's radio, somewhere in the distance. You need to move. He could be back at any moment.</p>
-
 <div id="end" class="description"></div>
+
+<p>Then you hear a sound. It's the crackle of the Russian's radio, somewhere in the distance. You need to move. He could be back at any moment.</p>
 
 <p id="msg"><<if !$inventory.has("knife")>>You put the knife back on the shelf. <</if>><<if $inventory.has("wallet")>>You take the victim's wallet.<</if>></p>
 

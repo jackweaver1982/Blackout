@@ -1,13 +1,15 @@
+// widgets
+
 /*  fail rule in Bedroom */
-setup.bedroomFail = function() {
+s.bedroomFail = function() {
   let retVals = [1,2];
   let retVal = -1;
-  let levelUp = setup.markXP();
+  let levelUp = s.markXP();
   if (levelUp == 1) {
     alert("unexpected level up");
   }
   if (v.rollCount == 1 && v.pounding) {
-    retVal = setup.generalSoftFail();
+    retVal = s.generalSoftFail();
   } else {
     v.pounding = false;
     v.crowbar = false;
@@ -21,10 +23,10 @@ setup.bedroomFail = function() {
 }
 
 /*  tackled rule in Cops bust in */
-setup.copsBustInTackled = function() {
+s.copsBustInTackled = function() {
   let retVals = [5,8];
   let retVal = -1;
-  let death = setup.addInjury("concussion");
+  let death = s.addInjury("concussion");
   if (death == 1) {
     alert("unexpected death");
   }
@@ -45,11 +47,11 @@ setup.copsBustInTackled = function() {
 }
 
 /*  shot rule in Cops bust in */
-setup.copsBustInShot = function() {
+s.copsBustInShot = function() {
   let retVals = [6,9];
   let retVal = -1;
-  setup.adjustREL("detective", -1);
-  let death = setup.addInjury("gunshotShoulder");
+  s.adjustREL("detective", -1);
+  let death = s.addInjury("gunshotShoulder");
   if (death == 1) {
     alert("unexpected death");
   }
@@ -70,17 +72,17 @@ setup.copsBustInShot = function() {
 }
 
 /*  low roll rule in Bathroom */
-setup.bathroomLowRoll = function() {
+s.bathroomLowRoll = function() {
   let retVals = [1,7];
   let retVal = -1;
-  let levelUp = setup.markXP();
+  let levelUp = s.markXP();
   if (levelUp == 1) {
     alert("unexpected level up");
   }
 if (v.rollCount == 1 && v.pounding) {
-    retVal = setup.generalSoftFail();
+    retVal = s.generalSoftFail();
   } else {
-    retVal = setup.bathroomFail();
+    retVal = s.bathroomFail();
   }
   if (!retVals.includes(retVal)) {
     alert("bathroomLowRoll() tried to return " + retVal + ", which is not one of the expected return values");
@@ -89,7 +91,7 @@ if (v.rollCount == 1 && v.pounding) {
 }
 
 /*  fail rule in Bathroom */
-setup.bathroomFail = function() {
+s.bathroomFail = function() {
   let retVals = [7];
   let retVal = -1;
   v.pounding = false;
@@ -103,7 +105,7 @@ setup.bathroomFail = function() {
 }
 
 /*  soft fail rule in General rules */
-setup.generalSoftFail = function() {
+s.generalSoftFail = function() {
   let retVals = [1];
   let retVal = -1;
   v.pounding = false;
@@ -116,7 +118,7 @@ setup.generalSoftFail = function() {
 }
 
 /*  remember tattoo rule in General rules */
-setup.generalRememberTattoo = function() {
+s.generalRememberTattoo = function() {
   let retVals = [3];
   let retVal = -1;
   v.knowledge.add("womanAtBar");
@@ -129,7 +131,7 @@ setup.generalRememberTattoo = function() {
 }
 
 /*  remember Mustang rule in General rules */
-setup.generalRememberMustang = function() {
+s.generalRememberMustang = function() {
   let retVals = [4];
   let retVal = -1;
   v.knowledge.add("mustangKeys");

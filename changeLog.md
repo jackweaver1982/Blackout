@@ -1,5 +1,9 @@
 # Change Log
 
+## Version 1.11
+
+* reorganized JavaScript files
+
 ## Version 1.10
 
 * changed cheat code to help-help-bio-help-bio-help-help

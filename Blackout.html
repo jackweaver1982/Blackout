@@ -134,74 +134,68 @@ a {
 }
 .headings {
   color: lime;
-}</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* twine-user-script #1: "005_jsShortcuts.js" */
-/*  make "v" a shortcut for "State.variables",
- *  which is equivalent to "variables()" */
-Object.defineProperty(window, "v", {
-  get: function() {
-    return State.variables;
-  }
-});
+}</style><script role="script" id="twine-user-script" type="text/twine-javascript">/* twine-user-script #1: "_standard.js" */
+// This is a collection of standard code to include in all projects:
+// `nobr` on every passage and shortcuts/aliases for `setup`,
+// `settings`, and accessing story and temporary variables in
+// JavaScript.
+//
+// This file should be the first file passed to Tweego. All other files
+// will depend on it, since they will make use of the shortcuts/aliases
+// contained here.
 
-/*  make "t" a shortcut for "State.temporary",
- *  which is equivalent to "temporary()" */
-Object.defineProperty(window, "t", {
-  get: function() {
-    return State.temporary;
-  }
-});
+// sets all passages to `nobr`
+Config.passages.nobr = true;
 
-/*  make "s" a shortcut for "setup" */
+// make `s` a shortcut for `setup`
 Object.defineProperty(window, "s", {
   get: function() {
     return setup;
   }
 });
 
-/*  make "ss" a shortcut for "setup" */
+// make `ss` a shortcut for `settings`
 Object.defineProperty(window, "ss", {
   get: function() {
     return settings;
   }
 });
-/* twine-user-script #2: "007_constants.js" */
-s.lastEdited = "2019-01-24-0826";
-s.versionNumber = 110;
 
-s.calcVersion = function(num) {
-  let main = Math.floor(num/100);
-  let sub = num % 100;
-  return main + '.' + sub;
-}
-
-s.version = setup.calcVersion(setup.versionNumber);
-
-s.betaFormURL = 'https://jackweaver1982.github.io/Blackout/betaForm.html';
-/* twine-user-script #3: "010_config.js" */
-/*  sets all passages to `nobr` */
-Config.passages.nobr = true;
-
-/*  add debug mode to settings */
-Setting.addToggle("debug", {
-  label: "debug mode"
+// make `v` a shortcut for `State.variables`, which is equivalent to
+// `variables()`
+Object.defineProperty(window, "v", {
+  get: function() {
+    return State.variables;
+  }
 });
 
-/*  add beta mode to settings */
+// make `t` a shortcut for `State.temporary`, which is equivalent to
+// `temporary()`
+Object.defineProperty(window, "t", {
+  get: function() {
+    return State.temporary;
+  }
+});
+/* twine-user-script #2: "beta.js" */
+// requires: _standard.js
+//
+// This file adds a beta mode to settings, so items in the game can be
+// shown/activated conditional on whether beta mode is on or off. It
+// also offers a place to store a url for a beta testing feedback form.
+
+s.betaFormURL = 'https://jackweaver1982.github.io/Blackout/betaForm.html';
+
 Setting.addToggle("beta", {
   label: "beta mode",
   default: true
 });
-
-/*  add bio notifications to settings */
-Setting.addToggle("bioNotify", {
-  label: "bio notifications",
-  default: true
-});
+/* twine-user-script #3: "bookmark.js" */
+// save
 
 /*  enable autosaves and autoloading */
 Config.saves.autosave = true;
 Config.saves.autoload = function () {
-  return settings.debug;
+  return ss.debug;
 };
 
 /*  disallow saves on the starting and intro passages */
@@ -216,9 +210,6 @@ Config.saves.isAllowed = function() {
 /*  use passage titles for save files */
 Config.passages.descriptions = true;
 
-/*  sets a maximum of one save slot */
-/*  Config.saves.slots = 1; */
-
 /*  add custom save naming to settings */
 Setting.addToggle("nameSaves", {
   label   : "custom save names",
@@ -227,193 +218,80 @@ Setting.addToggle("nameSaves", {
 
 /*  enable custom naming of saves */
 Config.saves.onSave = function(save) {
-  if (Dialog.isOpen("saves") && settings.nameSaves) {
+  if (Dialog.isOpen("saves") && ss.nameSaves) {
     save.title = prompt("Name of this save file:", passage());
   }
   return;
 }
 
+/*  save game */
+s.saveGame = function() {
+  if (!Save.slots.has(0)) {
+    if (confirm("Save bookmark? You are allowed only one.\n\n(If you just want to quit and resume later, you should not need to save. See the help section for details.)")) {
+      Save.slots.save(0);
+    }
+  } else {
+    alert("Bookmark used already. Restart to delete current bookmark.")
+  }
+  return;
+}
+
+/*  load game */
+s.loadGame = function() {
+  if (!Save.slots.has(0)) {
+    alert("No bookmark to load.");
+  } else {
+    if (confirm("Load bookmark?")) {
+      Save.slots.load(0);
+    }
+  }
+  return;
+}
+
 /*  set version number of saves */
-Config.saves.version = setup.versionNumber;
+Config.saves.version = s.versionNumber;
 
 /*  check compatibility of save file */
 s.checkSave = function(save) {
-  return (save.version == setup.versionNumber);
+  return (save.version == s.versionNumber);
 }
-/* twine-user-script #4: "015_funcObj.js" */
-/*  creates a variable `varName` which is a clone of `ClassName`, then sets its
-    id to `varName` and adds it to the set of game objects, `gameObjects` */
-setup.make = function(varName, ClassName) {
-  if (v.gameObjects.has(varName)) {
-    alert("setup.make() is trying to create `" + varName +"`, which already exists");
-    return;
-  } else {
-    v[varName] = clone(v[ClassName]);
-    v[varName].id = varName;
-    v.gameObjects.add(varName);
-    return;
+/* twine-user-script #4: "debug.js" */
+// debug
+
+/*  add debug mode to settings */
+Setting.addToggle("debug", {
+  label: "debug mode"
+});
+
+/*  entering menus in the right pattern will activate debug mode. This
+    function checks for it every time you enter a menu screen. */
+s.visitMenu = function(psgName) {
+  if (turns() != v.lastMenuTurn) {
+    v.cheatCode = [1, 1, 1, 1, 1, 1, 1];
+    v.lastMenuTurn = turns();
   }
+  v.cheatCode.push(psgName == "help" ? 0 : 1);
+  v.cheatCode.shift();
+  if (JSON.stringify(v.cheatCode) == "[0,0,1,0,1,0,0]") {
+    ss.debug = !ss.debug;
+    Setting.save();
+    if (ss.debug) {
+      UIBar.unstow().show();
+    } else {
+      UIBar.hide().stow();
+    }
+    Engine.play(psgName, true);
+  }
+  return;
 }
 
-/*  check type */
-setup.checkType = function(obj, type) {
-  do {
-    if (v[obj].type == type || v[obj].parent == type) {
-      return true;
-    } else {
-      obj = v[obj].parent;
-    }
-  } while (obj !== "none");
-  return false;
-}
+/*  get the current passage, regardless of whether saving to history or not */
+$(document).on(':passageinit', function (ev) {
+  v.curPassage = ev.passage;
+});
+/* twine-user-script #5: "dice.js" */
+// dice
 
-/*  getters */
-
-  /*  update the array of what the player has discovered */
-  setup.getDiscovered = function() {
-    v.hasDiscovered.clear();
-    function checkDiscovered(val1, val2, set) {
-      if (setup.checkType(val1, "Thing") && v[val1].discovered == true) {
-        v.hasDiscovered.add(val1);
-      }
-    }
-    v.gameObjects.forEach(checkDiscovered);
-    return;
-  }
-
-  /*  update the array of what the player has handled */
-  setup.getHandled = function() {
-    v.hasHandled.clear();
-    function checkHandled(val1, val2, set) {
-      if (setup.checkType(val1, "Thing") && v[val1].handled == true) {
-        v.hasHandled.add(val1);
-      }
-    }
-    v.gameObjects.forEach(checkHandled);
-    return;
-  }
-
-/*  setters */
-
-  /*  mark XP */
-  setup.markXP = function() {
-    /*  return codes: 0 = no follow-up needed, 1 = leveled up */
-    let ret = 0;
-    if (v.player.XP < 5) {
-      v.player.XP++;
-      if (v.player.XP == 5) {
-        ret = 1;
-        v.player.Level = 2;
-        if (!v.injuries.delete("headache")) {
-          alert("leveled up without a headache");
-        }
-        v.player.DEX += 1;
-      }
-    }
-    return ret;
-  }
-
-  /*  manually add 1 XP, looping back to 0 after 5 and adjusting level as
-      needed */
-  setup.addXP = function() {
-    v.player.XP = (v.player.XP + 1) % 6;
-    if (v.player.XP == 5) {
-      v.player.Level = 2;
-      v.injuries.delete("headache");
-    } else if (v.player.XP == 0) {
-      v.player.Level = 1;
-      v.injuries.add("headache");
-    }
-    Engine.show();
-    return;
-  }
-
-  /*  add injury and take damage */
-  setup.addInjury = function(injury) {
-    /*  return codes: 0 = no follow-up needed, 1 = died, 2 = warn */
-    let ret = 0;
-    if (v.injuries.has(injury)) {
-      alert("setup.addInjury() tried adding a duplicate injury");
-    } else {
-      v.injuries.add(injury);
-      v.player.HP -= v[injury].damage;
-      if (v.player.HP == 1) {
-        ret = 2;
-      }
-      if (v.player.HP <= 0) {
-        ret = 1;
-      }
-    }
-    return ret;
-  }
-
-  /*  manually remove 1 HP, looping back to 5 after 1 */
-  setup.removeHP = function() {
-    v.player.HP -= 1;
-    if (v.player.HP < 1) {
-      v.player.HP = 5;
-    }
-    Engine.show();
-    return;
-  }
-
-  /*  mark thing as discovered */
-  setup.discoverThing = function(thing) {
-    if (!setup.checkType(thing, "Thing")) {
-      alert("setup.discoverThing() tried marking an object which was not a Thing");
-    } else {
-      if (!v[thing].discovered) {
-        v[thing].discovered = true;
-        v[thing].discoveredWhen = turns();
-        setup.getDiscovered();
-      }
-    }
-    return;
-  }
-
-  /*  mark thing as handle */
-  setup.handleThing = function(thing) {
-    if (!setup.checkType(thing, "Thing")) {
-      alert("setup.handleThing() tried marking an object which was not a Thing");
-    } else {
-      v[thing].handled = true;
-      setup.getHandled();
-    }
-    return;
-  }
-
-  /*  put thing in inventory */
-  setup.takeThing = function(thing) {
-    if (v.inventory.has(thing)) {
-      alert("setup.takeThing() tried taking a thing already in inventory");
-    } else {
-      setup.discoverThing(thing);
-      setup.handleThing(thing);
-      v.inventory.add(thing);
-    }
-    return;
-  }
-
-  /*  move everything but clothes from inventory to inventoryLost */
-  setup.takeInventory = function() {
-    for (var thing of v.inventory) {
-      if (thing !== "clothes") {
-        v.inventory.delete(thing);
-        v.inventoryLost.add(thing);
-      }
-    }
-    return;
-  }
-
-  /*  adjusts the player's REL stat with `NPC` by n */
-  setup.adjustREL = function(NPC, n) {
-    if (!Object.keys(v.player.REL).includes(NPC)) {
-      v.player.REL[NPC] = 0;
-    }
-    v.player.REL[NPC] = (v.player.REL[NPC] + n).clamp(-1,3);
-    return;
-  }
-/* twine-user-script #5: "020_funcGameplay.js" */
 /*  the dice rolling function */
 setup.roll = function() {
   v.rollCount++;
@@ -453,9 +331,12 @@ setup.rollSpecial = function(mod, omit) {
   return ret;
 }
 
+/* twine-user-script #6: "examine.js" */
+// examine
+
 /*  replaces the HTML element with the given `id` (default is "end") by
     `objDescription` */
-setup.examine = function(objDescription, id) {
+s.examine = function(objDescription, id) {
   let txt = jQuery("#" + (id || "end")).html();
   jQuery(".description").empty()
   jQuery("#" + (id || "end")).wiki(objDescription);
@@ -464,68 +345,30 @@ setup.examine = function(objDescription, id) {
   }
   return;
 }
+/* twine-user-script #7: "notify.js" */
+// notifications
 
-/*  entering menus in the right pattern will activate debug mode. This
-    function checks for it every time you enter a menu screen. */
-setup.visitMenu = function(psgName) {
-  if (turns() != v.lastMenuTurn) {
-    v.cheatCode = [1, 1, 1, 1, 1, 1, 1];
-    v.lastMenuTurn = turns();
-  }
-  v.cheatCode.push(psgName == "help" ? 0 : 1);
-  v.cheatCode.shift();
-  if (JSON.stringify(v.cheatCode) == "[0,0,1,0,1,0,0]") {
-    settings.debug = !settings.debug;
-    Setting.save();
-    if (settings.debug) {
-      UIBar.unstow().show();
-    } else {
-      UIBar.hide().stow();
-    }
-    Engine.play(psgName, true);
-  }
-  return;
-}
+/*  add bio notifications to settings */
+Setting.addToggle("bioNotify", {
+  label: "bio notifications",
+  default: true
+});
 
-/*  save game */
-setup.saveGame = function() {
-  if (!Save.slots.has(0)) {
-    if (confirm("Save bookmark? You are allowed only one.\n\n(If you just want to quit and resume later, you should not need to save. See the help section for details.)")) {
-      Save.slots.save(0);
-    }
-  } else {
-    alert("Bookmark used already. Restart to delete current bookmark.")
-  }
-  return;
-}
-
-/*  load game */
-setup.loadGame = function() {
-  if (!Save.slots.has(0)) {
-    alert("No bookmark to load.");
-  } else {
-    if (confirm("Load bookmark?")) {
-      Save.slots.load(0);
-    }
-  }
-  return;
-}
-/* twine-user-script #6: "025_funcBioView.js" */
-/*	check if one set is a subset of another */
-setup.isSubset = function(set1, set2) {
-	for (var x of set1) if (!set2.has(x)) return false;
-	return true;
+/*  check if one set is a subset of another */
+s.isSubset = function(set1, set2) {
+  for (var x of set1) if (!set2.has(x)) return false;
+  return true;
 }
 
 /*  check if two sets are equal */
-setup.eqSet = function(set1, set2) {
+s.eqSet = function(set1, set2) {
     if (set1.size !== set2.size) return false;
     return s.isSubset(set1, set2);
 }
 
-/*	update the bioLastViewed variable to the current bioView */
-setup.updateBioView = function() {
-	v.bioLastViewed = {
+/*  update the bioLastViewed variable to the current bioView */
+s.updateBioView = function() {
+  v.bioLastViewed = {
     Level: v.player.Level,
     injuries: clone(v.injuries),
     HP: v.player.HP,
@@ -535,38 +378,231 @@ setup.updateBioView = function() {
   return;
 }
 
-/*	check if the bio has changed since last viewing it */
-setup.bioChanged = function() {
-	if (v.bioLastViewed.Level != v.player.Level ||
-		  !s.eqSet(v.bioLastViewed.injuries, v.injuries) ||
+/*  check if the bio has changed since last viewing it */
+s.bioChanged = function() {
+  if (v.bioLastViewed.Level != v.player.Level ||
+      !s.eqSet(v.bioLastViewed.injuries, v.injuries) ||
       v.bioLastViewed.HP != v.player.HP ||
       !s.eqSet(v.bioLastViewed.inventory, v.inventory) ||
       !s.eqSet(v.bioLastViewed.knowledge, v.knowledge)) {
-		return true;
-	} else {
-		return false;
-	}
+    return true;
+  } else {
+    return false;
+  }
 }
 
-/*	sets the CSS style for a bio notification */
-setup.bioStyle = function(bool) {
-	if (ss.bioNotify && bool) {
-		return 'changes';
-	} else {
-		return '';
-	}
+/*  sets the CSS style for a bio notification */
+s.bioStyle = function(bool) {
+  if (ss.bioNotify && bool) {
+    return 'changes';
+  } else {
+    return '';
+  }
 }
-/* twine-user-script #7: "030_rules.js" */
+/* twine-user-script #8: "objectm.js" */
+// object management
+
+/*  creates a variable `varName` which is a clone of `ClassName`, then sets its
+    id to `varName` and adds it to the set of game objects, `gameObjects` */
+s.make = function(varName, ClassName) {
+  if (v.gameObjects.has(varName)) {
+    alert("s.make() is trying to create `" + varName +"`, which already exists");
+    return;
+  } else {
+    v[varName] = clone(v[ClassName]);
+    v[varName].id = varName;
+    v.gameObjects.add(varName);
+    return;
+  }
+}
+
+/*  check type */
+s.checkType = function(obj, type) {
+  do {
+    if (v[obj].type == type || v[obj].parent == type) {
+      return true;
+    } else {
+      obj = v[obj].parent;
+    }
+  } while (obj !== "none");
+  return false;
+}
+
+/*  adjusts the player's REL stat with `NPC` by n */
+s.adjustREL = function(NPC, n) {
+  if (!Object.keys(v.player.REL).includes(NPC)) {
+    v.player.REL[NPC] = 0;
+  }
+  v.player.REL[NPC] = (v.player.REL[NPC] + n).clamp(-1,3);
+  return;
+}
+
+/*  mark XP */
+s.markXP = function() {
+  /*  return codes: 0 = no follow-up needed, 1 = leveled up */
+  let ret = 0;
+  if (v.player.XP < 5) {
+    v.player.XP++;
+    if (v.player.XP == 5) {
+      ret = 1;
+      v.player.Level = 2;
+      if (!v.injuries.delete("headache")) {
+        alert("leveled up without a headache");
+      }
+      v.player.DEX += 1;
+    }
+  }
+  return ret;
+}
+
+/*  manually add 1 XP, looping back to 0 after 5 and adjusting level as
+    needed */
+s.addXP = function() {
+  v.player.XP = (v.player.XP + 1) % 6;
+  if (v.player.XP == 5) {
+    v.player.Level = 2;
+    v.injuries.delete("headache");
+  } else if (v.player.XP == 0) {
+    v.player.Level = 1;
+    v.injuries.add("headache");
+  }
+  Engine.show();
+  return;
+}
+
+/*  add injury and take damage */
+s.addInjury = function(injury) {
+  /*  return codes: 0 = no follow-up needed, 1 = died, 2 = warn */
+  let ret = 0;
+  if (v.injuries.has(injury)) {
+    alert("s.addInjury() tried adding a duplicate injury");
+  } else {
+    v.injuries.add(injury);
+    v.player.HP -= v[injury].damage;
+    if (v.player.HP == 1) {
+      ret = 2;
+    }
+    if (v.player.HP <= 0) {
+      ret = 1;
+    }
+  }
+  return ret;
+}
+
+/*  manually remove 1 HP, looping back to 5 after 1 */
+s.removeHP = function() {
+  v.player.HP -= 1;
+  if (v.player.HP < 1) {
+    v.player.HP = 5;
+  }
+  Engine.show();
+  return;
+}
+
+/*  mark thing as discovered */
+s.discoverThing = function(thing) {
+  if (!s.checkType(thing, "Thing")) {
+    alert("s.discoverThing() tried marking an object which was not a Thing");
+  } else {
+    if (!v[thing].discovered) {
+      v[thing].discovered = true;
+      v[thing].discoveredWhen = turns();
+      s.getDiscovered();
+    }
+  }
+  return;
+}
+
+/*  update the array of what the player has discovered */
+s.getDiscovered = function() {
+  v.hasDiscovered.clear();
+  function checkDiscovered(val1, val2, set) {
+    if (s.checkType(val1, "Thing") && v[val1].discovered == true) {
+      v.hasDiscovered.add(val1);
+    }
+  }
+  v.gameObjects.forEach(checkDiscovered);
+  return;
+}
+
+/*  mark thing as handle */
+s.handleThing = function(thing) {
+  if (!s.checkType(thing, "Thing")) {
+    alert("s.handleThing() tried marking an object which was not a Thing");
+  } else {
+    v[thing].handled = true;
+    s.getHandled();
+  }
+  return;
+}
+
+/*  update the array of what the player has handled */
+s.getHandled = function() {
+  v.hasHandled.clear();
+  function checkHandled(val1, val2, set) {
+    if (s.checkType(val1, "Thing") && v[val1].handled == true) {
+      v.hasHandled.add(val1);
+    }
+  }
+  v.gameObjects.forEach(checkHandled);
+  return;
+}
+
+/*  put thing in inventory */
+s.takeThing = function(thing) {
+  if (v.inventory.has(thing)) {
+    alert("s.takeThing() tried taking a thing already in inventory");
+  } else {
+    s.discoverThing(thing);
+    s.handleThing(thing);
+    v.inventory.add(thing);
+  }
+  return;
+}
+
+/*  move everything but clothes from inventory to inventoryLost */
+s.takeInventory = function() {
+  for (var thing of v.inventory) {
+    if (thing !== "clothes") {
+      v.inventory.delete(thing);
+      v.inventoryLost.add(thing);
+    }
+  }
+  return;
+}
+/* twine-user-script #9: "version.js" */
+// requires: _standard.js
+
+// This is a place to store the current version number and, if needed,
+// the date and time the project was last edited.
+
+s.versionNumber = 111;
+s.lastEdited = "2019-01-25-0753";
+
+s.calcVersion = function(num) {
+	// convert version number as integer to version number as string
+	// according to the relationship:
+	//
+	// 'x.y' <--> 100 * x + y
+  let main = Math.floor(num/100);
+  let sub = num % 100;
+  return main + '.' + sub;
+}
+
+s.version = setup.calcVersion(setup.versionNumber);
+/* twine-user-script #10: "widgets.js" */
+// widgets
+
 /*  fail rule in Bedroom */
-setup.bedroomFail = function() {
+s.bedroomFail = function() {
   let retVals = [1,2];
   let retVal = -1;
-  let levelUp = setup.markXP();
+  let levelUp = s.markXP();
   if (levelUp == 1) {
     alert("unexpected level up");
   }
   if (v.rollCount == 1 && v.pounding) {
-    retVal = setup.generalSoftFail();
+    retVal = s.generalSoftFail();
   } else {
     v.pounding = false;
     v.crowbar = false;
@@ -580,10 +616,10 @@ setup.bedroomFail = function() {
 }
 
 /*  tackled rule in Cops bust in */
-setup.copsBustInTackled = function() {
+s.copsBustInTackled = function() {
   let retVals = [5,8];
   let retVal = -1;
-  let death = setup.addInjury("concussion");
+  let death = s.addInjury("concussion");
   if (death == 1) {
     alert("unexpected death");
   }
@@ -604,11 +640,11 @@ setup.copsBustInTackled = function() {
 }
 
 /*  shot rule in Cops bust in */
-setup.copsBustInShot = function() {
+s.copsBustInShot = function() {
   let retVals = [6,9];
   let retVal = -1;
-  setup.adjustREL("detective", -1);
-  let death = setup.addInjury("gunshotShoulder");
+  s.adjustREL("detective", -1);
+  let death = s.addInjury("gunshotShoulder");
   if (death == 1) {
     alert("unexpected death");
   }
@@ -629,17 +665,17 @@ setup.copsBustInShot = function() {
 }
 
 /*  low roll rule in Bathroom */
-setup.bathroomLowRoll = function() {
+s.bathroomLowRoll = function() {
   let retVals = [1,7];
   let retVal = -1;
-  let levelUp = setup.markXP();
+  let levelUp = s.markXP();
   if (levelUp == 1) {
     alert("unexpected level up");
   }
 if (v.rollCount == 1 && v.pounding) {
-    retVal = setup.generalSoftFail();
+    retVal = s.generalSoftFail();
   } else {
-    retVal = setup.bathroomFail();
+    retVal = s.bathroomFail();
   }
   if (!retVals.includes(retVal)) {
     alert("bathroomLowRoll() tried to return " + retVal + ", which is not one of the expected return values");
@@ -648,7 +684,7 @@ if (v.rollCount == 1 && v.pounding) {
 }
 
 /*  fail rule in Bathroom */
-setup.bathroomFail = function() {
+s.bathroomFail = function() {
   let retVals = [7];
   let retVal = -1;
   v.pounding = false;
@@ -662,7 +698,7 @@ setup.bathroomFail = function() {
 }
 
 /*  soft fail rule in General rules */
-setup.generalSoftFail = function() {
+s.generalSoftFail = function() {
   let retVals = [1];
   let retVal = -1;
   v.pounding = false;
@@ -675,7 +711,7 @@ setup.generalSoftFail = function() {
 }
 
 /*  remember tattoo rule in General rules */
-setup.generalRememberTattoo = function() {
+s.generalRememberTattoo = function() {
   let retVals = [3];
   let retVal = -1;
   v.knowledge.add("womanAtBar");
@@ -688,7 +724,7 @@ setup.generalRememberTattoo = function() {
 }
 
 /*  remember Mustang rule in General rules */
-setup.generalRememberMustang = function() {
+s.generalRememberMustang = function() {
   let retVals = [4];
   let retVal = -1;
   v.knowledge.add("mustangKeys");
@@ -698,12 +734,7 @@ setup.generalRememberMustang = function() {
   }
   return retVal;
 }
-/* twine-user-script #8: "040_navEvents.js" */
-/*	get the current passage, regardless of whether saving to history or not */
-$(document).on(':passageinit', function (ev) {
-  v.curPassage = ev.passage;
-});
-/* twine-user-script #9: "Story JavaScript" */
+/* twine-user-script #11: "Story JavaScript" */
 </script><tw-passagedata pid="1" name="StoryInit" tags="" position="100,100" size="100,100">/*  system variables */
 
   &lt;&lt;set $rollCount = 0&gt;&gt;

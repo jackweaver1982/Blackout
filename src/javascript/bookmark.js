@@ -1,27 +1,9 @@
-/*  sets all passages to `nobr` */
-Config.passages.nobr = true;
-
-/*  add debug mode to settings */
-Setting.addToggle("debug", {
-  label: "debug mode"
-});
-
-/*  add beta mode to settings */
-Setting.addToggle("beta", {
-  label: "beta mode",
-  default: true
-});
-
-/*  add bio notifications to settings */
-Setting.addToggle("bioNotify", {
-  label: "bio notifications",
-  default: true
-});
+// save
 
 /*  enable autosaves and autoloading */
 Config.saves.autosave = true;
 Config.saves.autoload = function () {
-  return settings.debug;
+  return ss.debug;
 };
 
 /*  disallow saves on the starting and intro passages */
@@ -36,9 +18,6 @@ Config.saves.isAllowed = function() {
 /*  use passage titles for save files */
 Config.passages.descriptions = true;
 
-/*  sets a maximum of one save slot */
-/*  Config.saves.slots = 1; */
-
 /*  add custom save naming to settings */
 Setting.addToggle("nameSaves", {
   label   : "custom save names",
@@ -47,16 +26,40 @@ Setting.addToggle("nameSaves", {
 
 /*  enable custom naming of saves */
 Config.saves.onSave = function(save) {
-  if (Dialog.isOpen("saves") && settings.nameSaves) {
+  if (Dialog.isOpen("saves") && ss.nameSaves) {
     save.title = prompt("Name of this save file:", passage());
   }
   return;
 }
 
+/*  save game */
+s.saveGame = function() {
+  if (!Save.slots.has(0)) {
+    if (confirm("Save bookmark? You are allowed only one.\n\n(If you just want to quit and resume later, you should not need to save. See the help section for details.)")) {
+      Save.slots.save(0);
+    }
+  } else {
+    alert("Bookmark used already. Restart to delete current bookmark.")
+  }
+  return;
+}
+
+/*  load game */
+s.loadGame = function() {
+  if (!Save.slots.has(0)) {
+    alert("No bookmark to load.");
+  } else {
+    if (confirm("Load bookmark?")) {
+      Save.slots.load(0);
+    }
+  }
+  return;
+}
+
 /*  set version number of saves */
-Config.saves.version = setup.versionNumber;
+Config.saves.version = s.versionNumber;
 
 /*  check compatibility of save file */
 s.checkSave = function(save) {
-  return (save.version == setup.versionNumber);
+  return (save.version == s.versionNumber);
 }

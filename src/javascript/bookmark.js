@@ -1,4 +1,4 @@
-// save
+// the JS related to the bookmark system and the autosave system
 
 /*  enable autosaves and autoloading */
 Config.saves.autosave = true;

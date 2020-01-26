@@ -316,7 +316,7 @@
 <p>[[continue|Streets]]</p>
 
 :: cuff [include]
-cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes the knife. <<run $inventory.delete("knife")>><<run $inventoryLost.add("knife")>><</if>>The other cops lift you up and the three of them take you outside. There is a gray sedan and two patrol cars parked out front. They push you into the back of the second patrol car and close the door. You sit there for
+cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes the knife. <<run $inventory.delete("knife")>><<run $inventoryLost.add("knife")>><</if>>The other cops lift you up and the three of them take you outside. There is a gray sedan and two patrol cars parked out front. They <<include "take inventory">><<if ($inventoryLost.has("knife") && $inventoryLost.size > 1) || (!$inventoryLost.has("knife") && $inventoryLost.size > 0)>>take all your belongings, <</if>>push you into the back of the second patrol car and close the door. You sit there for
 
 :: heading to the station [message]
 <p>$msg[0]</p>

@@ -1,4 +1,4 @@
-// object management
+// JS related to the pseudo-OOP approach taken in this project
 
 /*  creates a variable `varName` which is a clone of `ClassName`, then sets its
     id to `varName` and adds it to the set of game objects, `gameObjects` */

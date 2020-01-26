@@ -213,7 +213,7 @@ and tattoo is known~~
 ~~mark 2 dmg~~  
 ~~remove knife from inventory~~  
 ~~if seen bum stuff:~~
-> put player in ambulance  
+> ~~put player in ambulance~~  
 *~~Uniformed cop shoots your shoulder. You're taken away in an ambulance.~~*  
 ~~describe outcome~~  
 ~~goto [Streets](../warehouse/streets.html)~~

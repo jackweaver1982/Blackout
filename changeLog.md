@@ -1,5 +1,14 @@
 # Change Log
 
+## Version 1.12
+
+* added an html version the change log
+* added a preface to the GM Guide containing a link to the change log
+* rewrote the code related to character sheet notifications so it's more like an object oriented approach
+* added comments to JavaScript files
+* when getting arrested at the house, the cops now take all your belongings in the same passage where they take your knife, so as to minimize character sheet notifications
+* made several edits so that the bio would change after you learn that you're the bum
+
 ## Version 1.11
 
 * reorganized JavaScript files

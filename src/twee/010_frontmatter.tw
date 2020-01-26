@@ -62,9 +62,26 @@ a {
   <<set $cheatCode = [1, 1, 1, 1, 1, 1, 1]>>
   /* an array used to pass text from one passage to another */
   <<set $msg = []>>
-  <<set $bioLastViewed = {}>>
 
 /*  the "classes" used in the game */
+
+  <<set $BioView = {
+    parent: "none",
+    type: "BioView",
+    Level: 1,
+    injuries: new Set(),
+    HP: 6,
+    inventory: new Set(),
+    knowledge: new Set()}>>
+
+  <<set $ViewDiff = {
+    parent: "none",
+    type: "ViewDiff",
+    lvlDiff: 0,
+    injuries: {gained: new Set(), lost: new Set()},
+    HPDiff: 0,
+    inventory: {gained: new Set(), lost: new Set()},
+    knowledge: {gained: new Set(), lost: new Set()}}>>
 
   <<set $Thing = {
     parent: "none",
@@ -113,6 +130,15 @@ a {
 <<set $gameObjects = new Set()>> /* logs every object in game */
 
 /*  objects
+
+  /*  BioView objects */
+
+    <<run setup.make("curView", "BioView")>>
+    <<run setup.make("lastView", "BioView")>>
+
+  /*  ViewDiff objects */
+
+    <<run setup.make("viewDiff", "ViewDiff")>>
 
   /*  Thing objects */
 
@@ -184,6 +210,7 @@ a {
     <<run setup.make("bumKilledHim", "Fact")>>
     <<run setup.make("stolenPhone", "Fact")>>
     <<run setup.make("bumMotive", "Fact")>>
+    <<run setup.make("playerIdentity", "Fact")>>
 
   /*  Injury objects */
 
@@ -233,6 +260,8 @@ a {
 
     /*  Person properties */
 
+      <<set $player.name = 'Scott Allen Brady, a.k.a. "Scotty"'>>
+      <<set $player.occupation = 'Hewlett-Packard shipping worker'>>
       <<set $player.description = "<p>You reek of alcohol, your mouth is dry and tastes like vomit, and your head is throbbing. There's blood on your <<link \"clothes\">><<run setup.examine($clothes.description,\"more\")>><</link>>, in your hair, and on your face and hands. You've had better days.</p><div id=\"more\" class=\"description\"></div>">>
       <<set $player.STR = 3>>
       <<set $player.INT = 0>>
@@ -305,6 +334,9 @@ a {
 
     <<set $bumMotive.printedName = 'the <<link "bum\'s motive">><<run setup.examine($bumMotive.description)>><</link>>'>>
     <<set $bumMotive.description = "<p>In a strange flash of insight, you understood the bum's motive. He wanted to //be// the victim. Through some deep mental delusion, the bum thought he could kill this guy and then //become// him. He wanted to swap out his nasty bum life for this guy's fancy life.</p>">>
+
+    <<set $playerIdentity.printedName = '<<link "you are the bum">><<run s.examine($playerIdentity.description)>><</link>>'>>
+    <<set $playerIdentity.description = "<p>A part of you still won't believe it. But how can you deny what is right before your eyes? The garbage bags that were in the shower--the ones that belonged to the killer--they were yours. The bum in the video you watched--that was you. Your head is spinning trying to comprehend this. You need a drink.</p>">>
 
   /*  Injury properties */
 
@@ -477,7 +509,7 @@ a {
     <</if>>
   <<else>>
     <em><<link "exit Character Sheet">>
-      <<run s.updateBioView()>>
+      <<run s.updateLastView()>>
       <<script>>Engine.show()<</script>>
     <</link>></em>
   <</if>></p>
@@ -514,47 +546,62 @@ a {
   <<run setup.visitMenu("bio")>>
 <</timed>>
 
-<p><b class="headings">Name:</b> Scott Allen Brady, a.k.a. "Scotty"</p>
+<<run s.getViewDiff()>>
 
-<p><b class="headings">Occupation:</b> Hewlett-Packard shipping worker</p>
+<p><b class="headings">Name: </b>$player.name</p>
 
-<p><b class="headings">Attributes:</b></p>
-<ul>
-  <li>6' 2", 245 lbs., muscular build</li>
-  <li>a little clumsy</li>
-  <li>a keen eye for detail</li>
-  <li>charming and persuasive</li>
-</ul>
+<p><b class="headings">Occupation: </b>$player.occupation</p>
 
+<<if !$knowledge.has("playerIdentity")>>
+  <p><b class="headings">Attributes:</b></p>
+  <ul>
+    <li>6' 2", 245 lbs., muscular build</li>
+    <li>a little clumsy</li>
+    <li>a keen eye for detail</li>
+    <li>charming and persuasive</li>
+  </ul>
+<<else>>
+  <p><b class="headings">Attributes:</b></p>
+  <ul>
+    <li>5' 8", 137 lbs.</li>
+    <li>shaky hands</li>
+    <li>paranoid and delusional</li>
+    <li>schizophrenic</li>
+  </ul>
+<</if>>
+
+/*  level up indicator */
 <p><b class="headings">Bonuses:</b>
   <<if $player.Level === 1>>
     None.
   <<else>>
-    <<set _style = s.bioStyle(v.bioLastViewed.Level != v.player.Level)>>
+    <<set _style = s.bioStyle($viewDiff.lvlDiff > 0)>>
     <span @class=_style>
       Your headache is gone. You can think a little more clearly now.
     </span>
   <</if>>
 </p>
 
+/*  list of injuries and 1 HP indicator */
 <p><b class="headings">Injuries: </b>
   <<if $injuries.size == 0>>
-    <<set _style = s.bioStyle($bioLastViewed.injuries.size > 0)>>
+    <<set _style = s.bioStyle($viewDiff.injuries.lost.size > 0)>>
     <span @class=_style>None.</span>
   <<else>>
     <<for _item range $injuries>>
-      <<set _style = s.bioStyle(!$bioLastViewed.injuries.has(_item))>>
+      <<set _style = s.bioStyle($viewDiff.injuries.gained.has(_item))>>
       <span @class=_style><<= v[_item].description + " ">></span>
     <</for>>
   <</if>>
   <<if $player.HP == 1>>
-    <<set _style = s.bioStyle($bioLastViewed.HP > 1)>>
+    <<set _style = s.bioStyle($viewDiff.HPDiff > 0)>>
     <span @class=_style>
       You feel weak and light-headed. You're not sure how much more of this physical abuse you can take.
     </span>
   <</if>>
 </p>
 
+/*  list of injuries and knowledge */
 <div class="columns">
   <div class="leftcolumn">
     <b class="headings">You are carrying:</b>
@@ -562,11 +609,12 @@ a {
       <<= "<br>nothing">>
     <<else>>
       <<for _item range $inventory>>
-        <<set _style = s.bioStyle(!$bioLastViewed.inventory.has(_item))>>
+        <<set _style = s.bioStyle($viewDiff.inventory.gained.has
+        (_item))>>
         <span @class=_style><<= "<br>" + v[_item].printedName>></span>
       <</for>>
     <</if>>
-    <<if ss.bioNotify && !s.isSubset($bioLastViewed.inventory, $inventory)>>
+    <<if ss.bioNotify && $viewDiff.inventory.lost.size > 0>>
       <br><span class='changes'><em>[you lost one or more items]</em></span>
     <</if>>
   </div>
@@ -576,13 +624,15 @@ a {
       <<= "<br>nothing">>
     <<else>>
       <<for _item range $knowledge>>
-        <<set _style = s.bioStyle(!$bioLastViewed.knowledge.has(_item))>>
+        <<set _style = s.bioStyle($viewDiff.knowledge.gained.has
+        (_item))>>
         <span @class=_style><<= "<br>" + v[_item].printedName>></span>
       <</for>>
     <</if>>
   </div>
 </div>
 
+/*  container for descriptions */
 <div id="end" class="description"></div>
 
 <<if settings.debug>>
@@ -603,7 +653,7 @@ a {
   <<run setup.takeThing("clothes")>>
 <</if>>
 
-<<run s.updateBioView()>>
+<<run s.updateLastView()>>
 
 <<if settings.debug>>
   <<goto "bedroom">>

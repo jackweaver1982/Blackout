@@ -1,4 +1,4 @@
-// debug
+// the JS related to the debug mode which is activated by a cheat code
 
 /*  add debug mode to settings */
 Setting.addToggle("debug", {

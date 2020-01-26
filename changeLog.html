@@ -1,5 +1,5 @@
 <!DOCTYPE html><html><head>
-      <title>Blackout GM Guide</title>
+      <title>changeLog</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -263,44 +263,123 @@ pre[data-line] .line-highlight[data-end]:after {
     </head>
     <body for="html-export">
       <div class="mume markdown-preview  ">
-      <h1 class="mume-header" id="blackout-gm-guide">Blackout GM Guide</h1>
+      <h1 class="mume-header" id="change-log">Change Log</h1>
 
-<h2 class="mume-header" id="preface">Preface</h2>
+<h2 class="mume-header" id="version-112">Version 1.12</h2>
 
-<p>This GM Guide was written for version 1.0 of Blackout. Since then, the game has been revised. I have tried to keep the flowchart and the game tree part of this guide (see below) updated whenever narrative changes were made to the story. But I cannot guarantee everything in this guide is consistent with the current version of Blackout. For a complete list of changes since version 1.0, see the <a href="../changeLog.html" target="_blank">change log</a>.</p>
-<h2 class="mume-header" id="what-is-this">What is this?</h2>
-
-<p>Blackout is a choice-based work of interactive fiction. The mechanics which underlie it are based on a tabletop RPG system called <em>Powered by the Apocalypse</em> (PbtA). This guide is an outline to the game which, ideally, will be understandable to anyone who has played a PbtA game, such as Dungeon World or Simple World.</p>
-<p>Blackout is built in Twine. This guide can also be considered a pseudocode version of the Twine passages.</p>
-<p>Although this guide can be useful when coding Blackout, the guide itself is not meant to be a full programming outline. It&apos;s primary purpose is to be a human-readable outline of the story branches. If it can be used as a kind of &quot;module&quot; in a PbtA game, then it has served its purpose.</p>
-<p>Occasionally, the guide contains highlighted annotations. The annotations &quot;<mark>todo</mark>&quot; and &quot;<mark>to be continued</mark>&quot; indicate something that needs to be written, with &quot;<mark>todo</mark>&quot; being the higher priority. Strikethroughs indicate items that have already been coded.</p>
-<h2 class="mume-header" id="how-to-use-the-guide">How to use the guide</h2>
-
-<p>Read this guide as though you are the GM of an RPG which uses the PbtA system, and you are using the guide as a module to help you run a gaming session.</p>
-<p>Each passage contains at least two sections. The first is the &quot;describe&quot; section. It begins with italicized text meant only for the GM and used to orient the GM to what is going on in this passage. In general, italicized text in this guide always serves this purpose. After the orienting text is a list of things for the GM to describe to the player.</p>
-<p>The next section is the &quot;actions&quot; section. It contains the actions that are available to the player during the given passage. Each action has a &quot;check&quot; section and a &quot;carry out&quot; section. The &quot;check&quot; section usually begins with &quot;hide if&quot; or &quot;hide unless&quot; and gives conditions under which the GM should offer that option to the player. The &quot;carry out&quot; section gives instructions for the GM to follow if the player chooses that action.</p>
-<p>Sometimes you will see &quot;rules&quot; listed in the guide. They are generally self-explanatory and written for human-readability. Their implementation in the code, however, is significantly different. For further details on this, see the <a href="techNotes.html">technical notes</a>.</p>
-<h2 class="mume-header" id="postscript-on-pbta-principles">Postscript on PbtA principles</h2>
-
-<p>After developing the first half of this game, I realized that a strict and complete adherence to PbtA principles was going to make for a very large project. By strict and complete, I mean including with each scenario a decently sized handful of options that a PbtA player might think of, and including three outcomes (success, mixed, and fail) for each option. Since this was supposed to be a small, experimental project, I knew I could not keep that up.</p>
-<p>For the second half of the game, the passage structure resembles more of a classic <a href="https://heterogenoustasks.wordpress.com/2015/01/26/standard-patterns-in-choice-based-games/" target="_blank">gauntlet-style interactive fiction</a>. That said, I did not abandon PbtA principles entirely in the second half. I used them behind the scenes to create the passages and options that are presented there.</p>
-<h2 class="mume-header" id="contents">Contents</h2>
-
-<ol>
-<li><a href="GMprep.html">GM overview</a></li>
-<li><a href="initialState.html">(done) Initial state of game world</a></li>
-<li><a href="functions.html">(done) Functions</a></li>
-<li>Game tree
 <ul>
-<li><a href="awakening/010bedroom.html">(done) Bedroom</a> (start)</li>
-<li><a href="awakening/020cops-bust-in.html">(done) Cops bust in</a></li>
-<li><a href="awakening/030bathroom.html">(done) Bathroom</a></li>
-<li><a href="awakening/general-rules.html">(done) General rules</a></li>
-<li><a href="warehouse/streets.html">(done) Streets</a></li>
-<li><a href="warehouse/warehouse.html">(done) Warehouse</a></li>
+<li>added an html version the change log</li>
+<li>added a preface to the GM Guide containing a link to the change log</li>
+<li>rewrote the code related to character sheet notifications so it&apos;s more like an object oriented approach</li>
+<li>added comments to JavaScript files</li>
+<li>when getting arrested at the house, the cops now take all your belongings in the same passage where they take your knife, so as to minimize character sheet notifications</li>
+<li>made several edits so that the bio would change after you learn that you&apos;re the bum</li>
 </ul>
-</li>
-</ol>
+<h2 class="mume-header" id="version-111">Version 1.11</h2>
+
+<ul>
+<li>reorganized JavaScript files</li>
+</ul>
+<h2 class="mume-header" id="version-110">Version 1.10</h2>
+
+<ul>
+<li>changed cheat code to help-help-bio-help-bio-help-help</li>
+<li>edit cheat code description in GM info section of repository</li>
+<li>in bio, moved &quot;return to story&quot; link to footer and changed text to &quot;exit character sheet&quot;</li>
+<li>changed links inside a yellow line of text to be orange instead of blue</li>
+</ul>
+<h2 class="mume-header" id="version-19">Version 1.9</h2>
+
+<ul>
+<li>fixed error where visiting help from character sheet would result in no link back to character sheet</li>
+<li>changed cheat code to help-help-bio-help-bio-help, to avoid two consecutive bio clicks</li>
+<li>fixed a bug where if you discovered the wallet in the house, then when you saw it in the warehouse and clicked on it, the description would appear one paragraph lower than it should</li>
+</ul>
+<h2 class="mume-header" id="version-18">Version 1.8</h2>
+
+<ul>
+<li>split <code>eqSet()</code> into two functions, one of which checks for subset</li>
+<li>corrected <code>you lost one or more items</code> notification to not check for size of inventory, but for actually missing items (using the new subset function)</li>
+<li>moved the updating of the bio view into a JS function</li>
+<li>removed &quot;view Character Sheet&quot; link from the Character Sheet</li>
+<li>added an initialization of the <code>bioLastViewed</code> object</li>
+<li>moved checking for bio view differences to a JS function</li>
+<li>moved setting the style of bio diffs to a JS function</li>
+</ul>
+<h2 class="mume-header" id="version-17">Version 1.7</h2>
+
+<ul>
+<li>added <code>ss</code> as a JS shortcut for <code>settings</code></li>
+<li>added a setting to turn on and off Character Sheet notifications</li>
+<li>edited <code>setup.eqSet()</code> for readability</li>
+<li>split JS function file into multiple files</li>
+</ul>
+<h2 class="mume-header" id="version-16">Version 1.6</h2>
+
+<ul>
+<li>implemented a system to notify the player of changes to the Character Sheet</li>
+</ul>
+<h2 class="mume-header" id="version-15">Version 1.5</h2>
+
+<ul>
+<li>changed &quot;bio&quot; link to &quot;view Character Sheet&quot; and moved to footer</li>
+<li>redesigned character sheet</li>
+<li>added &quot;Bonuses&quot; to character sheet to reflect when PC has leveled up</li>
+<li>added an RNG warning and info about Character Sheet in a forced message at the beginning of the game</li>
+</ul>
+<h2 class="mume-header" id="version-14">Version 1.4</h2>
+
+<ul>
+<li>reorganized JavaScript files</li>
+<li>created a temporary URL for a fillable feedback form to be developed later</li>
+<li>in beta mode, added a link to temp URL on title screen</li>
+<li>in beta mode, added a link to temp URL on every ending</li>
+<li>in beta mode, added a link to temp URL on acknowledgments</li>
+<li>updated acknowledgments</li>
+<li>&quot;THE END&quot; is no longer a link; added a separate link to view acknowledgments</li>
+<li>noun descriptions are now yellow</li>
+<li>clicking on a noun description now makes all other noun descriptions disappear</li>
+</ul>
+<h2 class="mume-header" id="version-13">Version 1.3</h2>
+
+<ul>
+<li>edited detective&apos;s dialog for character consistency</li>
+<li>edited Russian&apos;s dialog for character consistency</li>
+<li>edited woman&apos;s dialog for character and narrative consistency</li>
+<li>extended the intro to include the PC&apos;s name and where he works</li>
+<li>changed help screen headings from yellow to lime</li>
+<li>added work shirt and name reference when entering bathroom</li>
+<li>added work shirt on victim to end flashback</li>
+<li>fixed narrative error in end flashback: victim cannot take a selfie after leaving his phone on the counter</li>
+<li>in end flashback, victim&apos;s friend now says, &quot;it&apos;s your turn&quot;</li>
+<li>in end flashback, you now explicitly take the victim&apos;s phone</li>
+<li>added a secret happy ending</li>
+</ul>
+<h2 class="mume-header" id="version-12">Version 1.2</h2>
+
+<ul>
+<li>if the PC goes to the warehouse directly from the house and had one or more things taken from his inventory, the narration now explicitly says your things were taken</li>
+<li>improved explanation of how you remove your handcuffs</li>
+<li>when jumping off the platform, narrative has been edited for clarity and logical consistency</li>
+<li>added headings on help screen for improved readability</li>
+<li>changed the description of the medicine cabinet so the player no longer looks in the mirror</li>
+<li>added a link to acknowledgments to every ending</li>
+<li>added a beta mode boolean toggle to settings, defaulting to true</li>
+<li>in beta mode, added a version number to title screen</li>
+<li>removed version number and date last edited from help screen</li>
+<li>changed internal version number to integer (e.g. 102 corresponds to 1.2, 120 corresponds to 1.20, etc.)</li>
+<li>new saves will now record the version number</li>
+<li>blocked the loading of saves from old versions (loading old versions still allowed in debug mode)</li>
+</ul>
+<h2 class="mume-header" id="version-11">Version 1.1</h2>
+
+<ul>
+<li>fixed minor typos</li>
+<li>changed woman&apos;s name to from Natasha to Kira</li>
+</ul>
+<h2 class="mume-header" id="version-10">Version 1.0</h2>
+
+<p>This was the original version released for alpha testing.</p>
 
       </div>
       

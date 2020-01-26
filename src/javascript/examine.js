@@ -1,4 +1,4 @@
-// examine
+// JS related to system of examining nouns in a passage
 
 /*  replaces the HTML element with the given `id` (default is "end") by
     `objDescription` */

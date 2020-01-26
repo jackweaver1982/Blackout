@@ -4,6 +4,10 @@ title: Blackout GM Guide
 
 # Blackout GM Guide
 
+## Preface
+
+This GM Guide was written for version 1.0 of Blackout. Since then, the game has been revised. I have tried to keep the flowchart and the game tree part of this guide (see below) updated whenever narrative changes were made to the story. But I cannot guarantee everything in this guide is consistent with the current version of Blackout. For a complete list of changes since version 1.0, see the <a href="../changeLog.html" target="_blank">change log</a>.
+
 ## What is this?
 
 Blackout is a choice-based work of interactive fiction. The mechanics which underlie it are based on a tabletop RPG system called *Powered by the Apocalypse* (PbtA). This guide is an outline to the game which, ideally, will be understandable to anyone who has played a PbtA game, such as Dungeon World or Simple World.

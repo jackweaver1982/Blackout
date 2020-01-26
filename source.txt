@@ -107,7 +107,7 @@ Setting.addToggle("beta", {
   default: true
 });
 /* twine-user-script #3: "bookmark.js" */
-// save
+// the JS related to the bookmark system and the autosave system
 
 /*  enable autosaves and autoloading */
 Config.saves.autosave = true;
@@ -173,7 +173,7 @@ s.checkSave = function(save) {
   return (save.version == s.versionNumber);
 }
 /* twine-user-script #4: "debug.js" */
-// debug
+// the JS related to the debug mode which is activated by a cheat code
 
 /*  add debug mode to settings */
 Setting.addToggle("debug", {
@@ -207,7 +207,7 @@ $(document).on(':passageinit', function (ev) {
   v.curPassage = ev.passage;
 });
 /* twine-user-script #5: "dice.js" */
-// dice
+// JS related to the PbtA-style dice rolling
 
 /*  the dice rolling function */
 setup.roll = function() {
@@ -249,7 +249,7 @@ setup.rollSpecial = function(mod, omit) {
 }
 
 /* twine-user-script #6: "examine.js" */
-// examine
+// JS related to system of examining nouns in a passage
 
 /*  replaces the HTML element with the given `id` (default is "end") by
     `objDescription` */
@@ -263,7 +263,8 @@ s.examine = function(objDescription, id) {
   return;
 }
 /* twine-user-script #7: "notify.js" */
-// notifications
+// JS related to the system of providing notification for changes to the
+// character sheet
 
 /*  add bio notifications to settings */
 Setting.addToggle("bioNotify", {
@@ -271,37 +272,76 @@ Setting.addToggle("bioNotify", {
   default: true
 });
 
-/*  check if one set is a subset of another */
+s.setDiff = function(set1, set2) {
+  // returns the set difference, set1 - set2, for sets of primitive
+  // values
+  let diff = new Set(set1);
+  set1.forEach(function(elem) {
+    if (set2.has(elem)) {
+      diff.delete(elem);
+    }
+  });
+  return diff;
+}
+
 s.isSubset = function(set1, set2) {
-  for (var x of set1) if (!set2.has(x)) return false;
-  return true;
+  //returns true is set1 is a subset of set2, for sets of primitive
+  // values
+  return (s.setDiff(set1, set2).size === 0);
 }
 
-/*  check if two sets are equal */
-s.eqSet = function(set1, set2) {
-    if (set1.size !== set2.size) return false;
-    return s.isSubset(set1, set2);
+s.equal = function(set1, set2) {
+  // returns true if set1 equals set2, for sets of primitive values
+  return (set1.size === set2.size && s.isSubset(set1, set2));
 }
 
-/*  update the bioLastViewed variable to the current bioView */
-s.updateBioView = function() {
-  v.bioLastViewed = {
-    Level: v.player.Level,
-    injuries: clone(v.injuries),
-    HP: v.player.HP,
-    inventory: clone(v.inventory),
-    knowledge: clone(v.knowledge)
-  }
+s.getCurView = function() {
+  // retrieves the current view object
+  v.curView.Level = v.player.Level;
+  v.curView.injuries = clone(v.injuries);
+  v.curView.HP = v.player.HP;
+  v.curView.inventory = clone(v.inventory);
+  v.curView.knowledge = clone(v.knowledge);
+  return v.curView;
+}
+
+/*  update the lastView variable to the current bioView */
+s.updateLastView = function() {
+  v.lastView = clone(s.getCurView());
   return;
+}
+
+s.getViewDiff = function() {
+  // computes the view differences
+  s.getCurView();
+
+  v.viewDiff.lvlDiff = v.curView.Level - v.lastView.Level;
+
+  v.viewDiff.injuries.gained = s.setDiff(v.curView.injuries,
+    v.lastView.injuries);
+  v.viewDiff.injuries.lost = s.setDiff(v.lastView.injuries,
+    v.curView.injuries);
+  
+  v.viewDiff.HPDiff = v.lastView.HP - v.curView.HP;
+  
+  v.viewDiff.inventory.gained = s.setDiff(v.curView.inventory,
+    v.lastView.inventory);
+  v.viewDiff.inventory.lost = s.setDiff(v.lastView.inventory,
+    v.curView.inventory);
+  
+  v.viewDiff.knowledge.gained = s.setDiff(v.curView.knowledge,
+    v.lastView.knowledge);
+  v.viewDiff.knowledge.lost = s.setDiff(v.lastView.knowledge,
+    v.curView.knowledge);
 }
 
 /*  check if the bio has changed since last viewing it */
 s.bioChanged = function() {
-  if (v.bioLastViewed.Level != v.player.Level ||
-      !s.eqSet(v.bioLastViewed.injuries, v.injuries) ||
-      v.bioLastViewed.HP != v.player.HP ||
-      !s.eqSet(v.bioLastViewed.inventory, v.inventory) ||
-      !s.eqSet(v.bioLastViewed.knowledge, v.knowledge)) {
+  if (v.lastView.Level !== v.player.Level ||
+      !s.equal(v.lastView.injuries, v.injuries) ||
+      v.lastView.HP !== v.player.HP ||
+      !s.equal(v.lastView.inventory, v.inventory) ||
+      !s.equal(v.lastView.knowledge, v.knowledge)) {
     return true;
   } else {
     return false;
@@ -317,7 +357,7 @@ s.bioStyle = function(bool) {
   }
 }
 /* twine-user-script #8: "objectm.js" */
-// object management
+// JS related to the pseudo-OOP approach taken in this project
 
 /*  creates a variable `varName` which is a clone of `ClassName`, then sets its
     id to `varName` and adds it to the set of game objects, `gameObjects` */
@@ -488,13 +528,11 @@ s.takeInventory = function() {
   return;
 }
 /* twine-user-script #9: "version.js" */
-// requires: _standard.js
-
 // This is a place to store the current version number and, if needed,
 // the date and time the project was last edited.
 
-s.versionNumber = 111;
-s.lastEdited = "2019-01-25-0753";
+s.versionNumber = 112;
+s.lastEdited = "2019-01-26-1521";
 
 s.calcVersion = function(num) {
 	// convert version number as integer to version number as string
@@ -508,7 +546,9 @@ s.calcVersion = function(num) {
 
 s.version = setup.calcVersion(setup.versionNumber);
 /* twine-user-script #10: "widgets.js" */
-// widgets
+// This JS was implemented as an alternative to widgets, which seemed to
+// work in way I didn't fully understand. In hindsight, most of this
+// could have been accomplished with SugarCube <<include>> macros.
 
 /*  fail rule in Bedroom */
 s.bedroomFail = function() {
@@ -667,9 +707,26 @@ s.generalRememberMustang = function() {
   <<set $cheatCode = [1, 1, 1, 1, 1, 1, 1]>>
   /* an array used to pass text from one passage to another */
   <<set $msg = []>>
-  <<set $bioLastViewed = {}>>
 
 /*  the "classes" used in the game */
+
+  <<set $BioView = {
+    parent: "none",
+    type: "BioView",
+    Level: 1,
+    injuries: new Set(),
+    HP: 6,
+    inventory: new Set(),
+    knowledge: new Set()}>>
+
+  <<set $ViewDiff = {
+    parent: "none",
+    type: "ViewDiff",
+    lvlDiff: 0,
+    injuries: {gained: new Set(), lost: new Set()},
+    HPDiff: 0,
+    inventory: {gained: new Set(), lost: new Set()},
+    knowledge: {gained: new Set(), lost: new Set()}}>>
 
   <<set $Thing = {
     parent: "none",
@@ -718,6 +775,15 @@ s.generalRememberMustang = function() {
 <<set $gameObjects = new Set()>> /* logs every object in game */
 
 /*  objects
+
+  /*  BioView objects */
+
+    <<run setup.make("curView", "BioView")>>
+    <<run setup.make("lastView", "BioView")>>
+
+  /*  ViewDiff objects */
+
+    <<run setup.make("viewDiff", "ViewDiff")>>
 
   /*  Thing objects */
 
@@ -789,6 +855,7 @@ s.generalRememberMustang = function() {
     <<run setup.make("bumKilledHim", "Fact")>>
     <<run setup.make("stolenPhone", "Fact")>>
     <<run setup.make("bumMotive", "Fact")>>
+    <<run setup.make("playerIdentity", "Fact")>>
 
   /*  Injury objects */
 
@@ -838,6 +905,8 @@ s.generalRememberMustang = function() {
 
     /*  Person properties */
 
+      <<set $player.name = 'Scott Allen Brady, a.k.a. "Scotty"'>>
+      <<set $player.occupation = 'Hewlett-Packard shipping worker'>>
       <<set $player.description = "<p>You reek of alcohol, your mouth is dry and tastes like vomit, and your head is throbbing. There's blood on your <<link \"clothes\">><<run setup.examine($clothes.description,\"more\")>><</link>>, in your hair, and on your face and hands. You've had better days.</p><div id=\"more\" class=\"description\"></div>">>
       <<set $player.STR = 3>>
       <<set $player.INT = 0>>
@@ -910,6 +979,9 @@ s.generalRememberMustang = function() {
 
     <<set $bumMotive.printedName = 'the <<link "bum\'s motive">><<run setup.examine($bumMotive.description)>><</link>>'>>
     <<set $bumMotive.description = "<p>In a strange flash of insight, you understood the bum's motive. He wanted to //be// the victim. Through some deep mental delusion, the bum thought he could kill this guy and then //become// him. He wanted to swap out his nasty bum life for this guy's fancy life.</p>">>
+
+    <<set $playerIdentity.printedName = '<<link "you are the bum">><<run s.examine($playerIdentity.description)>><</link>>'>>
+    <<set $playerIdentity.description = "<p>A part of you still won't believe it. But how can you deny what is right before your eyes? The garbage bags that were in the shower--the ones that belonged to the killer--they were yours. The bum in the video you watched--that was you. Your head is spinning trying to comprehend this. You need a drink.</p>">>
 
   /*  Injury properties */
 
@@ -1084,7 +1156,7 @@ s.generalRememberMustang = function() {
     <</if>>
   <<else>>
     <em><<link "exit Character Sheet">>
-      <<run s.updateBioView()>>
+      <<run s.updateLastView()>>
       <<script>>Engine.show()<</script>>
     <</link>></em>
   <</if>></p>
@@ -1123,47 +1195,62 @@ s.generalRememberMustang = function() {
   <<run setup.visitMenu("bio")>>
 <</timed>>
 
-<p><b class="headings">Name:</b> Scott Allen Brady, a.k.a. "Scotty"</p>
+<<run s.getViewDiff()>>
 
-<p><b class="headings">Occupation:</b> Hewlett-Packard shipping worker</p>
+<p><b class="headings">Name: </b>$player.name</p>
 
-<p><b class="headings">Attributes:</b></p>
-<ul>
-  <li>6' 2", 245 lbs., muscular build</li>
-  <li>a little clumsy</li>
-  <li>a keen eye for detail</li>
-  <li>charming and persuasive</li>
-</ul>
+<p><b class="headings">Occupation: </b>$player.occupation</p>
 
+<<if !$knowledge.has("playerIdentity")>>
+  <p><b class="headings">Attributes:</b></p>
+  <ul>
+    <li>6' 2", 245 lbs., muscular build</li>
+    <li>a little clumsy</li>
+    <li>a keen eye for detail</li>
+    <li>charming and persuasive</li>
+  </ul>
+<<else>>
+  <p><b class="headings">Attributes:</b></p>
+  <ul>
+    <li>5' 8", 137 lbs.</li>
+    <li>shaky hands</li>
+    <li>paranoid and delusional</li>
+    <li>schizophrenic</li>
+  </ul>
+<</if>>
+
+/*  level up indicator */
 <p><b class="headings">Bonuses:</b>
   <<if $player.Level === 1>>
     None.
   <<else>>
-    <<set _style = s.bioStyle(v.bioLastViewed.Level != v.player.Level)>>
+    <<set _style = s.bioStyle($viewDiff.lvlDiff > 0)>>
     <span @class=_style>
       Your headache is gone. You can think a little more clearly now.
     </span>
   <</if>>
 </p>
 
+/*  list of injuries and 1 HP indicator */
 <p><b class="headings">Injuries: </b>
   <<if $injuries.size == 0>>
-    <<set _style = s.bioStyle($bioLastViewed.injuries.size > 0)>>
+    <<set _style = s.bioStyle($viewDiff.injuries.lost.size > 0)>>
     <span @class=_style>None.</span>
   <<else>>
     <<for _item range $injuries>>
-      <<set _style = s.bioStyle(!$bioLastViewed.injuries.has(_item))>>
+      <<set _style = s.bioStyle($viewDiff.injuries.gained.has(_item))>>
       <span @class=_style><<= v[_item].description + " ">></span>
     <</for>>
   <</if>>
   <<if $player.HP == 1>>
-    <<set _style = s.bioStyle($bioLastViewed.HP > 1)>>
+    <<set _style = s.bioStyle($viewDiff.HPDiff > 0)>>
     <span @class=_style>
       You feel weak and light-headed. You're not sure how much more of this physical abuse you can take.
     </span>
   <</if>>
 </p>
 
+/*  list of injuries and knowledge */
 <div class="columns">
   <div class="leftcolumn">
     <b class="headings">You are carrying:</b>
@@ -1171,11 +1258,12 @@ s.generalRememberMustang = function() {
       <<= "<br>nothing">>
     <<else>>
       <<for _item range $inventory>>
-        <<set _style = s.bioStyle(!$bioLastViewed.inventory.has(_item))>>
+        <<set _style = s.bioStyle($viewDiff.inventory.gained.has
+        (_item))>>
         <span @class=_style><<= "<br>" + v[_item].printedName>></span>
       <</for>>
     <</if>>
-    <<if ss.bioNotify && !s.isSubset($bioLastViewed.inventory, $inventory)>>
+    <<if ss.bioNotify && $viewDiff.inventory.lost.size > 0>>
       <br><span class='changes'><em>[you lost one or more items]</em></span>
     <</if>>
   </div>
@@ -1185,13 +1273,15 @@ s.generalRememberMustang = function() {
       <<= "<br>nothing">>
     <<else>>
       <<for _item range $knowledge>>
-        <<set _style = s.bioStyle(!$bioLastViewed.knowledge.has(_item))>>
+        <<set _style = s.bioStyle($viewDiff.knowledge.gained.has
+        (_item))>>
         <span @class=_style><<= "<br>" + v[_item].printedName>></span>
       <</for>>
     <</if>>
   </div>
 </div>
 
+/*  container for descriptions */
 <div id="end" class="description"></div>
 
 <<if settings.debug>>
@@ -1213,7 +1303,7 @@ s.generalRememberMustang = function() {
   <<run setup.takeThing("clothes")>>
 <</if>>
 
-<<run s.updateBioView()>>
+<<run s.updateLastView()>>
 
 <<if settings.debug>>
   <<goto "bedroom">>
@@ -1838,7 +1928,7 @@ s.generalRememberMustang = function() {
 
 
 :: cuff [include]
-cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes the knife. <<run $inventory.delete("knife")>><<run $inventoryLost.add("knife")>><</if>>The other cops lift you up and the three of them take you outside. There is a gray sedan and two patrol cars parked out front. They push you into the back of the second patrol car and close the door. You sit there for
+cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes the knife. <<run $inventory.delete("knife")>><<run $inventoryLost.add("knife")>><</if>>The other cops lift you up and the three of them take you outside. There is a gray sedan and two patrol cars parked out front. They <<include "take inventory">><<if ($inventoryLost.has("knife") && $inventoryLost.size > 1) || (!$inventoryLost.has("knife") && $inventoryLost.size > 0)>>take all your belongings, <</if>>push you into the back of the second patrol car and close the door. You sit there for
 
 
 :: heading to the station [message]
@@ -2202,7 +2292,7 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 <<set $copCar.traveledIn = true>>
 <<run s.discoverThing("detective")>>
 
-<p>"Turn around and put your hands on the wall," he says. With no good options, you do as he says. He steps into the shower and cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes the knife. <<run $inventory.delete("knife")>><<run $inventoryLost.add("knife")>><</if>>Grabbing you by the arm, he leads you outside. There is a gray sedan and two patrol cars parked out front. He pushes you into the back of the second patrol car and closes the door. Two uniformed cops come around from the back of the house and join the detective. You sit there for what must be a half hour while they talk into their radios and fill out paperwork. Finally, they start driving.<p>
+<p>"Turn around and put your hands on the wall," he says. With no good options, you do as he says. He steps into the shower and cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes the knife. <<run $inventory.delete("knife")>><<run $inventoryLost.add("knife")>><</if>>Grabbing you by the arm, he leads you outside. There is a gray sedan and two patrol cars parked out front. He <<include "take inventory">><<if ($inventoryLost.has("knife") && $inventoryLost.size > 1) || (!$inventoryLost.has("knife") && $inventoryLost.size > 0)>>takes all your belongings, <</if>>pushes you into the back of the second patrol car and closes the door. Two uniformed cops come around from the back of the house and join the detective. You sit there for what must be a half hour while they talk into their radios and fill out paperwork. Finally, they start driving.<p>
 
 <p>[[continue|Streets]]</p>
 
@@ -2295,15 +2385,18 @@ cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes t
 :: end of bathroom [fake]
 
 
-:: Streets
+:: take inventory [include]
 /*  take player's inventory */
 <<if !$inventoryTaken>>
   <<run setup.takeInventory()>>
   <<set $inventoryTaken = true>>
 <</if>>
-<<if $containedIn.get("player") == "copCar">>
 
+
+:: Streets
 <<set $shooter.discovered = true>>
+
+<<if $containedIn.get("player") == "copCar">>
 
   /*  initial description if in cop car */
   <p><<if $inventoryLost.size !== 0>>The cops have taken all your things and have them in the front seat. <</if>>You are in the back of the patrol car with your hands cuffed behind you. You drive for about twenty minutes along the interstate. When you get off, you head through downtown toward the station.</p>
@@ -3387,6 +3480,29 @@ $msg[0]
 
 :: the truth
 /*	the intended ending */
+<<run $knowledge.add("playerIdentity")>>
+
+<<set $player.name = "Rufus Allen">>
+<<set $player.occupation = "none">>
+
+<<set $sameLastName.description = '<p>The victim was Matthew Scott Brady, Jr. His friends at the bar called him "Scotty". Thinking that was his name, you adopted it for yourself.</p>'>>
+
+<<set $womanAtBar.description = "<p>You remember the victim doing shots and playing pool with a woman at the Fireplace Tavern.</p>">>
+
+<<set $mustangKeys.description = "<p>You have a memory of being in the woman's black Mustang. She got in, took the keys from above the visor, and started driving. Given what you know now, that doesn't make sense. Perhaps it's just a part of your delusion.</p>">>
+
+<<set $russian.description = "<p>The victim had selfies on his phone with a blonde woman. The Russian man was in the background watching him. He also had a video in which the Russian and the woman were together, talking.</p>">>
+
+<<set $bumStuff.printedName = "<<link \"your stuff\">><<run setup.examine($bumStuff.description)>><</link>> in the shower">>
+<<set $bumStuff.description = "<p>On the floor inside the shower were three garbage bags. Two were half-open and some of their contents had spilled onto the tiles--old, dirty clothes, a shoe that was falling apart, empty booze bottles. These were your belongings.</p>">>
+
+<<run $knowledge.delete("bumKilledHim")>>
+
+<<set $stolenPhone.description = "<p>You were at the bar last night. You stole the victim's phone and used it to track down where he lived.</p>">>
+
+<<set $bumMotive.printedName = '<<link "your motive">><<run setup.examine($bumMotive.description)>><</link>>'>>
+<<set $bumMotive.description = "<p>In an unusual flash of clarity, you understood your motive. You wanted to //be// the victim. Through some deep mental delusion, you thought you could kill this guy and then //become// him. You wanted to swap out your nasty bum life for this guy's fancy life.</p>">>
+
 <p>$msg[0]</p>
 
 <p>$msg[1] The detective walks toward you. "You have the right to remain silent," he says. He continues to recite the Miranda warning as he cuffs your hands behind your back. You stand passively, a feeling of confusion clouding your mind. You face the glass window and in it you see your reflection. It looks like a stranger. Ragged beard, matted hair, tired eyes, leathery face. Your whole visage stands in stark contrast to the clothes you're wearing. You have the face of a poverty-stricken old man, and the blood-stained clothes of an affluent young one. Your head hurts trying to make sense of it all and you look away. With a tug on your arm, the detective leads you out of the office.</p>

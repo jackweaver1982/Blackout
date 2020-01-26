@@ -329,7 +329,7 @@
 <<set $copCar.traveledIn = true>>
 <<run s.discoverThing("detective")>>
 
-<p>"Turn around and put your hands on the wall," he says. With no good options, you do as he says. He steps into the shower and cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes the knife. <<run $inventory.delete("knife")>><<run $inventoryLost.add("knife")>><</if>>Grabbing you by the arm, he leads you outside. There is a gray sedan and two patrol cars parked out front. He pushes you into the back of the second patrol car and closes the door. Two uniformed cops come around from the back of the house and join the detective. You sit there for what must be a half hour while they talk into their radios and fill out paperwork. Finally, they start driving.<p>
+<p>"Turn around and put your hands on the wall," he says. With no good options, you do as he says. He steps into the shower and cuffs your hands behind your back. <<if $inventory.has("knife")>>Then he takes the knife. <<run $inventory.delete("knife")>><<run $inventoryLost.add("knife")>><</if>>Grabbing you by the arm, he leads you outside. There is a gray sedan and two patrol cars parked out front. He <<include "take inventory">><<if ($inventoryLost.has("knife") && $inventoryLost.size > 1) || (!$inventoryLost.has("knife") && $inventoryLost.size > 0)>>takes all your belongings, <</if>>pushes you into the back of the second patrol car and closes the door. Two uniformed cops come around from the back of the house and join the detective. You sit there for what must be a half hour while they talk into their radios and fill out paperwork. Finally, they start driving.<p>
 
 <p>[[continue|Streets]]</p>
 

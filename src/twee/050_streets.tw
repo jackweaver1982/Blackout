@@ -1,12 +1,14 @@
-:: Streets
+:: take inventory [include]
 /*  take player's inventory */
 <<if !$inventoryTaken>>
   <<run setup.takeInventory()>>
   <<set $inventoryTaken = true>>
 <</if>>
-<<if $containedIn.get("player") == "copCar">>
 
+:: Streets
 <<set $shooter.discovered = true>>
+
+<<if $containedIn.get("player") == "copCar">>
 
   /*  initial description if in cop car */
   <p><<if $inventoryLost.size !== 0>>The cops have taken all your things and have them in the front seat. <</if>>You are in the back of the patrol car with your hands cuffed behind you. You drive for about twenty minutes along the interstate. When you get off, you head through downtown toward the station.</p>

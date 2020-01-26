@@ -1,4 +1,6 @@
-// widgets
+// This JS was implemented as an alternative to widgets, which seemed to
+// work in way I didn't fully understand. In hindsight, most of this
+// could have been accomplished with SugarCube <<include>> macros.
 
 /*  fail rule in Bedroom */
 s.bedroomFail = function() {

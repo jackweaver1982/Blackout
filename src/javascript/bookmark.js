@@ -35,7 +35,7 @@ Config.saves.onSave = function(save) {
 /*  save game */
 s.saveGame = function() {
   if (!Save.slots.has(0)) {
-    if (confirm("Save bookmark? You are allowed only one.\n\n(If you just want to quit and resume later, you should not need to save. See the help section for details.)")) {
+    if (confirm("Save bookmark? You are allowed only one.\n\n(If you just want to quit and resume later, you should not need to save. See the info screen for details.)")) {
       Save.slots.save(0);
     }
   } else {

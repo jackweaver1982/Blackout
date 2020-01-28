@@ -443,7 +443,7 @@ a {
 
 :: PassageHeader
 <<timed 0s>><<if !tags().includes("no-header")>>
-  <<link "help">>
+  <<link "info">>
     <<script>>Engine.play("help", true)<</script>>
   <</link>> / 
   <<link "save">>
@@ -663,7 +663,7 @@ a {
     by<br>
     Jack Weaver<br>
     <<if settings.beta>>
-      (beta version <<= setup.version>>)
+      version <<= setup.version>> (beta)
     <</if>>
     <br>
     <br>
@@ -708,7 +708,7 @@ a {
 <p>[[continue|RNG warning]]</p>
 
 :: RNG warning [no-header]
-<p>In this game, your choices can have random consequences. The chances of the various outcomes are affected by your character's traits. You can read about those traits on the Character Sheet. The Character Sheet also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
+<p>In this story, your choices can have random consequences. The chances of the various outcomes are affected by your character's traits. You can read about those traits on the Character Sheet. The Character Sheet also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
 
 <p>[[got it|who you are]]</p>
 

@@ -100,7 +100,7 @@ Object.defineProperty(window, "t", {
 // shown/activated conditional on whether beta mode is on or off. It
 // also offers a place to store a url for a beta testing feedback form.
 
-s.betaFormURL = 'https://jackweaver1982.github.io/Blackout/betaForm.html';
+s.betaFormURL = 'https://forms.gle/uYARf1LTzRgRantZA';
 
 Setting.addToggle("beta", {
   label: "beta mode",
@@ -144,7 +144,7 @@ Config.saves.onSave = function(save) {
 /*  save game */
 s.saveGame = function() {
   if (!Save.slots.has(0)) {
-    if (confirm("Save bookmark? You are allowed only one.\n\n(If you just want to quit and resume later, you should not need to save. See the help section for details.)")) {
+    if (confirm("Save bookmark? You are allowed only one.\n\n(If you just want to quit and resume later, you should not need to save. See the info screen for details.)")) {
       Save.slots.save(0);
     }
   } else {
@@ -531,8 +531,7 @@ s.takeInventory = function() {
 // This is a place to store the current version number and, if needed,
 // the date and time the project was last edited.
 
-s.versionNumber = 112;
-s.lastEdited = "2019-01-26-1521";
+s.versionNumber = 200;
 
 s.calcVersion = function(num) {
 	// convert version number as integer to version number as string
@@ -1089,7 +1088,7 @@ s.generalRememberMustang = function() {
 
 :: PassageHeader
 <<timed 0s>><<if !tags().includes("no-header")>>
-  <<link "help">>
+  <<link "info">>
     <<script>>Engine.play("help", true)<</script>>
   <</link>> / 
   <<link "save">>
@@ -1313,7 +1312,7 @@ s.generalRememberMustang = function() {
     by<br>
     Jack Weaver<br>
     <<if settings.beta>>
-      (beta version <<= setup.version>>)
+      version <<= setup.version>> (beta)
     <</if>>
     <br>
     <br>
@@ -1360,7 +1359,7 @@ s.generalRememberMustang = function() {
 
 
 :: RNG warning [no-header]
-<p>In this game, your choices can have random consequences. The chances of the various outcomes are affected by your character's traits. You can read about those traits on the Character Sheet. The Character Sheet also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
+<p>In this story, your choices can have random consequences. The chances of the various outcomes are affected by your character's traits. You can read about those traits on the Character Sheet. The Character Sheet also shows what you are carrying, what you have learned, and any injuries you may have suffered.</p>
 
 <p>[[got it|who you are]]</p>
 

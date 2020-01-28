@@ -1,8 +1,20 @@
 # Change Log
 
+## Version 2.0
+
+* deleted superfluous `lastEdited` variable
+* changed "game" to "story" in RNG splash screen
+* changed "help" to "info" in header and save popup
+* edited message web page for alpha testers
+* inserted correct link to beta feedback form
+* changed wording of "beta version" on title screen
+* deleted old beta form placeholder file
+* edited README
+* deleted old index.md and index.html
+
 ## Version 1.12
 
-* added an html version the change log
+* added an html version of the change log
 * added a preface to the GM Guide containing a link to the change log
 * rewrote the code related to character sheet notifications so it's more like an object oriented approach
 * added comments to JavaScript files

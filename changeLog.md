@@ -11,6 +11,8 @@
 * deleted old beta form placeholder file
 * edited README
 * deleted old index.md and index.html
+* noticed that version checking in the save system has been broken since v1.11; renamed `version.js` to `_version.js`, so it would load into Tweego before `bookmark.js` (the latter uses the former)
+* added comments to JS files indicating which other files they require; renamed files so they process in the correct order
 
 ## Version 1.12
 

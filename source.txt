@@ -51,7 +51,7 @@ a {
 
 
 :: Story JavaScript [script]
-/* twine-user-script #1: "_standard.js" */
+/* twine-user-script #1: "_010-standard.js" */
 // This is a collection of standard code to include in all projects:
 // `nobr` on every passage and shortcuts/aliases for `setup`,
 // `settings`, and accessing story and temporary variables in
@@ -93,7 +93,58 @@ Object.defineProperty(window, "t", {
     return State.temporary;
   }
 });
-/* twine-user-script #2: "beta.js" */
+/* twine-user-script #2: "_020-version.js" */
+// This is a place to store the current version number and, if needed,
+// the date and time the project was last edited.
+
+s.versionNumber = 200;
+
+s.calcVersion = function(num) {
+	// convert version number as integer to version number as string
+	// according to the relationship:
+	//
+	// 'x.y' <--> 100 * x + y
+  let main = Math.floor(num/100);
+  let sub = num % 100;
+  return main + '.' + sub;
+}
+
+s.version = s.calcVersion(s.versionNumber);
+/* twine-user-script #3: "_030-debug.js" */
+// the JS related to the debug mode which is activated by a cheat code
+
+/*  add debug mode to settings */
+Setting.addToggle("debug", {
+  label: "debug mode"
+});
+
+/*  entering menus in the right pattern will activate debug mode. This
+    function checks for it every time you enter a menu screen. */
+s.visitMenu = function(psgName) {
+  if (turns() != v.lastMenuTurn) {
+    v.cheatCode = [1, 1, 1, 1, 1, 1, 1];
+    v.lastMenuTurn = turns();
+  }
+  v.cheatCode.push(psgName == "help" ? 0 : 1);
+  v.cheatCode.shift();
+  if (JSON.stringify(v.cheatCode) == "[0,0,1,0,1,0,0]") {
+    ss.debug = !ss.debug;
+    Setting.save();
+    if (ss.debug) {
+      UIBar.unstow().show();
+    } else {
+      UIBar.hide().stow();
+    }
+    Engine.play(psgName, true);
+  }
+  return;
+}
+
+/*  get the current passage, regardless of whether saving to history or not */
+$(document).on(':passageinit', function (ev) {
+  v.curPassage = ev.passage;
+});
+/* twine-user-script #4: "beta.js" */
 // requires: _standard.js
 //
 // This file adds a beta mode to settings, so items in the game can be
@@ -106,8 +157,10 @@ Setting.addToggle("beta", {
   label: "beta mode",
   default: true
 });
-/* twine-user-script #3: "bookmark.js" */
+/* twine-user-script #5: "bookmark.js" */
 // the JS related to the bookmark system and the autosave system
+//
+// requires `debug` and `version`
 
 /*  enable autosaves and autoloading */
 Config.saves.autosave = true;
@@ -172,42 +225,10 @@ Config.saves.version = s.versionNumber;
 s.checkSave = function(save) {
   return (save.version == s.versionNumber);
 }
-/* twine-user-script #4: "debug.js" */
-// the JS related to the debug mode which is activated by a cheat code
-
-/*  add debug mode to settings */
-Setting.addToggle("debug", {
-  label: "debug mode"
-});
-
-/*  entering menus in the right pattern will activate debug mode. This
-    function checks for it every time you enter a menu screen. */
-s.visitMenu = function(psgName) {
-  if (turns() != v.lastMenuTurn) {
-    v.cheatCode = [1, 1, 1, 1, 1, 1, 1];
-    v.lastMenuTurn = turns();
-  }
-  v.cheatCode.push(psgName == "help" ? 0 : 1);
-  v.cheatCode.shift();
-  if (JSON.stringify(v.cheatCode) == "[0,0,1,0,1,0,0]") {
-    ss.debug = !ss.debug;
-    Setting.save();
-    if (ss.debug) {
-      UIBar.unstow().show();
-    } else {
-      UIBar.hide().stow();
-    }
-    Engine.play(psgName, true);
-  }
-  return;
-}
-
-/*  get the current passage, regardless of whether saving to history or not */
-$(document).on(':passageinit', function (ev) {
-  v.curPassage = ev.passage;
-});
-/* twine-user-script #5: "dice.js" */
+/* twine-user-script #6: "dice.js" */
 // JS related to the PbtA-style dice rolling
+//
+// requires `debug`
 
 /*  the dice rolling function */
 setup.roll = function() {
@@ -248,7 +269,7 @@ setup.rollSpecial = function(mod, omit) {
   return ret;
 }
 
-/* twine-user-script #6: "examine.js" */
+/* twine-user-script #7: "examine.js" */
 // JS related to system of examining nouns in a passage
 
 /*  replaces the HTML element with the given `id` (default is "end") by
@@ -262,7 +283,7 @@ s.examine = function(objDescription, id) {
   }
   return;
 }
-/* twine-user-script #7: "notify.js" */
+/* twine-user-script #8: "notify.js" */
 // JS related to the system of providing notification for changes to the
 // character sheet
 
@@ -356,7 +377,7 @@ s.bioStyle = function(bool) {
     return '';
   }
 }
-/* twine-user-script #8: "objectm.js" */
+/* twine-user-script #9: "objectm.js" */
 // JS related to the pseudo-OOP approach taken in this project
 
 /*  creates a variable `varName` which is a clone of `ClassName`, then sets its
@@ -527,23 +548,6 @@ s.takeInventory = function() {
   }
   return;
 }
-/* twine-user-script #9: "version.js" */
-// This is a place to store the current version number and, if needed,
-// the date and time the project was last edited.
-
-s.versionNumber = 200;
-
-s.calcVersion = function(num) {
-	// convert version number as integer to version number as string
-	// according to the relationship:
-	//
-	// 'x.y' <--> 100 * x + y
-  let main = Math.floor(num/100);
-  let sub = num % 100;
-  return main + '.' + sub;
-}
-
-s.version = setup.calcVersion(setup.versionNumber);
 /* twine-user-script #10: "widgets.js" */
 // This JS was implemented as an alternative to widgets, which seemed to
 // work in way I didn't fully understand. In hindsight, most of this

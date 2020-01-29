@@ -277,6 +277,8 @@ pre[data-line] .line-highlight[data-end]:after {
 <li>deleted old beta form placeholder file</li>
 <li>edited README</li>
 <li>deleted old <a href="http://index.md">index.md</a> and index.html</li>
+<li>noticed that version checking in the save system has been broken since v1.11; renamed <code>version.js</code> to <code>_version.js</code>, so it would load into Tweego before <code>bookmark.js</code> (the latter uses the former)</li>
+<li>added comments to JS files indicating which other files they require; renamed files so they process in the correct order</li>
 </ul>
 <h2 class="mume-header" id="version-112">Version 1.12</h2>
 

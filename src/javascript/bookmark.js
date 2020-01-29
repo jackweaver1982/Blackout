@@ -1,4 +1,6 @@
 // the JS related to the bookmark system and the autosave system
+//
+// requires `debug` and `version`
 
 /*  enable autosaves and autoloading */
 Config.saves.autosave = true;

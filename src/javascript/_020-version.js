@@ -13,4 +13,4 @@ s.calcVersion = function(num) {
   return main + '.' + sub;
 }
 
-s.version = setup.calcVersion(setup.versionNumber);
+s.version = s.calcVersion(s.versionNumber);

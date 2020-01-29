@@ -1,4 +1,6 @@
 // JS related to the PbtA-style dice rolling
+//
+// requires `debug`
 
 /*  the dice rolling function */
 setup.roll = function() {
